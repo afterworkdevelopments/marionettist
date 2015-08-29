@@ -1,6 +1,16 @@
-do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n) ->
+do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s) ->
 
   Marionetist = Marionette.extend()
+
+  Marionetist.Backbone = Backbone
+
+  Marionetist.Marionette = Marionette
+
+  Marionetist._ = _
+
+  Marionetist.$ = $
+
+  Marionetist.s = s
 
   Marionetist.I18n = i18n
 
@@ -16,6 +26,16 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n) ->
 
   Marionetist.Application = Marionetist.Application.extend
 
+    Backbone: Marionetist.Backbone
+
+    Marionette: Marionetist.Marionette
+
+    _: Marionetist._
+
+    $: Marionetist.$
+
+    s: Marionetist.s
+
     I18n: Marionetist.I18n
 
     Controllers: Marionetist.Controllers
@@ -25,15 +45,15 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n) ->
     Views: Marionetist.Views
 
     navigate: (route, options = {}) ->
-      Backbone.history.navigate route, options
+      Marionetist.Backbone.history.navigate route, options
 
     getCurrentRoute: ->
-      frag = Backbone.history.fragment
+      frag = Marionetist.Backbone.history.fragment
       if _.isEmpty(frag) then null else frag
 
     startHistory: (options= {})->
-      if Backbone.history
-        Backbone.history.start(options)
+      if Marionetist.Backbone.history?
+        Marionetist.Backbone.history.start(options)
 
     register: (instance, id) ->
       @_registry ?= {}
@@ -67,10 +87,11 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n) ->
       "backbone.marionette"
       "i18next-client"
       'exports'
-    ], (_, $, Backbone, Marionette, i18n, exports) ->
+      "underscore.string"
+    ], (_, $, Backbone, Marionette, i18n, exports, s) ->
       # Export global even in AMD case in case this script is loaded with
       # others that may still expect a global Backbone.
-      Marionetist = factory(root, exports, Backbone, Marionette, _, $, i18n)
+      Marionetist = factory(root, exports, Backbone, Marionette, _, $, i18n, s)
       root.Marionetist = Marionetist
       return
     # Next for Node.js or CommonJS. jQuery may not be needed as a module.
@@ -80,11 +101,12 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n) ->
     Backbone = require("backbone")
     Marionette = require("backbone.marionette")
     i18n = require("i18next-client")
+    s = require("underscore.string")
     try
       $ = require('jquery')
     catch e
 
-    module.exports = root.Marionetist = factory(root, exports, Backbone, Marionette, _, $, i18n)
+    module.exports = root.Marionetist = factory(root, exports, Backbone, Marionette, _, $, i18n, s)
     # Finally, as a browser global.
   else
-    root.Marionetist = factory(root, {},root.Backbone, root.Marionette, root._, (root.jQuery or root.Zepto or root.ender or root.$), root.i18n)
+    root.Marionetist = factory(root, {},root.Backbone, root.Marionette, root._, (root.jQuery or root.Zepto or root.ender or root.$), root.i18n, root.s)

@@ -1,6 +1,6 @@
 {
   "name": "marionetist",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Marionette based framework",
   "main": "lib/marionetist.js",
   "scripts": {
@@ -8,26 +8,32 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/afterworkdevelopments/marionetist"
+    "url": "git+https://github.com/afterworkdevelopments/marionetist.git"
   },
+  "bugs": {
+    "url": "https://github.com/afterworkdevelopments/marionetist/issues"
+  },
+  "homepage": "https://github.com/afterworkdevelopments/marionetist#readme",
   "keywords": [
     "Marionette Framework Backbone Marionetist"
   ],
   "author": "Emilio Forrer <dev.emilio.forrer@gmail.com> (https://github.com/emilioforrer)",
   "license": "MIT",
   "dependencies": {
+    "jquery": "^2.1.4",
     "underscore": "^1.8.3",
+    "underscore-contrib": "^0.3.0",
+    "underscore.string": "^3.2.0",
     "backbone": "^1.2.2",
     "backbone-associations": "^0.6.2",
     "backbone.marionette": "^2.4.2",
-    "i18next-client": "^1.10.1",
-    "jquery": "^2.1.4",
     "coffee-script": "~1.9.3",
+    "i18next-client": "^1.10.1",
     "gulp": "~3.9.0",
-    "gulp-uglify": "^1.3.0",
     "gulp-coffee": "^2.3.1",
     "gulp-concat": "^2.6.0",
     "gulp-include": "^2.0.2",
+    "gulp-uglify": "^1.3.0",
     "gulp-util": "^3.0.6"
   }
 }

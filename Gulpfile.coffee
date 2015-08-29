@@ -20,7 +20,7 @@ gulp.task "minify", ()->
     .pipe(gulp.dest("./lib/"))
 
 gulp.task "watchfiles", ()->
-  gulp.watch("./src/**/**/**/*.coffee", ["coffee"])
+  gulp.watch("./src/**/**/**/*.coffee", ["coffee", "minify"])
 
 
 gulp.task "default", ["coffee", "minify", "watchfiles"]
