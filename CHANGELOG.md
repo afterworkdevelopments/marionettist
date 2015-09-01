@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## 0.2.1
+
+* Changed dependencies versions to match with Marionette 
+
 ## 0.2.0
 
 * Attached core dependencies (jQuery, Underscore, Underscore.string, Backbone, Marionette and i18next) to Marionetist root

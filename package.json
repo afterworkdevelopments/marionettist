@@ -1,6 +1,6 @@
 {
   "name": "marionetist",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Marionette based framework",
   "main": "lib/marionetist.js",
   "scripts": {
@@ -20,11 +20,11 @@
   "author": "Emilio Forrer <dev.emilio.forrer@gmail.com> (https://github.com/emilioforrer)",
   "license": "MIT",
   "dependencies": {
-    "jquery": "^2.1.4",
-    "underscore": "^1.8.3",
+    "jquery": "^1.8.0 || ^2.0.0",
+    "underscore": "1.4.4 - 1.8.3",
     "underscore-contrib": "^0.3.0",
     "underscore.string": "^3.2.0",
-    "backbone": "^1.2.2",
+    "backbone": "1.0.0 - 1.2.1",
     "backbone-associations": "^0.6.2",
     "backbone.marionette": "^2.4.2",
     "coffee-script": "~1.9.3",
