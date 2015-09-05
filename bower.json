@@ -1,6 +1,6 @@
 {
   "name": "marionetist",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "authors": [
     "Emilio Forrer <dev.emilio.forrer@gmail.com>"
   ],
@@ -18,11 +18,16 @@
   "homepage": "https://github.com/afterworkdevelopments/marionetist",
   "dependencies": {
     "jquery": "^1.8.0 || ^2.0.0",
+    "moment": "^2.10.6",
+    "moment-range": "^2.0.3",
+    "numeral": "^1.5.3",
     "underscore": "1.4.4 - 1.8.3",
     "underscore-contrib": "~0.3.0",
     "underscore.string": "~3.2.0",
+    "backbone.mutators": "^0.4.5",
     "backbone": "1.0.0 - 1.2.1",
     "backbone-associations": "^0.6.2",
+    "backbone.stickit": "^0.9.2",
     "backbone.marionette": "^2.4.2",
     "i18next": "^1.10.1"
   },

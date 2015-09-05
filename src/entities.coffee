@@ -1,7 +1,11 @@
 Marionetist.Entities = new Marionetist.Object()
 
-#=require "./entities/model.coffee"
+Marionetist.Entities.Models = new Marionetist.Object()
 
-#=require "./entities/associated_model.coffee"
+Marionetist.Entities.Collections = new Marionetist.Object()
 
-#=require "./entities/collection.coffee"
+#=require "./entities/models/base.coffee"
+
+#=require "./entities/models/associated.coffee"
+
+#=require "./entities/collections/base.coffee"

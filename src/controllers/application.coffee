@@ -1,1 +1,0 @@
-class Marionetist.Controllers.Application extends Marionetist.Object

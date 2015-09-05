@@ -1,1 +1,0 @@
-class Marionetist.Views.CompositeView extends Marionette.CompositeView

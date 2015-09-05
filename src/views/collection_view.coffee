@@ -1,1 +1,0 @@
-class Marionetist.Views.CollectionView extends Marionette.CollectionView

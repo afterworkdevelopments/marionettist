@@ -3,10 +3,13 @@ _.extend Marionetist.Renderer,
   lookups: Marionetist.Config.getOption("templates").getOption("lookupPaths")
 
   render: (template, data) ->
-    return if template is false
-    path = @getTemplate(template)
-    throw "Template #{template} not found!" unless path
-    path(data)
+    if _.isFunction(template)
+      return template(data)
+    else
+      return if template is false
+      path = @getTemplate(template)
+      throw "Template #{template} not found!" unless path
+      path(data)
 
   getTemplate: (template) ->
     for lookup in @lookups
