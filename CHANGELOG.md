@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+## 1.0.1
+
+* Added dependencies check
+* Fixed `lookupPaths` in `Renderer` to use the option directly from config.
+
 ## 1.0.0
 
 * Since the refactor was so big have to change to a MAJOR Version

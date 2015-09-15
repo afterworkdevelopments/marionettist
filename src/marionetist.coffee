@@ -1,7 +1,17 @@
 do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, numeral, moment) ->
 
-  unless moment.range?
-    console.error "Unable to load moment-range"
+  # Dependencies Check
+
+  console?.error "Unable to load jQuery" unless $?
+  console?.error "Unable to load Underscore" unless _?
+  console?.error "Unable to load Underscore.string" unless s?
+  console?.error "Unable to load Backbone" unless Backbone?
+  console?.error "Unable to load backbone-associations" unless Backbone.AssociatedModel?
+  console?.error "Unable to load Marionette" unless Marionette?
+  console?.error "Unable to load i18next" unless i18n?
+  console?.error "Unable to load numeral" unless numeral?
+  console?.error "Unable to load moment" unless moment?
+  console?.error "Unable to load moment-range" unless moment.range?
 
   Marionetist = Marionette.extend()
 

@@ -1,7 +1,5 @@
 _.extend Marionetist.Renderer,
 
-  lookups: Marionetist.Config.getOption("templates").getOption("lookupPaths")
-
   render: (template, data) ->
     if _.isFunction(template)
       return template(data)
@@ -12,7 +10,10 @@ _.extend Marionetist.Renderer,
       path(data)
 
   getTemplate: (template) ->
-    for lookup in @lookups
+    lookups = Marionetist.Config.getOption("templates").getOption("lookupPaths")
+    lookups = lookups() if _.isFunction(lookups)
+    throw "lookupPaths most be an array" unless _.isArray(lookups)
+    for lookup in lookups
       ## inserts the template at the '-1' position of the template array
       ## this allows to omit the word 'templates' from the view but still
       ## store the templates in a directory outside of the view
