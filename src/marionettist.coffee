@@ -13,23 +13,23 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
   console?.error "Unable to load moment" unless moment?
   console?.error "Unable to load moment-range" unless moment.range?
 
-  Marionetist = Marionette.extend()
+  Marionettist = Marionette.extend()
 
-  Marionetist.Backbone = Backbone
+  Marionettist.Backbone = Backbone
 
-  Marionetist.Marionette = Marionette
+  Marionettist.Marionette = Marionette
 
-  Marionetist._ = _
+  Marionettist._ = _
 
-  Marionetist.$ = $
+  Marionettist.$ = $
 
-  Marionetist.s = s
+  Marionettist.s = s
 
-  Marionetist.I18n = i18n
+  Marionettist.I18n = i18n
 
-  Marionetist.numeral = numeral
+  Marionettist.numeral = numeral
 
-  Marionetist.moment = moment
+  Marionettist.moment = moment
 
   #=require "./config.coffee"
 
@@ -41,40 +41,40 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
 
   #=require "./controllers.coffee"
 
-  Marionetist.Application = Marionetist.Application.extend
+  Marionettist.Application = Marionettist.Application.extend
 
-    Backbone: Marionetist.Backbone
+    Backbone: Marionettist.Backbone
 
-    Marionette: Marionetist.Marionette
+    Marionette: Marionettist.Marionette
 
-    _: Marionetist._
+    _: Marionettist._
 
-    $: Marionetist.$
+    $: Marionettist.$
 
-    s: Marionetist.s
+    s: Marionettist.s
 
-    I18n: Marionetist.I18n
+    I18n: Marionettist.I18n
 
-    numeral: Marionetist.numeral
+    numeral: Marionettist.numeral
 
-    moment: Marionetist.moment
+    moment: Marionettist.moment
 
-    Controllers: new Marionetist.Object()
+    Controllers: new Marionettist.Object()
 
-    Entities: new Marionetist.Object()
+    Entities: new Marionettist.Object()
 
-    Views: new Marionetist.Object()
+    Views: new Marionettist.Object()
 
     navigate: (route, options = {}) ->
-      Marionetist.Backbone.history.navigate route, options
+      Marionettist.Backbone.history.navigate route, options
 
     getCurrentRoute: ->
-      frag = Marionetist.Backbone.history.fragment
+      frag = Marionettist.Backbone.history.fragment
       if _.isEmpty(frag) then null else frag
 
     startHistory: (options= {})->
-      if Marionetist.Backbone.history?
-        Marionetist.Backbone.history.start(options)
+      if Marionettist.Backbone.history?
+        Marionettist.Backbone.history.start(options)
 
     register: (instance, id) ->
       @_registry ?= {}
@@ -94,7 +94,7 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
     	_.size @_registry
 
 
-  return Marionetist
+  return Marionettist
 
 ) ->
 
@@ -116,8 +116,8 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
     ], (_, $, Backbone, BackboneAssociations, Marionette, i18n, exports, s, numeral, moment, momentRange) ->
       # Export global even in AMD case in case this script is loaded with
       # others that may still expect a global Backbone.
-      Marionetist = factory(root, exports, Backbone, Marionette, _, $, i18n, s, numeral, moment)
-      root.Marionetist = Marionetist
+      Marionettist = factory(root, exports, Backbone, Marionette, _, $, i18n, s, numeral, moment)
+      root.Marionettist = Marionettist
       return
     # Next for Node.js or CommonJS. jQuery may not be needed as a module.
   else if typeof exports != 'undefined'
@@ -135,7 +135,7 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
       $ = require('jquery')
     catch e
 
-    module.exports = root.Marionetist = factory(root, exports, Backbone, Marionette, _, $, i18n, s, numeral, moment)
+    module.exports = root.Marionettist = factory(root, exports, Backbone, Marionette, _, $, i18n, s, numeral, moment)
     # Finally, as a browser global.
   else
-    root.Marionetist = factory(root, {},root.Backbone, root.Marionette, root._, (root.jQuery or root.Zepto or root.ender or root.$), root.i18n, root.s, root.numeral, root.moment)
+    root.Marionettist = factory(root, {},root.Backbone, root.Marionette, root._, (root.jQuery or root.Zepto or root.ender or root.$), root.i18n, root.s, root.numeral, root.moment)

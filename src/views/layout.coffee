@@ -1,1 +1,1 @@
-class Marionetist.Views.Layout extends Marionette.LayoutView
+class Marionettist.Views.Layout extends Marionette.LayoutView

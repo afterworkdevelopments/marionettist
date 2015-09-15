@@ -1,4 +1,4 @@
-class Templates extends Marionetist.Object
+class Templates extends Marionettist.Object
 
   lookupPaths: ["templates/"]
 
@@ -10,4 +10,4 @@ class Templates extends Marionetist.Object
       engine = JST
     return engine
 
-Marionetist.Config.options.templates = new Templates()
+Marionettist.Config.options.templates = new Templates()

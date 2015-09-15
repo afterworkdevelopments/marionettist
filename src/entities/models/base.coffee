@@ -1,1 +1,1 @@
-class Marionetist.Entities.Models.Base extends Backbone.Model
+class Marionettist.Entities.Models.Base extends Backbone.Model

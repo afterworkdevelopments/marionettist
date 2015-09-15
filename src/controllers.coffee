@@ -1,3 +1,3 @@
-Marionetist.Controllers = new Marionetist.Object()
+Marionettist.Controllers = new Marionettist.Object()
 
 #=require "./controllers/base.coffee"

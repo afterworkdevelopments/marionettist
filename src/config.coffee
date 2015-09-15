@@ -1,3 +1,3 @@
-Marionetist.Config = new Marionetist.Object()
+Marionettist.Config = new Marionettist.Object()
 #=require "./config/templates.coffee"
 #=require "./config/renderer.coffee"

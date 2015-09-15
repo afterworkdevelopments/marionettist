@@ -1,8 +1,8 @@
-Marionetist.Entities = new Marionetist.Object()
+Marionettist.Entities = new Marionettist.Object()
 
-Marionetist.Entities.Models = new Marionetist.Object()
+Marionettist.Entities.Models = new Marionettist.Object()
 
-Marionetist.Entities.Collections = new Marionetist.Object()
+Marionettist.Entities.Collections = new Marionettist.Object()
 
 #=require "./entities/models/base.coffee"
 

@@ -1,2 +1,2 @@
 if Backbone.AssociatedModel
-  class Marionetist.Entities.Models.Associated extends Backbone.AssociatedModel
+  class Marionettist.Entities.Models.Associated extends Backbone.AssociatedModel

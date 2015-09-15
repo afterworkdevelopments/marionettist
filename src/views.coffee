@@ -1,25 +1,25 @@
-Marionetist.Views = new Marionetist.Object()
+Marionettist.Views = new Marionettist.Object()
 
-Marionetist.Views.templateHelpers =
+Marionettist.Views.templateHelpers =
 
-  t: Marionetist.I18n.t
+  t: Marionettist.I18n.t
 
   formatCurrency: (amount, format = "$0,0.00")->
-    Marionetist.numeral(amount).format(format)
+    Marionettist.numeral(amount).format(format)
 
   formatNumber: (amount, format = "0,0.00")->
-    Marionetist.numeral(amount).format(format)
+    Marionettist.numeral(amount).format(format)
 
   formatPercentage: (amount, format = "0.00%")->
-    Marionetist.numeral(amount).format(format)
+    Marionettist.numeral(amount).format(format)
 
   formatDate: (date, format = "DD-MM-YYYY")->
-    Marionetist.moment(date).format(format)
+    Marionettist.moment(date).format(format)
 
-_.extend Marionetist.View::,
+_.extend Marionettist.View::,
 
   templateHelpers: ->
-    return Marionetist.Views.templateHelpers
+    return Marionettist.Views.templateHelpers
 
 
 #=require "./views/collection.coffee"

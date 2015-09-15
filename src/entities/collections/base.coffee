@@ -1,1 +1,1 @@
-class Marionetist.Entities.Collections.Base extends Backbone.Collection
+class Marionettist.Entities.Collections.Base extends Backbone.Collection

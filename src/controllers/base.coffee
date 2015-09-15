@@ -1,1 +1,1 @@
-class Marionetist.Controllers.Base extends Marionetist.Object
+class Marionettist.Controllers.Base extends Marionettist.Object

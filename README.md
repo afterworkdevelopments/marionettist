@@ -1,4 +1,4 @@
-# marionetist
+# marionettist
 
 It's a framework that extends [Marionette](http://marionettejs.com/) and add a lot of new features, like:
 
@@ -12,11 +12,11 @@ It's a framework that extends [Marionette](http://marionettejs.com/) and add a l
 ## Install
 
 ```
-  npm install marionetist --save
+  npm install marionettist --save
 ```
 ## Dependencies
 
-**Marionetist** depends on a lot of awesome libraries, like:
+**Marionettist** depends on a lot of awesome libraries, like:
 
 * **[numeral](http://numeraljs.com/) (Formatting and manipulating numbers)**
 * **[moment](http://momentjs.com/) (Parse, validate, manipulate, and display dates in JavaScript)**
@@ -51,13 +51,13 @@ class Views.AdvertiseItem extends App.Views.ItemView
 **getter**
 
 ```
-Marionetist.Config.getOption("templates").getOption("lookupPaths")
+Marionettist.Config.getOption("templates").getOption("lookupPaths")
 ```
 
 **setter**
 
 ```
-Marionetist.Config.getOption("templates").lookupPaths = ["templates/", "demo/"]
+Marionettist.Config.getOption("templates").lookupPaths = ["templates/", "demo/"]
 ```
 
 #### engine
@@ -69,40 +69,40 @@ This option allows you change the default template engine, the default value it'
 **getter**
 
 ```
-Marionetist.Config.getOption("templates").getOption("engine")
+Marionettist.Config.getOption("templates").getOption("engine")
 ```
 
 **setter**
 
 ```
-Marionetist.Config.getOption("templates").engine = HAML
+Marionettist.Config.getOption("templates").engine = HAML
 ```
 
 ## Models
 
 List of all the diferent model classes:
 
-* **`Marionetist.Entities.Models.Base`**
-* **`Marionetist.Entities.Models.Associated`**
+* **`Marionettist.Entities.Models.Base`**
+* **`Marionettist.Entities.Models.Associated`**
 
 ## Collections
 
 List of all the diferent collection classes:
 
-* **`Marionetist.Entities.Collections.Base`**
+* **`Marionettist.Entities.Collections.Base`**
 
 ## Views
 
 List of all the diferent view classes:
 
-* **`Marionetist.Views.Collection`**
-* **`Marionetist.Views.Composite`**
-* **`Marionetist.Views.Item`**
-* **`Marionetist.Views.Layout`**
+* **`Marionettist.Views.Collection`**
+* **`Marionettist.Views.Composite`**
+* **`Marionettist.Views.Item`**
+* **`Marionettist.Views.Layout`**
 
 ## Template helpers
 
-All marionetist views have the next helpers:
+All marionettist views have the next helpers:
 
 ## @t(string)
 

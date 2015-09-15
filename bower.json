@@ -1,21 +1,21 @@
 {
-  "name": "marionetist",
+  "name": "marionettist",
   "version": "1.0.1",
   "authors": [
     "Emilio Forrer <dev.emilio.forrer@gmail.com>"
   ],
   "description": "Marionette based framework",
-  "main": "lib/marionetist.js",
+  "main": "lib/marionettist.js",
   "moduleType": [
     "amd",
     "globals",
     "node"
   ],
   "keywords": [
-    "Marionette Framework Backbone Marionetist"
+    "Marionette Framework Backbone Marionettist"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/afterworkdevelopments/marionetist",
+  "homepage": "https://github.com/afterworkdevelopments/marionettist",
   "dependencies": {
     "jquery": "^1.8.0 || ^2.0.0",
     "moment": "^2.10.6",

@@ -1,4 +1,4 @@
-_.extend Marionetist.Renderer,
+_.extend Marionettist.Renderer,
 
   render: (template, data) ->
     if _.isFunction(template)
@@ -10,7 +10,7 @@ _.extend Marionetist.Renderer,
       path(data)
 
   getTemplate: (template) ->
-    lookups = Marionetist.Config.getOption("templates").getOption("lookupPaths")
+    lookups = Marionettist.Config.getOption("templates").getOption("lookupPaths")
     lookups = lookups() if _.isFunction(lookups)
     throw "lookupPaths most be an array" unless _.isArray(lookups)
     for lookup in lookups
@@ -20,7 +20,7 @@ _.extend Marionetist.Renderer,
       ## example: "users/list/layout" will become "users/list/templates/layout"
 
       for path in [template, @withTemplate(template)]
-        engine = Marionetist.Config.getOption("templates").getOption("engine")
+        engine = Marionettist.Config.getOption("templates").getOption("engine")
         engine = engine() if _.isFunction(engine)
         return engine[lookup + path] if engine[lookup + path]
 

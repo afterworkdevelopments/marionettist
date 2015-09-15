@@ -1,1 +1,1 @@
-class Marionetist.Views.Item extends Marionette.ItemView
+class Marionettist.Views.Item extends Marionette.ItemView
