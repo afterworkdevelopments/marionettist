@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## 1.0.2
+
+* Renamed package
+
 ## 1.0.1
 
 * Added dependencies check
