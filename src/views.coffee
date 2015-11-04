@@ -19,7 +19,13 @@ Marionettist.Views.templateHelpers =
 _.extend Marionettist.View::,
 
   templateHelpers: ->
-    return Marionettist.Views.templateHelpers
+    helpers = Marionettist.Views.templateHelpers
+    if @viewContext?
+      helpers.viewContext = @viewContext
+      helpers.viewContext = @viewContext() if Marionettist._.isFunction(@viewContext)
+    else
+      helpers.viewContext = {}
+    return helpers
 
 
 #=require "./views/collection.coffee"
