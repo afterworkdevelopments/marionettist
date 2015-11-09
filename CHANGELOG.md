@@ -1,5 +1,11 @@
 # CHANGE LOG
 
+## 1.2.0
+
+* Entended `Marionette` router.
+* Added the posibility to define "before" and "after" filters inside a controller.
+* The `onRoute` callback of the `Marionettist.AppRouter` now trigger same callback in the controller.
+
 ## 1.1.0
 
 * Added `viewContext` property and  merge to template heplers.

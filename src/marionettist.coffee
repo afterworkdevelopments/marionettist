@@ -35,6 +35,10 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
 
   #=require "./initializers.coffee"
 
+  #=require "./route.coffee"
+
+  #=require "./router.coffee"
+
   #=require "./views.coffee"
 
   #=require "./entities.coffee"
