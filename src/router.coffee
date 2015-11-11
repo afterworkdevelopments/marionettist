@@ -16,7 +16,7 @@ class Marionettist.AppRouter extends Marionette.AppRouter
 
 
   _addAppRoute: (controller, route, methodName) ->
-    @controller = @_setControllerFilters(@controller)
+    @controller = @_setControllerFilters(controller)
 
     method = ()=>
       @controller.route = new Marionettist.AppRoute

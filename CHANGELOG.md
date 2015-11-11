@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## 1.2.1
+
+* Fixed bug in router
+
 ## 1.2.0
 
 * Entended `Marionette` router.
