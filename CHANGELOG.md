@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+## 1.3.0
+
+* Added `Marionettist.channels`
+* Added `Marionettist.location`
+
 ## 1.2.1
 
 * Fixed bug in router

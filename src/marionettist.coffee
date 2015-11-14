@@ -31,6 +31,27 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
 
   Marionettist.moment = moment
 
+  Marionettist.channels =
+
+    publish: (channelName = "global", eventName = "", data ={})->
+      return Marionettist.Backbone.Wreqr.radio.channel(channelName).vent.trigger eventName, data
+
+    subscribe: (channelName = "global", eventName = "", callback)->
+      return Marionettist.Backbone.Wreqr.radio.channel(channelName).vent.on eventName, callback
+
+  Marionettist.location =
+
+    navigateTo: (route, options = {}) ->
+      Marionettist.Backbone.history.navigate route, options
+
+    getCurrentRoute: ->
+      frag = Marionettist.Backbone.history.fragment
+      if _.isEmpty(frag) then null else frag
+
+    startHistory: (options= {})->
+      if Marionettist.Backbone.history?
+        Marionettist.Backbone.history.start(options)
+
   #=require "./config.coffee"
 
   #=require "./initializers.coffee"
@@ -69,16 +90,14 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
 
     Views: new Marionettist.Object()
 
-    navigate: (route, options = {}) ->
-      Marionettist.Backbone.history.navigate route, options
+    navigateTo: (route, options = {}) ->
+      Marionettist.location.navigateTo route, options
 
     getCurrentRoute: ->
-      frag = Marionettist.Backbone.history.fragment
-      if _.isEmpty(frag) then null else frag
+      Marionettist.location.getCurrentRoute()
 
     startHistory: (options= {})->
-      if Marionettist.Backbone.history?
-        Marionettist.Backbone.history.start(options)
+      Marionettist.location.startHistory(options)
 
     register: (instance, id) ->
       @_registry ?= {}
