@@ -9,29 +9,31 @@ class Marionettist.AppRouter extends Marionette.AppRouter
       defaultFilters =
         before: {}
         after: {}
+      filters = controller.filters
+      filters = filters() if Marionettist._.isFunction(filters)
       controller.filters = {} unless controller.filters?
-      controller.filters = Marionettist._.extend(defaultFilters, controller.filters)
+      controller.filters = Marionettist._.extend(defaultFilters, filters)
     controller
 
 
 
   _addAppRoute: (controller, route, methodName) ->
     @controller = @_setControllerFilters(controller)
+    _method = controller[methodName]
 
-    method = ()=>
+    method = (args)=>
       @controller.route = new Marionettist.AppRoute
         controller: @controller
         actionName: methodName
         path: route
       result = @_executeFilter @controller.filters.before, @controller
       if result != false
-        @controller[methodName]()
+        @controller[methodName].apply(@controller, @_getParams())
         @_executeFilter @controller.filters.after, @controller
 
+
     throw new Marionette.Error('Method "' + methodName + '" was not found on the controller') if !method
-
     @route(route, methodName, _.bind(method, controller))
-
 
 
   _executeFilter: (filter, controller)->
@@ -52,6 +54,10 @@ class Marionettist.AppRouter extends Marionette.AppRouter
             break
     result
 
+  _getParams: ()->
+    route = @_routeToRegExp(@controller.route.getOption("path"))
+    params = @_extractParameters(route, Backbone.history.getFragment())
+
   _proccessFilterObject: (methodName,filter, controller)->
     defaultFilterOptions =
       method: null
@@ -66,6 +72,6 @@ class Marionettist.AppRouter extends Marionette.AppRouter
 
     if filterOptions.only.length > 0 or filterOptions.except.length > 0
       if Marionettist._.contains(filterOptions.only, actionName) and !Marionettist._.contains(filterOptions.except, actionName)
-        controllerMethod() if Marionettist._.isFunction(controllerMethod)
+        controllerMethod.apply(@controller, @_getParams()) if Marionettist._.isFunction(controllerMethod)
     else
-      controllerMethod() if Marionettist._.isFunction(controllerMethod)
+      controllerMethod.apply(@controller, @_getParams()) if Marionettist._.isFunction(controllerMethod)

@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+## 1.3.1
+
+* Fixing router params
+* Added method to change locale and trigger event
+
 ## 1.3.0
 
 * Added `Marionettist.channels`
