@@ -78,6 +78,21 @@ Marionettist.Config.getOption("templates").getOption("engine")
 Marionettist.Config.getOption("templates").engine = HAML
 ```
 
+## I18n
+
+You can change the current locale by calling `Marionettist.setLocale("es")`, this will trigger and event named `change:locale` on the marionettist channel. Which you can subscribe later on.
+
+```
+Marionettist.setLocale("es")
+
+# subscribe to this event
+
+Marionettist.channels.subscribe "marionettist", "change:locale", (opts)=>
+  console.log  "CHANGING LOCALE"
+  console.log opts
+
+```
+
 ## Router
 
 The **`Marionettist.AppRouter`** adds the next features:

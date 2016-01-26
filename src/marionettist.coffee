@@ -39,6 +39,17 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
     subscribe: (channelName = "global", eventName = "", callback)->
       return Marionettist.Backbone.Wreqr.radio.channel(channelName).vent.on eventName, callback
 
+
+  Marionettist.setLocale = (locale = "en", callback = null)->
+    oldLocale = Marionettist.I18n.lng()
+    Marionettist.I18n.setLng locale, (t) ->
+      Marionettist.channels.publish "marionettist", "change:locale",
+        currentLocale: locale
+        oldLocale: oldLocale
+
+      callback(t) if Marionettist._.isFunction(callback)
+
+
   Marionettist.location =
 
     navigateTo: (route, options = {}) ->
