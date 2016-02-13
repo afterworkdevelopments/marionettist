@@ -12,6 +12,7 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18next, s, n
   console?.error "Unable to load numeral" unless numeral?
   console?.error "Unable to load moment" unless moment?
   console?.error "Unable to load moment-range" unless moment.range?
+  console?.error "Unable to load moment-timezone" unless moment.tz?
 
   Marionettist = Marionette.extend()
 
@@ -150,7 +151,8 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18next, s, n
       "numeral"
       "moment"
       "moment-range"
-    ], (_, $, Backbone, BackboneAssociations, Marionette, i18next, exports, s, numeral, moment, momentRange) ->
+      "moment-timezone"
+    ], (_, $, Backbone, BackboneAssociations, Marionette, i18next, exports, s, numeral, moment, momentRange, momentTimezone) ->
       # Export global even in AMD case in case this script is loaded with
       # others that may still expect a global Backbone.
       Marionettist = factory(root, exports, Backbone, Marionette, _, $, i18next, s, numeral, moment)
@@ -167,6 +169,7 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18next, s, n
     BackboneAssociations = require("backbone-associations")
     numeral = require("numeral")
     moment  = require("moment")
+    momentTimezone  = require("moment-timezone")
     momentRange  = require("moment-range")
     try
       $ = require('jquery')
