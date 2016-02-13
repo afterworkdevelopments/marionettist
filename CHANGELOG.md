@@ -1,5 +1,12 @@
 # CHANGE LOG
 
+## 1.4.0
+
+* Added `Marionettist.location.refreshRoute()` which reload the current route
+* Updated some dependencies
+
+
+
 ## 1.3.1
 
 * Fixing router params

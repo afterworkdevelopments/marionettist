@@ -1,4 +1,4 @@
-do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, numeral, moment) ->
+do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18next, s, numeral, moment) ->
 
   # Dependencies Check
 
@@ -8,7 +8,7 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
   console?.error "Unable to load Backbone" unless Backbone?
   console?.error "Unable to load backbone-associations" unless Backbone.AssociatedModel?
   console?.error "Unable to load Marionette" unless Marionette?
-  console?.error "Unable to load i18next" unless i18n?
+  console?.error "Unable to load i18next" unless i18next?
   console?.error "Unable to load numeral" unless numeral?
   console?.error "Unable to load moment" unless moment?
   console?.error "Unable to load moment-range" unless moment.range?
@@ -25,7 +25,7 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
 
   Marionettist.s = s
 
-  Marionettist.I18n = i18n
+  Marionettist.I18n = i18next
 
   Marionettist.numeral = numeral
 
@@ -51,6 +51,9 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
 
 
   Marionettist.location =
+
+    refreshRoute: (fragment = @getCurrentRoute())->
+      Backbone.history.loadUrl(fragment)
 
     navigateTo: (route, options = {}) ->
       Marionettist.Backbone.history.navigate route, options
@@ -141,16 +144,16 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
       'backbone'
       "backbone-associations"
       "backbone.marionette"
-      "i18next-client"
+      "i18next"
       'exports'
       "underscore.string"
       "numeral"
       "moment"
       "moment-range"
-    ], (_, $, Backbone, BackboneAssociations, Marionette, i18n, exports, s, numeral, moment, momentRange) ->
+    ], (_, $, Backbone, BackboneAssociations, Marionette, i18next, exports, s, numeral, moment, momentRange) ->
       # Export global even in AMD case in case this script is loaded with
       # others that may still expect a global Backbone.
-      Marionettist = factory(root, exports, Backbone, Marionette, _, $, i18n, s, numeral, moment)
+      Marionettist = factory(root, exports, Backbone, Marionette, _, $, i18next, s, numeral, moment)
       root.Marionettist = Marionettist
       return
     # Next for Node.js or CommonJS. jQuery may not be needed as a module.
@@ -159,7 +162,7 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
     $ = undefined
     Backbone = require("backbone")
     Marionette = require("backbone.marionette")
-    i18n = require("i18next-client")
+    i18next = require("i18next")
     s = require("underscore.string")
     BackboneAssociations = require("backbone-associations")
     numeral = require("numeral")
@@ -169,7 +172,7 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18n, s, nume
       $ = require('jquery')
     catch e
 
-    module.exports = root.Marionettist = factory(root, exports, Backbone, Marionette, _, $, i18n, s, numeral, moment)
+    module.exports = root.Marionettist = factory(root, exports, Backbone, Marionette, _, $, i18next, s, numeral, moment)
     # Finally, as a browser global.
   else
-    root.Marionettist = factory(root, {},root.Backbone, root.Marionette, root._, (root.jQuery or root.Zepto or root.ender or root.$), root.i18n, root.s, root.numeral, root.moment)
+    root.Marionettist = factory(root, {},root.Backbone, root.Marionette, root._, (root.jQuery or root.Zepto or root.ender or root.$), root.i18next, root.s, root.numeral, root.moment)

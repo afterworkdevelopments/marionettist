@@ -195,6 +195,15 @@ Now in your template you have that property available
 %p= @viewContext.model.get("name")
 ```
 
+## Location
+
+Methods to work with the router and url
+
+**`Marionettist.location.refreshRoute()`**: reloads the current route
+**`Marionettist.location.navigateTo(path, options)`**: Redirect to a new route
+**`Marionettist.location.getCurrentRoute()`**: Return the current path
+**`Marionettist.location.startHistory(options)`**: Starts backbone history
+
 ## Channels
 
 Publish and subscribe events using channels.
