@@ -6,6 +6,7 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18next, s, n
   console?.error "Unable to load Underscore" unless _?
   console?.error "Unable to load Underscore.string" unless s?
   console?.error "Unable to load Backbone" unless Backbone?
+  console?.error "Unable to load Backbone.Radio" unless Backbone.Radio?
   console?.error "Unable to load backbone-associations" unless Backbone.AssociatedModel?
   console?.error "Unable to load Marionette" unless Marionette?
   console?.error "Unable to load i18next" unless i18next?
@@ -34,11 +35,28 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18next, s, n
 
   Marionettist.channels =
 
+    request: (channelName = "global", eventName = "", data={})->
+      return Marionettist.Backbone.Radio.channel(channelName).request(eventName,data)
+
+    replyOnce: (channelName = "global", eventName = "", callback)->
+      channel = Marionettist.Backbone.Radio.channel(channelName)
+      if Marionettist._.isFunction(callback)
+        return channel.replyOnce(eventName, callback)
+      else
+        return channel.replyOnce(callback)
+
+    reply: (channelName = "global", eventName = "", callback)->
+      channel = Marionettist.Backbone.Radio.channel(channelName)
+      if Marionettist._.isFunction(callback)
+        return channel.reply(eventName, callback)
+      else
+        return channel.reply(callback)
+
     publish: (channelName = "global", eventName = "", data ={})->
-      return Marionettist.Backbone.Wreqr.radio.channel(channelName).vent.trigger eventName, data
+      return Marionettist.Backbone.Radio.channel(channelName).trigger eventName, data
 
     subscribe: (channelName = "global", eventName = "", callback)->
-      return Marionettist.Backbone.Wreqr.radio.channel(channelName).vent.on eventName, callback
+      return Marionettist.Backbone.Radio.channel(channelName).on eventName, callback
 
 
   Marionettist.setLocale = (locale = "en", callback = null)->
@@ -61,7 +79,7 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18next, s, n
 
     getCurrentRoute: ->
       frag = Marionettist.Backbone.history.fragment
-      if _.isEmpty(frag) then null else frag
+      if Marionettist._.isEmpty(frag) then null else frag
 
     startHistory: (options= {})->
       if Marionettist.Backbone.history?
@@ -129,7 +147,7 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18next, s, n
       if @getRegistrySize() > 0 then console.warn(msg, @_registry) else console.log(msg)
 
     getRegistrySize: ->
-    	_.size @_registry
+    	Marionettist._.size @_registry
 
 
   return Marionettist
@@ -143,6 +161,7 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18next, s, n
       'underscore'
       'jquery'
       'backbone'
+      'backbone.radio'
       "backbone-associations"
       "backbone.marionette"
       "i18next"
@@ -163,6 +182,7 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18next, s, n
     _ = require('underscore')
     $ = undefined
     Backbone = require("backbone")
+    BackboneRadio = require("backbone.radio")
     Marionette = require("backbone.marionette")
     i18next = require("i18next")
     s = require("underscore.string")
