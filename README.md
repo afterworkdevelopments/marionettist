@@ -31,6 +31,8 @@ It's a framework that extends [Marionette](http://marionettejs.com/) and add a l
 * **[backbone.stickit
 ](https://github.com/NYTimes/backbone.stickit) (Data bindings)**
 
+## Environment
+
 ## Configurations
 
 ### Templates
@@ -83,7 +85,7 @@ Marionettist.Config.getOption("templates").engine = HAML
 You can change the current locale by calling `Marionettist.setLocale("es")`, this will trigger and event named `change:locale` on the marionettist channel. Which you can subscribe later on.
 
 ```
-Marionettist.setLocale("es")
+Marionettist.Env.current().setLocale("es")
 
 # subscribe to this event
 
@@ -318,4 +320,43 @@ Gives format date. Default format is `DD-MM-YYYY`
 %p
   = @t("app.today")
   = @formatDate(new Date()) # outputs  04-09-2015
+```
+
+
+## Utils
+
+Utilities and tools:
+
+## `Marionettist.Utils.log(message, colorType)`
+
+Log a message with the specified `colorType` to the console if the environment is development
+
+**Example.**
+
+```
+Marionettist.Utils.log("hola", "info")
+
+# outputs "hola" with a blue color
+```
+
+
+## `Marionettist.Utils.waitFor(ajaxRequests, options)`
+
+Waits for the array of ajax requests to be done and execute the callbacks `options.success` and `options.error`.
+
+**Example.**
+
+```
+customers = new Customers
+contacts  = new Contacts
+
+options =
+  success: =>
+    console.log "Customers and contacts has been loaded"
+    # do something with customers or contacts
+  error: =>
+    console.log "Error"
+
+Marionettist.Utils.waitFor([customers.fetch(), contacts.fetch()], options)
+
 ```

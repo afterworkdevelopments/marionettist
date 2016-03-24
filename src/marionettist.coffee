@@ -59,16 +59,6 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18next, s, n
       return Marionettist.Backbone.Radio.channel(channelName).on eventName, callback
 
 
-  Marionettist.setLocale = (locale = "en", callback = null)->
-    oldLocale = Marionettist.I18n.lng()
-    Marionettist.I18n.setLng locale, (t) ->
-      Marionettist.channels.publish "marionettist", "change:locale",
-        currentLocale: locale
-        oldLocale: oldLocale
-
-      callback(t) if Marionettist._.isFunction(callback)
-
-
   Marionettist.location =
 
     refreshRoute: (fragment = @getCurrentRoute())->
@@ -85,13 +75,19 @@ do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18next, s, n
       if Marionettist.Backbone.history?
         Marionettist.Backbone.history.start(options)
 
+  #=require "./environment.coffee"
+
   #=require "./config.coffee"
 
   #=require "./initializers.coffee"
 
+  #=require "./utils.coffee"
+
   #=require "./route.coffee"
 
   #=require "./router.coffee"
+
+  #=require "./region.coffee"
 
   #=require "./views.coffee"
 
