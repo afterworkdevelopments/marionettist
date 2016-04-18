@@ -1,11 +1,16 @@
+# npm install -D gulp gulp-concat gulp-util gulp-uglify gulp-coffee gulp-rollup gulp-sourcemaps
+
 gulp    = require("gulp")
 gutil   = require("gulp-util")
 coffee  = require("gulp-coffee")
 concat  = require("gulp-concat")
 include = require("gulp-include")
 uglify  = require("gulp-uglify")
-pkg     = require("./package.json")
-
+runSequence   = require('run-sequence').use(gulp)
+rollup         = require("gulp-rollup")
+sourcemaps     = require("gulp-sourcemaps")
+pkg            = require("./package.json")
+pagakeName     = pkg.name
 
 browserify  = require("browserify")
 watchify    = require("watchify")
@@ -16,21 +21,44 @@ pathmodify  = require("pathmodify")
 buffer      = require('vinyl-buffer')
 source      = require("vinyl-source-stream")
 
-gulp.task "coffee", ()->
-  gulp.src(["./src/#{pkg.name}.coffee"])
-    .pipe(include())
-    .pipe(concat("#{pkg.name}.js"))
-    .pipe(coffee({bare: true}).on("error", gutil.log))
-    .pipe(gulp.dest("./lib/"))
+
+gulp.task "bundle", ->
+  console.log "Bundle"
+  return gulp.src("./lib/#{pagakeName}.js", read: false).pipe(rollup(
+    sourceMap: true,
+    moduleName: "Marionettist"
+    format: "umd",
+    exports: "default",
+    plugins: [],
+    globals:
+      jquery: "$",
+      _: "_",
+      Backbone: "Backbone",
+      Marionette: "Marionette"
+  ))
+  .pipe(sourcemaps.write("."))
+  .pipe gulp.dest("./dist")
+
+
 
 gulp.task "minify", ()->
-  gulp.src(["./lib/#{pkg.name}.js"])
+  console.log "Minify"
+  return gulp.src(["./dist/#{pagakeName}.js"])
     .pipe(uglify())
-    .pipe(concat("#{pkg.name}.min.js"))
-    .pipe(gulp.dest("./lib/"))
+    .pipe(concat("#{pagakeName}.min.js"))
+    .pipe(gulp.dest("./dist"))
+
+
+gulp.task "coffee", ()->
+  console.log "Coffee"
+  return gulp.src(["./src/**/**/**/**/*.coffee"])
+    .pipe(coffee({bare: true}).on("error", gutil.log))
+    .pipe(gulp.dest("./lib"))
 
 gulp.task "watchfiles", ()->
-  gulp.watch("./src/**/**/**/*.coffee", ["coffee", "minify"])
+  console.log "Watchfiles"
+  return gulp.watch "./src/**/**/**/*.coffee" , (callback)->
+    runSequence("coffee",'bundle', "minify", callback)
 
 gulp.task "site", ()->
   options=
@@ -56,4 +84,5 @@ gulp.task "site", ()->
   b.on("log", gutil.log)
   bundle()
 
-gulp.task "default", ["coffee", "minify", "watchfiles"]
+gulp.task "default", (callback)->
+  runSequence("coffee",'bundle', "minify", "watchfiles", callback)
