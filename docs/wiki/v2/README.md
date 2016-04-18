@@ -1,6 +1,6 @@
 # marionettist
 
-It's a framework that extends [Marionette](http://marionettejs.com/) and add a lot of new features, like:
+[Marionettist](https://rawgit.com/afterworkdevelopments/marionettist/release/2.0.0/site/www/index.html) it's a framework that extends [Marionette](http://marionettejs.com/) and add a lot of new features, like:
 
 * **I18n**
 * **Custom template engine (HAML coffee by default)**
