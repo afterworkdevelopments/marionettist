@@ -20,7 +20,17 @@ hamlc       = require("gulp-haml-coffee-compile")
 pathmodify  = require("pathmodify")
 buffer      = require('vinyl-buffer')
 source      = require("vinyl-source-stream")
+hamlc       = require("gulp-haml-coffee-compile")
 
+gulp.task "hamlc", ()->
+  options =
+    compile:
+      includePath: true
+      pathRelativeTo: "./site/src"
+  gulp.src("./site/**/**/**/**/*.hamlc")
+    .pipe(hamlc(options).on("error", gutil.log))
+    .pipe(concat("templates.js"))
+    .pipe(gulp.dest("./site/www/js"))
 
 gulp.task "bundle", ->
   console.log "Bundle"
@@ -86,6 +96,7 @@ gulp.task "site", ()->
   b.on("update", bundle)
   b.on("log", gutil.log)
   bundle()
+  gulp.start("hamlc")
 
 gulp.task "default", (callback)->
   runSequence("coffee",'bundle', "minify", "watchfiles", callback)
