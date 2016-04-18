@@ -1,131 +1,21 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global.Marionettist = factory());
-}(this, function () { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('underscore'), require('underscore-contrib'), require('underscore.string'), require('jquery'), require('backbone'), require('backbone.radio'), require('backbone-associations'), require('backbone.marionette'), require('i18next'), require('numeral'), require('moment'), require('moment-range'), require('moment-timezone')) :
+  typeof define === 'function' && define.amd ? define(['underscore', 'underscore-contrib', 'underscore.string', 'jquery', 'backbone', 'backbone.radio', 'backbone-associations', 'backbone.marionette', 'i18next', 'numeral', 'moment', 'moment-range', 'moment-timezone'], factory) :
+  (global.Marionettist = factory(global._,global.underscoreContrib,global.s,global.$,global.Backbone,global.backbone_radio,global.backboneAssociations,global.Marionette,global.i18next,global.numeral,global.moment,global.momentRange,global.momentTimezone));
+}(this, function (_,underscoreContrib,s,$,Backbone,backbone_radio,backboneAssociations,Marionette,i18next,numeral,moment,momentRange,momentTimezone) { 'use strict';
 
-  var Marionettist;
-  var Templates;
-  var _show;
-  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  var hasProp = {}.hasOwnProperty;
-  Marionettist = Marionette.extend();
+  _ = 'default' in _ ? _['default'] : _;
+  s = 'default' in s ? s['default'] : s;
+  $ = 'default' in $ ? $['default'] : $;
+  Backbone = 'default' in Backbone ? Backbone['default'] : Backbone;
+  Marionette = 'default' in Marionette ? Marionette['default'] : Marionette;
+  i18next = 'default' in i18next ? i18next['default'] : i18next;
+  numeral = 'default' in numeral ? numeral['default'] : numeral;
+  moment = 'default' in moment ? moment['default'] : moment;
 
-  Marionettist.Backbone = Backbone;
+  var Env;
 
-  Marionettist.Marionette = Marionette;
-
-  Marionettist._ = _;
-
-  Marionettist.$ = $;
-
-  Marionettist.s = s;
-
-  Marionettist.I18n = i18next;
-
-  Marionettist.numeral = numeral;
-
-  Marionettist.moment = moment;
-
-  Marionettist.channels = {
-    request: function(channelName, eventName, data) {
-      if (channelName == null) {
-        channelName = "global";
-      }
-      if (eventName == null) {
-        eventName = "";
-      }
-      if (data == null) {
-        data = {};
-      }
-      return Marionettist.Backbone.Radio.channel(channelName).request(eventName, data);
-    },
-    replyOnce: function(channelName, eventName, callback) {
-      var channel;
-      if (channelName == null) {
-        channelName = "global";
-      }
-      if (eventName == null) {
-        eventName = "";
-      }
-      channel = Marionettist.Backbone.Radio.channel(channelName);
-      if (Marionettist._.isFunction(callback)) {
-        return channel.replyOnce(eventName, callback);
-      } else {
-        return channel.replyOnce(callback);
-      }
-    },
-    reply: function(channelName, eventName, callback) {
-      var channel;
-      if (channelName == null) {
-        channelName = "global";
-      }
-      if (eventName == null) {
-        eventName = "";
-      }
-      channel = Marionettist.Backbone.Radio.channel(channelName);
-      if (Marionettist._.isFunction(callback)) {
-        return channel.reply(eventName, callback);
-      } else {
-        return channel.reply(callback);
-      }
-    },
-    publish: function(channelName, eventName, data) {
-      if (channelName == null) {
-        channelName = "global";
-      }
-      if (eventName == null) {
-        eventName = "";
-      }
-      if (data == null) {
-        data = {};
-      }
-      return Marionettist.Backbone.Radio.channel(channelName).trigger(eventName, data);
-    },
-    subscribe: function(channelName, eventName, callback) {
-      if (channelName == null) {
-        channelName = "global";
-      }
-      if (eventName == null) {
-        eventName = "";
-      }
-      return Marionettist.Backbone.Radio.channel(channelName).on(eventName, callback);
-    }
-  };
-
-  Marionettist.location = {
-    refreshRoute: function(fragment) {
-      if (fragment == null) {
-        fragment = this.getCurrentRoute();
-      }
-      return Backbone.history.loadUrl(fragment);
-    },
-    navigateTo: function(route, options) {
-      if (options == null) {
-        options = {};
-      }
-      return Marionettist.Backbone.history.navigate(route, options);
-    },
-    getCurrentRoute: function() {
-      var frag;
-      frag = Marionettist.Backbone.history.fragment;
-      if (Marionettist._.isEmpty(frag)) {
-        return null;
-      } else {
-        return frag;
-      }
-    },
-    startHistory: function(options) {
-      if (options == null) {
-        options = {};
-      }
-      if (Marionettist.Backbone.history != null) {
-        return Marionettist.Backbone.history.start(options);
-      }
-    }
-  };
-
-  Marionettist.Env = (function() {
+  Env = (function() {
     Env.current = function() {
       return this._current || (this._current = new Env);
     };
@@ -170,24 +60,145 @@
 
   })();
 
-  Marionettist.Config = new Marionettist.Object();
+  var Env$1 = Env;
 
-  Templates = (function(superClass) {
-    extend(Templates, superClass);
+  var Channels;
 
-    function Templates() {
-      return Templates.__super__.constructor.apply(this, arguments);
-    }
+  Channels = (function() {
+    function Channels() {}
+
+    Channels.prototype.request = function(channelName, eventName, data) {
+      if (channelName == null) {
+        channelName = "global";
+      }
+      if (eventName == null) {
+        eventName = "";
+      }
+      if (data == null) {
+        data = {};
+      }
+      return Marionettist.Backbone.Radio.channel(channelName).request(eventName, data);
+    };
+
+    Channels.prototype.replyOnce = function(channelName, eventName, callback) {
+      var channel;
+      if (channelName == null) {
+        channelName = "global";
+      }
+      if (eventName == null) {
+        eventName = "";
+      }
+      channel = Marionettist.Backbone.Radio.channel(channelName);
+      if (Marionettist._.isFunction(callback)) {
+        return channel.replyOnce(eventName, callback);
+      } else {
+        return channel.replyOnce(callback);
+      }
+    };
+
+    Channels.prototype.reply = function(channelName, eventName, callback) {
+      var channel;
+      if (channelName == null) {
+        channelName = "global";
+      }
+      if (eventName == null) {
+        eventName = "";
+      }
+      channel = Marionettist.Backbone.Radio.channel(channelName);
+      if (Marionettist._.isFunction(callback)) {
+        return channel.reply(eventName, callback);
+      } else {
+        return channel.reply(callback);
+      }
+    };
+
+    Channels.prototype.publish = function(channelName, eventName, data) {
+      if (channelName == null) {
+        channelName = "global";
+      }
+      if (eventName == null) {
+        eventName = "";
+      }
+      if (data == null) {
+        data = {};
+      }
+      return Marionettist.Backbone.Radio.channel(channelName).trigger(eventName, data);
+    };
+
+    Channels.prototype.subscribe = function(channelName, eventName, callback) {
+      if (channelName == null) {
+        channelName = "global";
+      }
+      if (eventName == null) {
+        eventName = "";
+      }
+      return Marionettist.Backbone.Radio.channel(channelName).on(eventName, callback);
+    };
+
+    return Channels;
+
+  })();
+
+  var Channels$1 = Channels;
+
+  var Location;
+
+  Location = (function() {
+    function Location() {}
+
+    Location.prototype.refreshRoute = function(fragment) {
+      if (fragment == null) {
+        fragment = this.getCurrentRoute();
+      }
+      return Marionettist.Backbone.history.loadUrl(fragment);
+    };
+
+    Location.prototype.navigateTo = function(route, options) {
+      if (options == null) {
+        options = {};
+      }
+      return Marionettist.Backbone.history.navigate(route, options);
+    };
+
+    Location.prototype.getCurrentRoute = function() {
+      var frag;
+      frag = Marionettist.Backbone.history.fragment;
+      if (Marionettist._.isEmpty(frag)) {
+        return null;
+      } else {
+        return frag;
+      }
+    };
+
+    Location.prototype.startHistory = function(options) {
+      if (options == null) {
+        options = {};
+      }
+      if (Marionettist.Backbone.history != null) {
+        return Marionettist.Backbone.history.start(options);
+      }
+    };
+
+    return Location;
+
+  })();
+
+  var Location$1 = Location;
+
+  var Templates;
+
+  Templates = (function() {
+    function Templates() {}
 
     Templates.prototype.lookupPaths = ["templates/"];
 
     Templates.prototype.engine = function() {
       var engine;
       engine = {};
-      if (root.HAML != null) {
+      if (typeof HAML !== "undefined" && HAML !== null) {
         engine = HAML;
       }
-      if (root.JST != null) {
+      if (typeof JST !== "undefined" && JST !== null) {
         engine = JST;
       }
       return engine;
@@ -195,11 +206,54 @@
 
     return Templates;
 
-  })(Marionettist.Object);
+  })();
 
-  Marionettist.Config.options.templates = new Templates();
+  var Templates$1 = Templates;
 
-  _.extend(Marionettist.Renderer, {
+  var Config;
+
+  Config = (function() {
+    function Config() {
+      this.templates = new Templates$1();
+    }
+
+    return Config;
+
+  })();
+
+  var Config$1 = Config;
+
+  var Marionettist$1;
+  var _show;
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp = {}.hasOwnProperty;
+  Marionettist$1 = Marionette.extend();
+
+  Marionettist$1.Backbone = Backbone;
+
+  Marionettist$1.Marionette = Marionette;
+
+  Marionettist$1._ = _;
+
+  Marionettist$1.$ = $;
+
+  Marionettist$1.s = s;
+
+  Marionettist$1.I18n = i18next;
+
+  Marionettist$1.numeral = numeral;
+
+  Marionettist$1.moment = moment;
+
+  Marionettist$1.channels = new Channels$1();
+
+  Marionettist$1.location = new Location$1();
+
+  Marionettist$1.env = new Env$1();
+
+  Marionettist$1.config = new Config$1();
+
+  Marionettist$1._.extend(Marionettist$1.Renderer, {
     render: function(template, data) {
       var path;
       if (_.isFunction(template)) {
@@ -217,7 +271,7 @@
     },
     getTemplate: function(template) {
       var engine, i, j, len, len1, lookup, lookups, path, ref;
-      lookups = Marionettist.Config.getOption("templates").getOption("lookupPaths");
+      lookups = Marionettist$1.config.templates.lookupPaths;
       if (_.isFunction(lookups)) {
         lookups = lookups();
       }
@@ -229,7 +283,7 @@
         ref = [template, this.withTemplate(template)];
         for (j = 0, len1 = ref.length; j < len1; j++) {
           path = ref[j];
-          engine = Marionettist.Config.getOption("templates").getOption("engine");
+          engine = Marionettist$1.config.templates.engine;
           if (_.isFunction(engine)) {
             engine = engine();
           }
@@ -249,10 +303,10 @@
     }
   });
 
-  Marionettist.Utils = Marionettist._.extend(new Marionettist.Object(), {
+  Marionettist$1.Utils = Marionettist$1._.extend(new Marionettist$1.Object(), {
     log: function(msg, color) {
       var bgc;
-      if (Marionettist.Env.current().isDevelopment()) {
+      if (Marionettist$1.env.current().isDevelopment()) {
         color = color || 'black';
         bgc = 'White';
         switch (color) {
@@ -298,19 +352,19 @@
       }
       xhrs = [];
       xhrs = _.chain([ajaxRequests]).flatten().value();
-      return (ref = Marionettist.$).when.apply(ref, xhrs).then((function() {
-        if (Marionettist._.isFunction(options.success)) {
+      return (ref = Marionettist$1.$).when.apply(ref, xhrs).then((function() {
+        if (Marionettist$1._.isFunction(options.success)) {
           return options.success();
         }
       }), function(error) {
-        if (Marionettist._.isFunction(options.error)) {
+        if (Marionettist$1._.isFunction(options.error)) {
           return options.error();
         }
       });
     }
   });
 
-  Marionettist.AppRoute = (function(superClass) {
+  Marionettist$1.AppRoute = (function(superClass) {
     extend(AppRoute, superClass);
 
     function AppRoute() {
@@ -335,9 +389,9 @@
 
     return AppRoute;
 
-  })(Marionettist.Object);
+  })(Marionettist$1.Object);
 
-  Marionettist.AppRouter = (function(superClass) {
+  Marionettist$1.AppRouter = (function(superClass) {
     extend(AppRouter, superClass);
 
     function AppRouter() {
@@ -358,13 +412,13 @@
           after: {}
         };
         filters = controller.filters;
-        if (Marionettist._.isFunction(filters)) {
+        if (Marionettist$1._.isFunction(filters)) {
           filters = filters();
         }
         if (controller.filters == null) {
           controller.filters = {};
         }
-        controller.filters = Marionettist._.extend(defaultFilters, filters);
+        controller.filters = Marionettist$1._.extend(defaultFilters, filters);
       }
       return controller;
     };
@@ -376,7 +430,7 @@
       method = (function(_this) {
         return function(args) {
           var result;
-          _this.controller.route = new Marionettist.AppRoute({
+          _this.controller.route = new Marionettist$1.AppRoute({
             controller: _this.controller,
             actionName: methodName,
             path: route
@@ -389,7 +443,7 @@
         };
       })(this);
       if (!method) {
-        throw new Marionette.Error('Method "' + methodName + '" was not found on the controller');
+        throw new Marionettist$1.Marionette.Error('Method "' + methodName + '" was not found on the controller');
       }
       return this.route(route, methodName, _.bind(method, controller));
     };
@@ -403,7 +457,7 @@
         filterValue = filter[methodName];
         stopMsg = "Action halted by filter '" + methodName + "'";
         switch (false) {
-          case !Marionettist._.isFunction(filterValue):
+          case !Marionettist$1._.isFunction(filterValue):
             result = filterValue(controller);
             if (result === false) {
               if (typeof console !== "undefined" && console !== null) {
@@ -412,7 +466,7 @@
               break;
             }
             break;
-          case !Marionettist._.isObject(filterValue):
+          case !Marionettist$1._.isObject(filterValue):
             result = this._proccessFilterObject(methodName, filterValue, controller);
             if (result === false) {
               if (typeof console !== "undefined" && console !== null) {
@@ -438,7 +492,7 @@
         only: [],
         except: []
       };
-      filterOptions = Marionettist._.extend(defaultFilterOptions, filter);
+      filterOptions = Marionettist$1._.extend(defaultFilterOptions, filter);
       controllerMethod = controller[methodName];
       actionName = controller.route.actionName();
       if (!_.isArray(filterOptions.only)) {
@@ -448,13 +502,13 @@
         throw "filter option except, most be an array";
       }
       if (filterOptions.only.length > 0 || filterOptions.except.length > 0) {
-        if (Marionettist._.contains(filterOptions.only, actionName) && !Marionettist._.contains(filterOptions.except, actionName)) {
-          if (Marionettist._.isFunction(controllerMethod)) {
+        if (Marionettist$1._.contains(filterOptions.only, actionName) && !Marionettist$1._.contains(filterOptions.except, actionName)) {
+          if (Marionettist$1._.isFunction(controllerMethod)) {
             return controllerMethod.apply(this.controller, this._getParams());
           }
         }
       } else {
-        if (Marionettist._.isFunction(controllerMethod)) {
+        if (Marionettist$1._.isFunction(controllerMethod)) {
           return controllerMethod.apply(this.controller, this._getParams());
         }
       }
@@ -462,11 +516,11 @@
 
     return AppRouter;
 
-  })(Marionette.AppRouter);
+  })(Marionettist$1.Marionette.AppRouter);
 
-  _show = Marionette.Region.prototype.show;
+  _show = Marionettist$1.Marionette.Region.prototype.show;
 
-  Marionettist.Region = (function(superClass) {
+  Marionettist$1.Region = (function(superClass) {
     extend(Region, superClass);
 
     function Region() {
@@ -481,7 +535,7 @@
         return function() {
           var args;
           args = [
-            view, Marionettist._.extend(options, {
+            view, Marionettist$1._.extend(options, {
               preventDestroy: true
             })
           ];
@@ -491,7 +545,7 @@
           }
         };
       })(this);
-      if ((oldView != null) && Marionettist._.isFunction(oldView.onHide)) {
+      if ((oldView != null) && Marionettist$1._.isFunction(oldView.onHide)) {
         return oldView.onHide(showCurrentView, this);
       } else {
         return showCurrentView();
@@ -500,45 +554,45 @@
 
     return Region;
 
-  })(Marionette.Region);
+  })(Marionettist$1.Marionette.Region);
 
-  Marionettist.Views = new Marionettist.Object();
+  Marionettist$1.Views = new Marionettist$1.Object();
 
-  Marionettist.Views.templateHelpers = {
-    t: Marionettist.I18n.t,
+  Marionettist$1.Views.templateHelpers = {
+    t: Marionettist$1.I18n.t,
     formatCurrency: function(amount, format) {
       if (format == null) {
         format = "$0,0.00";
       }
-      return Marionettist.numeral(amount).format(format);
+      return Marionettist$1.numeral(amount).format(format);
     },
     formatNumber: function(amount, format) {
       if (format == null) {
         format = "0,0.00";
       }
-      return Marionettist.numeral(amount).format(format);
+      return Marionettist$1.numeral(amount).format(format);
     },
     formatPercentage: function(amount, format) {
       if (format == null) {
         format = "0.00%";
       }
-      return Marionettist.numeral(amount).format(format);
+      return Marionettist$1.numeral(amount).format(format);
     },
     formatDate: function(date, format) {
       if (format == null) {
         format = "DD-MM-YYYY";
       }
-      return Marionettist.moment(date).format(format);
+      return Marionettist$1.moment(date).format(format);
     }
   };
 
-  _.extend(Marionettist.View.prototype, {
+  Marionettist$1._.extend(Marionettist$1.View.prototype, {
     templateHelpers: function() {
       var helpers;
-      helpers = Marionettist.Views.templateHelpers;
+      helpers = Marionettist$1.Views.templateHelpers;
       if (this.viewContext != null) {
         helpers.viewContext = this.viewContext;
-        if (Marionettist._.isFunction(this.viewContext)) {
+        if (Marionettist$1._.isFunction(this.viewContext)) {
           helpers.viewContext = this.viewContext();
         }
       } else {
@@ -548,7 +602,7 @@
     }
   });
 
-  Marionettist.Views.Collection = (function(superClass) {
+  Marionettist$1.Views.Collection = (function(superClass) {
     extend(Collection, superClass);
 
     function Collection() {
@@ -557,9 +611,9 @@
 
     return Collection;
 
-  })(Marionette.CollectionView);
+  })(Marionettist$1.Marionette.CollectionView);
 
-  Marionettist.Views.Composite = (function(superClass) {
+  Marionettist$1.Views.Composite = (function(superClass) {
     extend(Composite, superClass);
 
     function Composite() {
@@ -568,9 +622,9 @@
 
     return Composite;
 
-  })(Marionette.CompositeView);
+  })(Marionettist$1.Marionette.CompositeView);
 
-  Marionettist.Views.Item = (function(superClass) {
+  Marionettist$1.Views.Item = (function(superClass) {
     extend(Item, superClass);
 
     function Item() {
@@ -579,9 +633,9 @@
 
     return Item;
 
-  })(Marionette.ItemView);
+  })(Marionettist$1.Marionette.ItemView);
 
-  Marionettist.Views.Layout = (function(superClass) {
+  Marionettist$1.Views.Layout = (function(superClass) {
     extend(Layout, superClass);
 
     function Layout() {
@@ -590,15 +644,15 @@
 
     return Layout;
 
-  })(Marionette.LayoutView);
+  })(Marionettist$1.Marionette.LayoutView);
 
-  Marionettist.Entities = new Marionettist.Object();
+  Marionettist$1.Entities = new Marionettist$1.Object();
 
-  Marionettist.Entities.Models = new Marionettist.Object();
+  Marionettist$1.Entities.Models = new Marionettist$1.Object();
 
-  Marionettist.Entities.Collections = new Marionettist.Object();
+  Marionettist$1.Entities.Collections = new Marionettist$1.Object();
 
-  Marionettist.Entities.Models.Base = (function(superClass) {
+  Marionettist$1.Entities.Models.Base = (function(superClass) {
     extend(Base, superClass);
 
     function Base() {
@@ -607,10 +661,10 @@
 
     return Base;
 
-  })(Backbone.Model);
+  })(Marionettist$1.Backbone.Model);
 
-  if (Backbone.AssociatedModel) {
-    Marionettist.Entities.Models.Associated = (function(superClass) {
+  if (Marionettist$1.Backbone.AssociatedModel) {
+    Marionettist$1.Entities.Models.Associated = (function(superClass) {
       extend(Associated, superClass);
 
       function Associated() {
@@ -619,10 +673,10 @@
 
       return Associated;
 
-    })(Backbone.AssociatedModel);
+    })(Marionettist$1.Backbone.AssociatedModel);
   }
 
-  Marionettist.Entities.Collections.Base = (function(superClass) {
+  Marionettist$1.Entities.Collections.Base = (function(superClass) {
     extend(Base, superClass);
 
     function Base() {
@@ -631,9 +685,11 @@
 
     return Base;
 
-  })(Backbone.Collection);
+  })(Marionettist$1.Backbone.Collection);
 
-  Marionettist.Controllers.Base = (function(superClass) {
+  Marionettist$1.Controllers = new Marionettist$1.Object();
+
+  Marionettist$1.Controllers.Base = (function(superClass) {
     extend(Base, superClass);
 
     function Base() {
@@ -642,34 +698,34 @@
 
     return Base;
 
-  })(Marionettist.Object);
+  })(Marionettist$1.Object);
 
-  Marionettist.Application = Marionettist.Application.extend({
-    Backbone: Marionettist.Backbone,
-    Marionette: Marionettist.Marionette,
-    _: Marionettist._,
-    $: Marionettist.$,
-    s: Marionettist.s,
-    I18n: Marionettist.I18n,
-    numeral: Marionettist.numeral,
-    moment: Marionettist.moment,
-    Controllers: new Marionettist.Object(),
-    Entities: new Marionettist.Object(),
-    Views: new Marionettist.Object(),
+  Marionettist$1.Application = Marionettist$1.Application.extend({
+    Backbone: Marionettist$1.Backbone,
+    Marionette: Marionettist$1.Marionette,
+    _: Marionettist$1._,
+    $: Marionettist$1.$,
+    s: Marionettist$1.s,
+    I18n: Marionettist$1.I18n,
+    numeral: Marionettist$1.numeral,
+    moment: Marionettist$1.moment,
+    Controllers: new Marionettist$1.Object(),
+    Entities: new Marionettist$1.Object(),
+    Views: new Marionettist$1.Object(),
     navigateTo: function(route, options) {
       if (options == null) {
         options = {};
       }
-      return Marionettist.location.navigateTo(route, options);
+      return Marionettist$1.location.navigateTo(route, options);
     },
     getCurrentRoute: function() {
-      return Marionettist.location.getCurrentRoute();
+      return Marionettist$1.location.getCurrentRoute();
     },
     startHistory: function(options) {
       if (options == null) {
         options = {};
       }
-      return Marionettist.location.startHistory(options);
+      return Marionettist$1.location.startHistory(options);
     },
     register: function(instance, id) {
       if (this._registry == null) {
@@ -696,13 +752,13 @@
       }
     },
     getRegistrySize: function() {
-      return Marionettist._.size(this._registry);
+      return Marionettist$1._.size(this._registry);
     }
   });
 
-  var Marionettist$1 = Marionettist;
+  var Marionettist$2 = Marionettist$1;
 
-  return Marionettist$1;
+  return Marionettist$2;
 
 }));
 //# sourceMappingURL=marionettist.js.map

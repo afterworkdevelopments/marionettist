@@ -1,3 +1,21 @@
+`import _ from "underscore"`
+`import underscoreContrib from "underscore-contrib"`
+`import s from "underscore.string"`
+`import $ from "jquery"`
+`import Backbone from "backbone"`
+`import backbone_radio from "backbone.radio"`
+`import backboneAssociations from "backbone-associations"`
+`import Marionette from "backbone.marionette"`
+`import i18next from "i18next"`
+`import numeral from "numeral"`
+`import moment from "moment"`
+`import momentRange from "moment-range"`
+`import momentTimezone from "moment-timezone"`
+`import Env from "./env.js"`
+`import Channels from "./channels.js"`
+`import Location from "./location.js"`
+`import Config from "./config.js"`
+
 Marionettist = Marionette.extend()
 
 Marionettist.Backbone = Backbone
@@ -16,98 +34,19 @@ Marionettist.numeral = numeral
 
 Marionettist.moment = moment
 
+Marionettist.channels = new Channels()
 
-Marionettist.channels =
+Marionettist.location = new Location()
 
-  request: (channelName = "global", eventName = "", data={})->
-    return Marionettist.Backbone.Radio.channel(channelName).request(eventName,data)
-
-  replyOnce: (channelName = "global", eventName = "", callback)->
-    channel = Marionettist.Backbone.Radio.channel(channelName)
-    if Marionettist._.isFunction(callback)
-      return channel.replyOnce(eventName, callback)
-    else
-      return channel.replyOnce(callback)
-
-  reply: (channelName = "global", eventName = "", callback)->
-    channel = Marionettist.Backbone.Radio.channel(channelName)
-    if Marionettist._.isFunction(callback)
-      return channel.reply(eventName, callback)
-    else
-      return channel.reply(callback)
-
-  publish: (channelName = "global", eventName = "", data ={})->
-    return Marionettist.Backbone.Radio.channel(channelName).trigger eventName, data
-
-  subscribe: (channelName = "global", eventName = "", callback)->
-    return Marionettist.Backbone.Radio.channel(channelName).on eventName, callback
-
-
-Marionettist.location =
-
-  refreshRoute: (fragment = @getCurrentRoute())->
-    Backbone.history.loadUrl(fragment)
-
-  navigateTo: (route, options = {}) ->
-    Marionettist.Backbone.history.navigate route, options
-
-  getCurrentRoute: ->
-    frag = Marionettist.Backbone.history.fragment
-    if Marionettist._.isEmpty(frag) then null else frag
-
-  startHistory: (options= {})->
-    if Marionettist.Backbone.history?
-      Marionettist.Backbone.history.start(options)
-
-      
 # Environment
-
-class Marionettist.Env
-
-  @current: ->
-    @_current or= new Env
-
-  constructor: ()->
-    @stage = "development"
-
-  isDevelopment: ->
-    @stage == "development"
-
-  isProduction: ->
-    @stage == "production"
-
-  getLocale: ()->
-    Marionettist.I18n.language
-
-
-  setLocale: (locale = "en", callback = null)->
-    oldLocale = @getLocale()
-    Marionettist.I18n.changeLanguage locale, (t) ->
-      Marionettist.channels.publish "marionettist", "change:locale",
-        currentLocale: locale
-        oldLocale: oldLocale
-
-      callback(t) if Marionettist._.isFunction(callback)
+Marionettist.env = new Env()
 
 # Config
-Marionettist.Config = new Marionettist.Object()
+Marionettist.config = new Config()
 
-class Templates extends Marionettist.Object
-
-  lookupPaths: ["templates/"]
-
-  engine: ->
-    engine = {}
-    if root.HAML?
-      engine = HAML
-    if root.JST?
-      engine = JST
-    return engine
-
-Marionettist.Config.options.templates = new Templates()
 
 # Renderer
-_.extend Marionettist.Renderer,
+Marionettist._.extend Marionettist.Renderer,
 
   render: (template, data) ->
     if _.isFunction(template)
@@ -119,7 +58,7 @@ _.extend Marionettist.Renderer,
       path(data)
 
   getTemplate: (template) ->
-    lookups = Marionettist.Config.getOption("templates").getOption("lookupPaths")
+    lookups = Marionettist.config.templates.lookupPaths
     lookups = lookups() if _.isFunction(lookups)
     throw "lookupPaths most be an array" unless _.isArray(lookups)
     for lookup in lookups
@@ -129,7 +68,7 @@ _.extend Marionettist.Renderer,
       ## example: "users/list/layout" will become "users/list/templates/layout"
 
       for path in [template, @withTemplate(template)]
-        engine = Marionettist.Config.getOption("templates").getOption("engine")
+        engine = Marionettist.config.templates.engine
         engine = engine() if _.isFunction(engine)
         return engine[lookup + path] if engine[lookup + path]
 
@@ -145,7 +84,7 @@ _.extend Marionettist.Renderer,
 Marionettist.Utils = Marionettist._.extend new Marionettist.Object(),
 
   log: (msg, color) ->
-    if Marionettist.Env.current().isDevelopment()
+    if Marionettist.env.current().isDevelopment()
       color = color or 'black'
       bgc = 'White'
       switch color
@@ -202,7 +141,7 @@ class Marionettist.AppRoute extends Marionettist.Object
 
 # Router
 
-class Marionettist.AppRouter extends Marionette.AppRouter
+class Marionettist.AppRouter extends Marionettist.Marionette.AppRouter
 
   onRoute: (name, path, args) ->
     if @controller? and _.isFunction(@controller.onRoute)
@@ -236,7 +175,7 @@ class Marionettist.AppRouter extends Marionette.AppRouter
         @_executeFilter @controller.filters.after, @controller
 
 
-    throw new Marionette.Error('Method "' + methodName + '" was not found on the controller') if !method
+    throw new Marionettist.Marionette.Error('Method "' + methodName + '" was not found on the controller') if !method
     @route(route, methodName, _.bind(method, controller))
 
 
@@ -283,9 +222,9 @@ class Marionettist.AppRouter extends Marionette.AppRouter
 
 #  Region
 
-_show = Marionette.Region.prototype.show
+_show = Marionettist.Marionette.Region.prototype.show
 
-class Marionettist.Region extends Marionette.Region
+class Marionettist.Region extends Marionettist.Marionette.Region
 
   show: (view, options)->
     options = options || {}
@@ -320,7 +259,7 @@ Marionettist.Views.templateHelpers =
   formatDate: (date, format = "DD-MM-YYYY")->
     Marionettist.moment(date).format(format)
 
-_.extend Marionettist.View::,
+Marionettist._.extend Marionettist.View::,
 
   templateHelpers: ->
     helpers = Marionettist.Views.templateHelpers
@@ -333,18 +272,18 @@ _.extend Marionettist.View::,
 
 # views/collection
 
-class Marionettist.Views.Collection extends Marionette.CollectionView
+class Marionettist.Views.Collection extends Marionettist.Marionette.CollectionView
 
 # views/composite
-class Marionettist.Views.Composite extends Marionette.CompositeView
+class Marionettist.Views.Composite extends Marionettist.Marionette.CompositeView
 
 # views/item
 
-class Marionettist.Views.Item extends Marionette.ItemView
+class Marionettist.Views.Item extends Marionettist.Marionette.ItemView
 
 # views/layout
 
-class Marionettist.Views.Layout extends Marionette.LayoutView
+class Marionettist.Views.Layout extends Marionettist.Marionette.LayoutView
 
 # Entities
 
@@ -355,16 +294,16 @@ Marionettist.Entities.Models = new Marionettist.Object()
 Marionettist.Entities.Collections = new Marionettist.Object()
 
 # entities/models/base
-class Marionettist.Entities.Models.Base extends Backbone.Model
+class Marionettist.Entities.Models.Base extends Marionettist.Backbone.Model
 # entities/models/associated
-if Backbone.AssociatedModel
-  class Marionettist.Entities.Models.Associated extends Backbone.AssociatedModel
+if Marionettist.Backbone.AssociatedModel
+  class Marionettist.Entities.Models.Associated extends Marionettist.Backbone.AssociatedModel
 
 # entities/collections/base
-class Marionettist.Entities.Collections.Base extends Backbone.Collection
+class Marionettist.Entities.Collections.Base extends Marionettist.Backbone.Collection
 
 #=require "./controllers.coffee"
-
+Marionettist.Controllers = new Marionettist.Object()
 class Marionettist.Controllers.Base extends Marionettist.Object
 
 

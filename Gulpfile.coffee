@@ -35,6 +35,9 @@ gulp.task "bundle", ->
       _: "_",
       Backbone: "Backbone",
       Marionette: "Marionette"
+      i18next: "i18next"
+      numeral: "numeral"
+      moment: "moment"
   ))
   .pipe(sourcemaps.write("."))
   .pipe gulp.dest("./dist")
