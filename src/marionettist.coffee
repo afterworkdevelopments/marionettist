@@ -49,28 +49,37 @@ Marionettist.config = new Config()
 Marionettist._.extend Marionettist.Renderer,
 
   render: (template, data) ->
-    if _.isFunction(template)
+    if Marionettist._.isFunction(template)
       return template(data)
     else
       return if template is false
-      path = @getTemplate(template)
-      throw "Template #{template} not found!" unless path
-      path(data)
+      engineTemplate = @getTemplate(template)
+      throw "Template #{template} was not found!" unless Marionettist._.isFunction(engineTemplate)
+      engineTemplate(data)
 
   getTemplate: (template) ->
     lookups = Marionettist.config.templates.lookupPaths
-    lookups = lookups() if _.isFunction(lookups)
-    throw "lookupPaths most be an array" unless _.isArray(lookups)
+    lookups = lookups() if Marionettist._.isFunction(lookups)
+    throw "lookupPaths most be an array" unless Marionettist._.isArray(lookups)
+    templates = [template, @withTemplate(template)]
+    lookups = [""] if lookups.length == 0
     for lookup in lookups
       ## inserts the template at the '-1' position of the template array
       ## this allows to omit the word 'templates' from the view but still
       ## store the templates in a directory outside of the view
       ## example: "users/list/layout" will become "users/list/templates/layout"
 
-      for path in [template, @withTemplate(template)]
-        engine = Marionettist.config.templates.engine
-        engine = engine() if _.isFunction(engine)
-        return engine[lookup + path] if engine[lookup + path]
+      for path in templates
+        lookupPath = @findLookupPath(lookup+path, template)
+        return lookupPath if lookupPath?
+
+  findLookupPath: (path,template)->
+    engine = Marionettist.config.templates.engine
+    engine = engine() if _.isFunction(engine)
+    lookupPath = engine[path]
+    if Marionettist.config.templates.debug is true
+      console.log "Looking template: #{template} in '#{path}'"
+    return lookupPath if lookupPath
 
   withTemplate: (string) ->
     if string?
@@ -245,7 +254,8 @@ Marionettist.Views = new Marionettist.Object()
 
 Marionettist.Views.templateHelpers =
 
-  t: Marionettist.I18n.t
+  t: (args...)->
+    Marionettist.I18n.t(args...)
 
   formatCurrency: (amount, format = "$0,0.00")->
     Marionettist.numeral(amount).format(format)
@@ -359,5 +369,6 @@ Marionettist.Application = Marionettist.Application.extend
   getRegistrySize: ->
     Marionettist._.size @_registry
 
+global.Marionettist = Marionettist if global?
 
 `export default Marionettist`

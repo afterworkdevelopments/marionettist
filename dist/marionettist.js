@@ -190,7 +190,9 @@
   Templates = (function() {
     function Templates() {}
 
-    Templates.prototype.lookupPaths = ["templates/"];
+    Templates.prototype.debug = false;
+
+    Templates.prototype.lookupPaths = [];
 
     Templates.prototype.engine = function() {
       var engine;
@@ -227,6 +229,7 @@
   var _show;
   var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   var hasProp = {}.hasOwnProperty;
+  var slice = [].slice;
   Marionettist$1 = Marionette.extend();
 
   Marionettist$1.Backbone = Backbone;
@@ -255,42 +258,56 @@
 
   Marionettist$1._.extend(Marionettist$1.Renderer, {
     render: function(template, data) {
-      var path;
-      if (_.isFunction(template)) {
+      var engineTemplate;
+      if (Marionettist$1._.isFunction(template)) {
         return template(data);
       } else {
         if (template === false) {
           return;
         }
-        path = this.getTemplate(template);
-        if (!path) {
-          throw "Template " + template + " not found!";
+        engineTemplate = this.getTemplate(template);
+        if (!Marionettist$1._.isFunction(engineTemplate)) {
+          throw "Template " + template + " was not found!";
         }
-        return path(data);
+        return engineTemplate(data);
       }
     },
     getTemplate: function(template) {
-      var engine, i, j, len, len1, lookup, lookups, path, ref;
+      var i, j, len, len1, lookup, lookupPath, lookups, path, templates;
       lookups = Marionettist$1.config.templates.lookupPaths;
-      if (_.isFunction(lookups)) {
+      if (Marionettist$1._.isFunction(lookups)) {
         lookups = lookups();
       }
-      if (!_.isArray(lookups)) {
+      if (!Marionettist$1._.isArray(lookups)) {
         throw "lookupPaths most be an array";
+      }
+      templates = [template, this.withTemplate(template)];
+      if (lookups.length === 0) {
+        lookups = [""];
       }
       for (i = 0, len = lookups.length; i < len; i++) {
         lookup = lookups[i];
-        ref = [template, this.withTemplate(template)];
-        for (j = 0, len1 = ref.length; j < len1; j++) {
-          path = ref[j];
-          engine = Marionettist$1.config.templates.engine;
-          if (_.isFunction(engine)) {
-            engine = engine();
-          }
-          if (engine[lookup + path]) {
-            return engine[lookup + path];
+        for (j = 0, len1 = templates.length; j < len1; j++) {
+          path = templates[j];
+          lookupPath = this.findLookupPath(lookup + path, template);
+          if (lookupPath != null) {
+            return lookupPath;
           }
         }
+      }
+    },
+    findLookupPath: function(path, template) {
+      var engine, lookupPath;
+      engine = Marionettist$1.config.templates.engine;
+      if (_.isFunction(engine)) {
+        engine = engine();
+      }
+      lookupPath = engine[path];
+      if (Marionettist$1.config.templates.debug === true) {
+        console.log("Looking template: " + template + " in '" + path + "'");
+      }
+      if (lookupPath) {
+        return lookupPath;
       }
     },
     withTemplate: function(string) {
@@ -559,7 +576,11 @@
   Marionettist$1.Views = new Marionettist$1.Object();
 
   Marionettist$1.Views.templateHelpers = {
-    t: Marionettist$1.I18n.t,
+    t: function() {
+      var args, ref;
+      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      return (ref = Marionettist$1.I18n).t.apply(ref, args);
+    },
     formatCurrency: function(amount, format) {
       if (format == null) {
         format = "$0,0.00";
@@ -755,6 +776,10 @@
       return Marionettist$1._.size(this._registry);
     }
   });
+
+  if (typeof global !== "undefined" && global !== null) {
+    global.Marionettist = Marionettist$1;
+  }
 
   var Marionettist$2 = Marionettist$1;
 

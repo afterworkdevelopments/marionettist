@@ -1,6 +1,8 @@
 class Templates
 
-  lookupPaths: ["templates/"]
+  debug: false
+
+  lookupPaths: []
 
   engine: ->
     engine = {}
