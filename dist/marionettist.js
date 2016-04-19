@@ -1,10 +1,10 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('underscore'), require('underscore-contrib'), require('underscore.string'), require('jquery'), require('backbone'), require('backbone.radio'), require('backbone-associations'), require('backbone.marionette'), require('i18next'), require('numeral'), require('moment'), require('moment-range'), require('moment-timezone')) :
   typeof define === 'function' && define.amd ? define(['underscore', 'underscore-contrib', 'underscore.string', 'jquery', 'backbone', 'backbone.radio', 'backbone-associations', 'backbone.marionette', 'i18next', 'numeral', 'moment', 'moment-range', 'moment-timezone'], factory) :
-  (global.Marionettist = factory(global._,global.underscoreContrib,global.s,global.$,global.Backbone,global.backbone_radio,global.backboneAssociations,global.Marionette,global.i18next,global.numeral,global.moment,global.momentRange,global.momentTimezone));
-}(this, function (_,underscoreContrib,s,$,Backbone,backbone_radio,backboneAssociations,Marionette,i18next,numeral,moment,momentRange,momentTimezone) { 'use strict';
+  (global.Marionettist = factory(global._,global.underscoreContrib,global.s,global.$,global.Backbone,global.Backbone.Radio,global.backboneAssociations,global.Marionette,global.i18next,global.numeral,global.moment,global.momentRange,global.momentTimezone));
+}(this, function (_$1,underscoreContrib,s,$,Backbone,backbone_radio,backboneAssociations,Marionette,i18next,numeral,moment,momentRange,momentTimezone) { 'use strict';
 
-  _ = 'default' in _ ? _['default'] : _;
+  _$1 = 'default' in _$1 ? _$1['default'] : _$1;
   s = 'default' in s ? s['default'] : s;
   $ = 'default' in $ ? $['default'] : $;
   Backbone = 'default' in Backbone ? Backbone['default'] : Backbone;
@@ -13,10 +13,19 @@
   numeral = 'default' in numeral ? numeral['default'] : numeral;
   moment = 'default' in moment ? moment['default'] : moment;
 
-  var Env;
+  var Marionettist$1;
 
-  Env = (function() {
-    Env.current = function() {
+  Marionettist$1 = Marionette.extend();
+
+  var Marionettist$2 = Marionettist$1;
+
+  var Env;
+  var extend$1 = function(child, parent) { for (var key in parent) { if (hasProp$1.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$1 = {}.hasOwnProperty;
+  Env = (function(superClass) {
+    extend$1(Env, superClass);
+
+    Env.prototype.current = function() {
       return this._current || (this._current = new Env);
     };
 
@@ -33,7 +42,7 @@
     };
 
     Env.prototype.getLocale = function() {
-      return Marionettist.I18n.language;
+      return Marionettist$2.I18n.language;
     };
 
     Env.prototype.setLocale = function(locale, callback) {
@@ -45,12 +54,12 @@
         callback = null;
       }
       oldLocale = this.getLocale();
-      return Marionettist.I18n.changeLanguage(locale, function(t) {
-        Marionettist.channels.publish("marionettist", "change:locale", {
+      return Marionettist$2.I18n.changeLanguage(locale, function(t) {
+        Marionettist$2.channels.publish("marionettist", "change:locale", {
           currentLocale: locale,
           oldLocale: oldLocale
         });
-        if (Marionettist._.isFunction(callback)) {
+        if (Marionettist$2._.isFunction(callback)) {
           return callback(t);
         }
       });
@@ -58,13 +67,16 @@
 
     return Env;
 
-  })();
+  })(Marionettist$2.Object);
 
   var Env$1 = Env;
 
   var Channels;
+  var extend$2 = function(child, parent) { for (var key in parent) { if (hasProp$2.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$2 = {}.hasOwnProperty;
+  Channels = (function(superClass) {
+    extend$2(Channels, superClass);
 
-  Channels = (function() {
     function Channels() {}
 
     Channels.prototype.request = function(channelName, eventName, data) {
@@ -77,7 +89,7 @@
       if (data == null) {
         data = {};
       }
-      return Marionettist.Backbone.Radio.channel(channelName).request(eventName, data);
+      return Marionettist$2.Backbone.Radio.channel(channelName).request(eventName, data);
     };
 
     Channels.prototype.replyOnce = function(channelName, eventName, callback) {
@@ -88,8 +100,8 @@
       if (eventName == null) {
         eventName = "";
       }
-      channel = Marionettist.Backbone.Radio.channel(channelName);
-      if (Marionettist._.isFunction(callback)) {
+      channel = Marionettist$2.Backbone.Radio.channel(channelName);
+      if (Marionettist$2._.isFunction(callback)) {
         return channel.replyOnce(eventName, callback);
       } else {
         return channel.replyOnce(callback);
@@ -104,8 +116,8 @@
       if (eventName == null) {
         eventName = "";
       }
-      channel = Marionettist.Backbone.Radio.channel(channelName);
-      if (Marionettist._.isFunction(callback)) {
+      channel = Marionettist$2.Backbone.Radio.channel(channelName);
+      if (Marionettist$2._.isFunction(callback)) {
         return channel.reply(eventName, callback);
       } else {
         return channel.reply(callback);
@@ -122,7 +134,7 @@
       if (data == null) {
         data = {};
       }
-      return Marionettist.Backbone.Radio.channel(channelName).trigger(eventName, data);
+      return Marionettist$2.Backbone.Radio.channel(channelName).trigger(eventName, data);
     };
 
     Channels.prototype.subscribe = function(channelName, eventName, callback) {
@@ -132,38 +144,41 @@
       if (eventName == null) {
         eventName = "";
       }
-      return Marionettist.Backbone.Radio.channel(channelName).on(eventName, callback);
+      return Marionettist$2.Backbone.Radio.channel(channelName).on(eventName, callback);
     };
 
     return Channels;
 
-  })();
+  })(Marionettist$2.Object);
 
   var Channels$1 = Channels;
 
   var Location;
+  var extend$3 = function(child, parent) { for (var key in parent) { if (hasProp$3.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$3 = {}.hasOwnProperty;
+  Location = (function(superClass) {
+    extend$3(Location, superClass);
 
-  Location = (function() {
     function Location() {}
 
     Location.prototype.refreshRoute = function(fragment) {
       if (fragment == null) {
         fragment = this.getCurrentRoute();
       }
-      return Marionettist.Backbone.history.loadUrl(fragment);
+      return Marionettist$2.Backbone.history.loadUrl(fragment);
     };
 
     Location.prototype.navigateTo = function(route, options) {
       if (options == null) {
         options = {};
       }
-      return Marionettist.Backbone.history.navigate(route, options);
+      return Marionettist$2.Backbone.history.navigate(route, options);
     };
 
     Location.prototype.getCurrentRoute = function() {
       var frag;
-      frag = Marionettist.Backbone.history.fragment;
-      if (Marionettist._.isEmpty(frag)) {
+      frag = Marionettist$2.Backbone.history.fragment;
+      if (Marionettist$2._.isEmpty(frag)) {
         return null;
       } else {
         return frag;
@@ -174,14 +189,14 @@
       if (options == null) {
         options = {};
       }
-      if (Marionettist.Backbone.history != null) {
-        return Marionettist.Backbone.history.start(options);
+      if (Marionettist$2.Backbone.history != null) {
+        return Marionettist$2.Backbone.history.start(options);
       }
     };
 
     return Location;
 
-  })();
+  })(Marionettist$2.Object);
 
   var Location$1 = Location;
 
@@ -213,60 +228,34 @@
   var Templates$1 = Templates;
 
   var Config;
+  var extend$4 = function(child, parent) { for (var key in parent) { if (hasProp$4.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$4 = {}.hasOwnProperty;
+  Config = (function(superClass) {
+    extend$4(Config, superClass);
 
-  Config = (function() {
     function Config() {
       this.templates = new Templates$1();
     }
 
     return Config;
 
-  })();
+  })(Marionettist$2.Object);
 
   var Config$1 = Config;
 
-  var Marionettist$1;
-  var _show;
-  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  var hasProp = {}.hasOwnProperty;
-  var slice = [].slice;
-  Marionettist$1 = Marionette.extend();
+  var Renderer;
 
-  Marionettist$1.Backbone = Backbone;
-
-  Marionettist$1.Marionette = Marionette;
-
-  Marionettist$1._ = _;
-
-  Marionettist$1.$ = $;
-
-  Marionettist$1.s = s;
-
-  Marionettist$1.I18n = i18next;
-
-  Marionettist$1.numeral = numeral;
-
-  Marionettist$1.moment = moment;
-
-  Marionettist$1.channels = new Channels$1();
-
-  Marionettist$1.location = new Location$1();
-
-  Marionettist$1.env = new Env$1();
-
-  Marionettist$1.config = new Config$1();
-
-  Marionettist$1._.extend(Marionettist$1.Renderer, {
+  Renderer = {
     render: function(template, data) {
       var engineTemplate;
-      if (Marionettist$1._.isFunction(template)) {
+      if (Marionettist._.isFunction(template)) {
         return template(data);
       } else {
         if (template === false) {
           return;
         }
         engineTemplate = this.getTemplate(template);
-        if (!Marionettist$1._.isFunction(engineTemplate)) {
+        if (!Marionettist._.isFunction(engineTemplate)) {
           throw "Template " + template + " was not found!";
         }
         return engineTemplate(data);
@@ -274,11 +263,11 @@
     },
     getTemplate: function(template) {
       var i, j, len, len1, lookup, lookupPath, lookups, path, templates;
-      lookups = Marionettist$1.config.templates.lookupPaths;
-      if (Marionettist$1._.isFunction(lookups)) {
+      lookups = Marionettist.config.templates.lookupPaths;
+      if (Marionettist._.isFunction(lookups)) {
         lookups = lookups();
       }
-      if (!Marionettist$1._.isArray(lookups)) {
+      if (!Marionettist._.isArray(lookups)) {
         throw "lookupPaths most be an array";
       }
       templates = [template, this.withTemplate(template)];
@@ -298,13 +287,13 @@
     },
     findLookupPath: function(path, template) {
       var engine, lookupPath;
-      engine = Marionettist$1.config.templates.engine;
-      if (_.isFunction(engine)) {
+      engine = Marionettist.config.templates.engine;
+      if (Marionettist._.isFunction(engine)) {
         engine = engine();
       }
       lookupPath = engine[path];
-      if (Marionettist$1.config.templates.debug === true) {
-        console.log("Looking template: " + template + " in '" + path + "'");
+      if (Marionettist.config.templates.debug === true) {
+        Marionettist.logger.info("Looking template: " + template + " in '" + path + "'");
       }
       if (lookupPath) {
         return lookupPath;
@@ -318,12 +307,86 @@
         return array.join("/");
       }
     }
-  });
+  };
 
-  Marionettist$1.Utils = Marionettist$1._.extend(new Marionettist$1.Object(), {
-    log: function(msg, color) {
+  var Renderer$1 = Renderer;
+
+  var Utils;
+  var extend$5 = function(child, parent) { for (var key in parent) { if (hasProp$5.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$5 = {}.hasOwnProperty;
+  Utils = (function(superClass) {
+    extend$5(Utils, superClass);
+
+    function Utils() {
+      return Utils.__super__.constructor.apply(this, arguments);
+    }
+
+    Utils.prototype.waitFor = function(ajaxRequests, options) {
+      var ref, xhrs;
+      if (options == null) {
+        options = {};
+      }
+      xhrs = [];
+      xhrs = _.chain([ajaxRequests]).flatten().value();
+      return (ref = Marionettist$2.$).when.apply(ref, xhrs).then((function() {
+        if (Marionettist$2._.isFunction(options.success)) {
+          return options.success();
+        }
+      }), function(error) {
+        if (Marionettist$2._.isFunction(options.error)) {
+          return options.error();
+        }
+      });
+    };
+
+    return Utils;
+
+  })(Marionettist$2.Object);
+
+  var Utils$1 = Utils;
+
+  var Logger;
+  var extend$6 = function(child, parent) { for (var key in parent) { if (hasProp$6.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$6 = {}.hasOwnProperty;
+  Logger = (function(superClass) {
+    extend$6(Logger, superClass);
+
+    function Logger() {}
+
+    Logger.prototype.success = function(msg, force) {
+      if (force == null) {
+        force = false;
+      }
+      return this.log(msg, "success", force);
+    };
+
+    Logger.prototype.warn = function(msg, force) {
+      if (force == null) {
+        force = false;
+      }
+      return this.log(msg, "warn", force);
+    };
+
+    Logger.prototype.error = function(msg, force) {
+      if (force == null) {
+        force = false;
+      }
+      return this.log(msg, "error", force);
+    };
+
+    Logger.prototype.info = function(msg, force) {
+      if (force == null) {
+        force = false;
+      }
+      return this.log(msg, "info", force);
+    };
+
+    Logger.prototype.log = function(msg, color, force) {
       var bgc;
-      if (Marionettist$1.env.current().isDevelopment()) {
+      if (force == null) {
+        force = false;
+      }
+      if (Marionettist$2.env.current().isDevelopment() || force === true) {
         color = color || 'black';
         bgc = 'White';
         switch (color) {
@@ -361,28 +424,19 @@
           console.log('%c' + msg, 'color:' + color + ';font-weight:bold; background-color: ' + bgc + ';');
         }
       }
-    },
-    waitFor: function(ajaxRequests, options) {
-      var ref, xhrs;
-      if (options == null) {
-        options = {};
-      }
-      xhrs = [];
-      xhrs = _.chain([ajaxRequests]).flatten().value();
-      return (ref = Marionettist$1.$).when.apply(ref, xhrs).then((function() {
-        if (Marionettist$1._.isFunction(options.success)) {
-          return options.success();
-        }
-      }), function(error) {
-        if (Marionettist$1._.isFunction(options.error)) {
-          return options.error();
-        }
-      });
-    }
-  });
+    };
 
-  Marionettist$1.AppRoute = (function(superClass) {
-    extend(AppRoute, superClass);
+    return Logger;
+
+  })(Marionettist$2.Object);
+
+  var Logger$1 = Logger;
+
+  var AppRoute;
+  var extend$7 = function(child, parent) { for (var key in parent) { if (hasProp$7.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$7 = {}.hasOwnProperty;
+  AppRoute = (function(superClass) {
+    extend$7(AppRoute, superClass);
 
     function AppRoute() {
       return AppRoute.__super__.constructor.apply(this, arguments);
@@ -406,17 +460,22 @@
 
     return AppRoute;
 
-  })(Marionettist$1.Object);
+  })(Marionettist$2.Object);
 
-  Marionettist$1.AppRouter = (function(superClass) {
-    extend(AppRouter, superClass);
+  var AppRoute$1 = AppRoute;
+
+  var AppRouter;
+  var extend$8 = function(child, parent) { for (var key in parent) { if (hasProp$8.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$8 = {}.hasOwnProperty;
+  AppRouter = (function(superClass) {
+    extend$8(AppRouter, superClass);
 
     function AppRouter() {
       return AppRouter.__super__.constructor.apply(this, arguments);
     }
 
     AppRouter.prototype.onRoute = function(name, path, args) {
-      if ((this.controller != null) && _.isFunction(this.controller.onRoute)) {
+      if ((this.controller != null) && Marionettist$2._.isFunction(this.controller.onRoute)) {
         return this.controller.onRoute(this, name, path, args);
       }
     };
@@ -429,13 +488,13 @@
           after: {}
         };
         filters = controller.filters;
-        if (Marionettist$1._.isFunction(filters)) {
+        if (Marionettist$2._.isFunction(filters)) {
           filters = filters();
         }
         if (controller.filters == null) {
           controller.filters = {};
         }
-        controller.filters = Marionettist$1._.extend(defaultFilters, filters);
+        controller.filters = Marionettist$2._.extend(defaultFilters, filters);
       }
       return controller;
     };
@@ -447,7 +506,7 @@
       method = (function(_this) {
         return function(args) {
           var result;
-          _this.controller.route = new Marionettist$1.AppRoute({
+          _this.controller.route = new Marionettist$2.AppRoute({
             controller: _this.controller,
             actionName: methodName,
             path: route
@@ -460,21 +519,21 @@
         };
       })(this);
       if (!method) {
-        throw new Marionettist$1.Marionette.Error('Method "' + methodName + '" was not found on the controller');
+        throw new Marionettist$2.Marionette.Error('Method "' + methodName + '" was not found on the controller');
       }
-      return this.route(route, methodName, _.bind(method, controller));
+      return this.route(route, methodName, Marionettist$2._.bind(method, controller));
     };
 
     AppRouter.prototype._executeFilter = function(filter, controller) {
       var filterValue, i, len, methodName, ref, result, stopMsg;
       result = true;
-      ref = _.keys(filter);
+      ref = Marionettist$2._.keys(filter);
       for (i = 0, len = ref.length; i < len; i++) {
         methodName = ref[i];
         filterValue = filter[methodName];
         stopMsg = "Action halted by filter '" + methodName + "'";
         switch (false) {
-          case !Marionettist$1._.isFunction(filterValue):
+          case !Marionettist$2._.isFunction(filterValue):
             result = filterValue(controller);
             if (result === false) {
               if (typeof console !== "undefined" && console !== null) {
@@ -483,7 +542,7 @@
               break;
             }
             break;
-          case !Marionettist$1._.isObject(filterValue):
+          case !Marionettist$2._.isObject(filterValue):
             result = this._proccessFilterObject(methodName, filterValue, controller);
             if (result === false) {
               if (typeof console !== "undefined" && console !== null) {
@@ -499,7 +558,7 @@
     AppRouter.prototype._getParams = function() {
       var params, route;
       route = this._routeToRegExp(this.controller.route.getOption("path"));
-      return params = this._extractParameters(route, Backbone.history.getFragment());
+      return params = this._extractParameters(route, Marionettist$2.Backbone.history.getFragment());
     };
 
     AppRouter.prototype._proccessFilterObject = function(methodName, filter, controller) {
@@ -509,7 +568,7 @@
         only: [],
         except: []
       };
-      filterOptions = Marionettist$1._.extend(defaultFilterOptions, filter);
+      filterOptions = Marionettist$2._.extend(defaultFilterOptions, filter);
       controllerMethod = controller[methodName];
       actionName = controller.route.actionName();
       if (!_.isArray(filterOptions.only)) {
@@ -519,13 +578,13 @@
         throw "filter option except, most be an array";
       }
       if (filterOptions.only.length > 0 || filterOptions.except.length > 0) {
-        if (Marionettist$1._.contains(filterOptions.only, actionName) && !Marionettist$1._.contains(filterOptions.except, actionName)) {
-          if (Marionettist$1._.isFunction(controllerMethod)) {
+        if (Marionettist$2._.contains(filterOptions.only, actionName) && !Marionettist$2._.contains(filterOptions.except, actionName)) {
+          if (Marionettist$2._.isFunction(controllerMethod)) {
             return controllerMethod.apply(this.controller, this._getParams());
           }
         }
       } else {
-        if (Marionettist$1._.isFunction(controllerMethod)) {
+        if (Marionettist$2._.isFunction(controllerMethod)) {
           return controllerMethod.apply(this.controller, this._getParams());
         }
       }
@@ -533,12 +592,18 @@
 
     return AppRouter;
 
-  })(Marionettist$1.Marionette.AppRouter);
+  })(Marionettist$2.AppRouter);
 
-  _show = Marionettist$1.Marionette.Region.prototype.show;
+  var AppRouter$1 = AppRouter;
 
-  Marionettist$1.Region = (function(superClass) {
-    extend(Region, superClass);
+  var Region;
+  var _show;
+  var extend$9 = function(child, parent) { for (var key in parent) { if (hasProp$9.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$9 = {}.hasOwnProperty;
+  _show = Marionette.Region.prototype.show;
+
+  Region = (function(superClass) {
+    extend$9(Region, superClass);
 
     function Region() {
       return Region.__super__.constructor.apply(this, arguments);
@@ -552,7 +617,7 @@
         return function() {
           var args;
           args = [
-            view, Marionettist$1._.extend(options, {
+            view, Marionettist$2._.extend(options, {
               preventDestroy: true
             })
           ];
@@ -562,7 +627,7 @@
           }
         };
       })(this);
-      if ((oldView != null) && Marionettist$1._.isFunction(oldView.onHide)) {
+      if ((oldView != null) && Marionettist$2._.isFunction(oldView.onHide)) {
         return oldView.onHide(showCurrentView, this);
       } else {
         return showCurrentView();
@@ -571,49 +636,229 @@
 
     return Region;
 
-  })(Marionettist$1.Marionette.Region);
+  })(Marionette.Region);
 
-  Marionettist$1.Views = new Marionettist$1.Object();
+  var Region$1 = Region;
 
-  Marionettist$1.Views.templateHelpers = {
-    t: function() {
-      var args, ref;
-      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      return (ref = Marionettist$1.I18n).t.apply(ref, args);
-    },
-    formatCurrency: function(amount, format) {
-      if (format == null) {
-        format = "$0,0.00";
-      }
-      return Marionettist$1.numeral(amount).format(format);
-    },
-    formatNumber: function(amount, format) {
-      if (format == null) {
-        format = "0,0.00";
-      }
-      return Marionettist$1.numeral(amount).format(format);
-    },
-    formatPercentage: function(amount, format) {
-      if (format == null) {
-        format = "0.00%";
-      }
-      return Marionettist$1.numeral(amount).format(format);
-    },
-    formatDate: function(date, format) {
-      if (format == null) {
-        format = "DD-MM-YYYY";
-      }
-      return Marionettist$1.moment(date).format(format);
+  var Views;
+  var extend$10 = function(child, parent) { for (var key in parent) { if (hasProp$10.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$10 = {}.hasOwnProperty;
+  var slice = [].slice;
+  Views = (function(superClass) {
+    extend$10(Views, superClass);
+
+    function Views() {
+      return Views.__super__.constructor.apply(this, arguments);
     }
-  };
 
-  Marionettist$1._.extend(Marionettist$1.View.prototype, {
+    Views.prototype.templateHelpers = {
+      t: function() {
+        var args, ref;
+        args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+        return (ref = Marionettist$2.I18n).t.apply(ref, args);
+      },
+      formatCurrency: function(amount, format) {
+        if (format == null) {
+          format = "$0,0.00";
+        }
+        return Marionettist$2.numeral(amount).format(format);
+      },
+      formatNumber: function(amount, format) {
+        if (format == null) {
+          format = "0,0.00";
+        }
+        return Marionettist$2.numeral(amount).format(format);
+      },
+      formatPercentage: function(amount, format) {
+        if (format == null) {
+          format = "0.00%";
+        }
+        return Marionettist$2.numeral(amount).format(format);
+      },
+      formatDate: function(date, format) {
+        if (format == null) {
+          format = "DD-MM-YYYY";
+        }
+        return Marionettist$2.moment(date).format(format);
+      }
+    };
+
+    return Views;
+
+  })(Marionettist$2.Object);
+
+  var Views$1 = Views;
+
+  var CollectionView;
+  var extend$11 = function(child, parent) { for (var key in parent) { if (hasProp$11.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$11 = {}.hasOwnProperty;
+  CollectionView = (function(superClass) {
+    extend$11(CollectionView, superClass);
+
+    function CollectionView() {
+      return CollectionView.__super__.constructor.apply(this, arguments);
+    }
+
+    return CollectionView;
+
+  })(Marionette.CollectionView);
+
+  var CollectionView$1 = CollectionView;
+
+  var CompositeView;
+  var extend$12 = function(child, parent) { for (var key in parent) { if (hasProp$12.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$12 = {}.hasOwnProperty;
+  CompositeView = (function(superClass) {
+    extend$12(CompositeView, superClass);
+
+    function CompositeView() {
+      return CompositeView.__super__.constructor.apply(this, arguments);
+    }
+
+    return CompositeView;
+
+  })(Marionette.CompositeView);
+
+  var CompositeView$1 = CompositeView;
+
+  var ItemView;
+  var extend$13 = function(child, parent) { for (var key in parent) { if (hasProp$13.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$13 = {}.hasOwnProperty;
+  ItemView = (function(superClass) {
+    extend$13(ItemView, superClass);
+
+    function ItemView() {
+      return ItemView.__super__.constructor.apply(this, arguments);
+    }
+
+    return ItemView;
+
+  })(Marionette.ItemView);
+
+  var ItemView$1 = ItemView;
+
+  var LayoutView;
+  var extend$14 = function(child, parent) { for (var key in parent) { if (hasProp$14.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$14 = {}.hasOwnProperty;
+  LayoutView = (function(superClass) {
+    extend$14(LayoutView, superClass);
+
+    function LayoutView() {
+      return LayoutView.__super__.constructor.apply(this, arguments);
+    }
+
+    return LayoutView;
+
+  })(Marionette.LayoutView);
+
+  var LayoutView$1 = LayoutView;
+
+  var Base;
+  var extend$15 = function(child, parent) { for (var key in parent) { if (hasProp$15.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$15 = {}.hasOwnProperty;
+  Base = (function(superClass) {
+    extend$15(Base, superClass);
+
+    function Base() {
+      return Base.__super__.constructor.apply(this, arguments);
+    }
+
+    return Base;
+
+  })(Backbone.Model);
+
+  var BaseModel = Base;
+
+  var Base$1;
+  var extend$16 = function(child, parent) { for (var key in parent) { if (hasProp$16.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$16 = {}.hasOwnProperty;
+  Base$1 = (function(superClass) {
+    extend$16(Base, superClass);
+
+    function Base() {
+      return Base.__super__.constructor.apply(this, arguments);
+    }
+
+    return Base;
+
+  })(Backbone.Collection);
+
+  var BaseCollection = Base$1;
+
+  var Base$2;
+  var extend$17 = function(child, parent) { for (var key in parent) { if (hasProp$17.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$17 = {}.hasOwnProperty;
+  Base$2 = (function(superClass) {
+    extend$17(Base, superClass);
+
+    function Base() {
+      return Base.__super__.constructor.apply(this, arguments);
+    }
+
+    Base.prototype.navigateTo = function(route, options) {
+      if (options == null) {
+        options = {};
+      }
+      return Marionettist$2.location.navigateTo(route, options);
+    };
+
+    Base.prototype.getCurrentRoute = function() {
+      return Marionettist$2.location.getCurrentRoute();
+    };
+
+    return Base;
+
+  })(Marionettist$2.Object);
+
+  var BaseController = Base$2;
+
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp = {}.hasOwnProperty;
+  Marionettist$2.Backbone = Backbone;
+
+  Marionettist$2.Marionette = Marionette;
+
+  Marionettist$2._ = _$1;
+
+  Marionettist$2.$ = $;
+
+  Marionettist$2.s = s;
+
+  Marionettist$2.I18n = i18next;
+
+  Marionettist$2.numeral = numeral;
+
+  Marionettist$2.moment = moment;
+
+  Marionettist$2.channels = new Channels$1();
+
+  Marionettist$2.location = new Location$1();
+
+  Marionettist$2.env = new Env$1();
+
+  Marionettist$2.config = new Config$1();
+
+  Marionettist$2.logger = new Logger$1;
+
+  Marionettist$2._.extend(Marionettist$2.Renderer, Renderer$1);
+
+  Marionettist$2.utils = new Utils$1;
+
+  Marionettist$2.AppRoute = AppRoute$1;
+
+  Marionettist$2.AppRouter = AppRouter$1;
+
+  Marionettist$2.Region = Region$1;
+
+  Marionettist$2.Views = new Views$1();
+
+  Marionettist$2._.extend(Marionettist$2.View.prototype, {
     templateHelpers: function() {
       var helpers;
-      helpers = Marionettist$1.Views.templateHelpers;
+      helpers = Marionettist$2.Views.templateHelpers;
       if (this.viewContext != null) {
         helpers.viewContext = this.viewContext;
-        if (Marionettist$1._.isFunction(this.viewContext)) {
+        if (Marionettist$2._.isFunction(this.viewContext)) {
           helpers.viewContext = this.viewContext();
         }
       } else {
@@ -623,69 +868,24 @@
     }
   });
 
-  Marionettist$1.Views.Collection = (function(superClass) {
-    extend(Collection, superClass);
+  Marionettist$2.Views.Collection = CollectionView$1;
 
-    function Collection() {
-      return Collection.__super__.constructor.apply(this, arguments);
-    }
+  Marionettist$2.Views.Composite = CompositeView$1;
 
-    return Collection;
+  Marionettist$2.Views.Item = ItemView$1;
 
-  })(Marionettist$1.Marionette.CollectionView);
+  Marionettist$2.Views.Layout = LayoutView$1;
 
-  Marionettist$1.Views.Composite = (function(superClass) {
-    extend(Composite, superClass);
+  Marionettist$2.Entities = new Marionettist$2.Object();
 
-    function Composite() {
-      return Composite.__super__.constructor.apply(this, arguments);
-    }
+  Marionettist$2.Entities.Models = new Marionettist$2.Object();
 
-    return Composite;
+  Marionettist$2.Entities.Collections = new Marionettist$2.Object();
 
-  })(Marionettist$1.Marionette.CompositeView);
+  Marionettist$2.Entities.Models.Base = BaseModel;
 
-  Marionettist$1.Views.Item = (function(superClass) {
-    extend(Item, superClass);
-
-    function Item() {
-      return Item.__super__.constructor.apply(this, arguments);
-    }
-
-    return Item;
-
-  })(Marionettist$1.Marionette.ItemView);
-
-  Marionettist$1.Views.Layout = (function(superClass) {
-    extend(Layout, superClass);
-
-    function Layout() {
-      return Layout.__super__.constructor.apply(this, arguments);
-    }
-
-    return Layout;
-
-  })(Marionettist$1.Marionette.LayoutView);
-
-  Marionettist$1.Entities = new Marionettist$1.Object();
-
-  Marionettist$1.Entities.Models = new Marionettist$1.Object();
-
-  Marionettist$1.Entities.Collections = new Marionettist$1.Object();
-
-  Marionettist$1.Entities.Models.Base = (function(superClass) {
-    extend(Base, superClass);
-
-    function Base() {
-      return Base.__super__.constructor.apply(this, arguments);
-    }
-
-    return Base;
-
-  })(Marionettist$1.Backbone.Model);
-
-  if (Marionettist$1.Backbone.AssociatedModel) {
-    Marionettist$1.Entities.Models.Associated = (function(superClass) {
+  if (Marionettist$2.Backbone.AssociatedModel) {
+    Marionettist$2.Entities.Models.Associated = (function(superClass) {
       extend(Associated, superClass);
 
       function Associated() {
@@ -694,59 +894,24 @@
 
       return Associated;
 
-    })(Marionettist$1.Backbone.AssociatedModel);
+    })(Marionettist$2.Backbone.AssociatedModel);
   }
 
-  Marionettist$1.Entities.Collections.Base = (function(superClass) {
-    extend(Base, superClass);
+  Marionettist$2.Entities.Collections.Base = BaseCollection;
 
-    function Base() {
-      return Base.__super__.constructor.apply(this, arguments);
-    }
+  Marionettist$2.Controllers = new Marionettist$2.Object();
 
-    return Base;
+  Marionettist$2.Controllers.Base = BaseController;
 
-  })(Marionettist$1.Backbone.Collection);
-
-  Marionettist$1.Controllers = new Marionettist$1.Object();
-
-  Marionettist$1.Controllers.Base = (function(superClass) {
-    extend(Base, superClass);
-
-    function Base() {
-      return Base.__super__.constructor.apply(this, arguments);
-    }
-
-    return Base;
-
-  })(Marionettist$1.Object);
-
-  Marionettist$1.Application = Marionettist$1.Application.extend({
-    Backbone: Marionettist$1.Backbone,
-    Marionette: Marionettist$1.Marionette,
-    _: Marionettist$1._,
-    $: Marionettist$1.$,
-    s: Marionettist$1.s,
-    I18n: Marionettist$1.I18n,
-    numeral: Marionettist$1.numeral,
-    moment: Marionettist$1.moment,
-    Controllers: new Marionettist$1.Object(),
-    Entities: new Marionettist$1.Object(),
-    Views: new Marionettist$1.Object(),
-    navigateTo: function(route, options) {
-      if (options == null) {
-        options = {};
-      }
-      return Marionettist$1.location.navigateTo(route, options);
-    },
-    getCurrentRoute: function() {
-      return Marionettist$1.location.getCurrentRoute();
-    },
+  Marionettist$2.Application = Marionettist$2.Application.extend({
+    Controllers: new Marionettist$2.Object(),
+    Entities: new Marionettist$2.Object(),
+    Views: new Marionettist$2.Object(),
     startHistory: function(options) {
       if (options == null) {
         options = {};
       }
-      return Marionettist$1.location.startHistory(options);
+      return Marionettist$2.location.startHistory(options);
     },
     register: function(instance, id) {
       if (this._registry == null) {
@@ -773,15 +938,13 @@
       }
     },
     getRegistrySize: function() {
-      return Marionettist$1._.size(this._registry);
+      return Marionettist$2._.size(this._registry);
     }
   });
 
   if (typeof global !== "undefined" && global !== null) {
-    global.Marionettist = Marionettist$1;
+    global.Marionettist = Marionettist$2;
   }
-
-  var Marionettist$2 = Marionettist$1;
 
   return Marionettist$2;
 

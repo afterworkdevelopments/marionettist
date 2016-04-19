@@ -1,4 +1,5 @@
-class Location
+`import Marionettist from "./core.js"`
+class Location extends Marionettist.Object
 
   constructor: ()->
 

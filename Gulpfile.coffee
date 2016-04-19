@@ -35,19 +35,23 @@ gulp.task "hamlc", ()->
 gulp.task "bundle", ->
   console.log "Bundle"
   return gulp.src("./lib/#{pagakeName}.js", read: false).pipe(rollup(
-    sourceMap: true,
+    sourceMap: true
     moduleName: "Marionettist"
-    format: "umd",
-    exports: "default",
-    plugins: [],
+    format: "umd"
+    exports: "default"
+    external: ['underscore', 'backbone', 'backbone.babysitter', 'backbone.radio', 'backbone.marionette','i18next','numeral','moment']
+    plugins: []
     globals:
-      jquery: "$",
-      _: "_",
-      Backbone: "Backbone",
-      Marionette: "Marionette"
-      i18next: "i18next"
-      numeral: "numeral"
-      moment: "moment"
+      'jquery': "$"
+      'backbone': 'Backbone'
+      'underscore': '_'
+      'backbone.babysitter': 'Backbone.ChildViewContainer'
+      'backbone.radio': 'Backbone.Radio'
+      'Marionette': "Marionette"
+      'i18next': "i18next"
+      'numeral': "numeral"
+      'moment': "moment"
+
   ))
   .pipe(sourcemaps.write("."))
   .pipe gulp.dest("./dist")

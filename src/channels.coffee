@@ -1,7 +1,8 @@
-class Channels
+`import Marionettist from "./core.js"`
+class Channels extends Marionettist.Object
 
   constructor: ()->
-    
+
   request: (channelName = "global", eventName = "", data={})->
     return Marionettist.Backbone.Radio.channel(channelName).request(eventName,data)
 

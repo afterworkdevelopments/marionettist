@@ -1,6 +1,7 @@
-class Env
+`import Marionettist from "./core.js"`
+class Env extends Marionettist.Object
 
-  @current: ->
+  current: ->
     @_current or= new Env
 
   constructor: ()->

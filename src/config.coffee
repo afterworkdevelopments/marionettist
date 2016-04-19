@@ -1,5 +1,6 @@
 `import Templates from "./config/templates.js"`
-class Config
+`import Marionettist from "./core.js"`
+class Config extends Marionettist.Object
 
   constructor: ()->
     @templates = new Templates()
