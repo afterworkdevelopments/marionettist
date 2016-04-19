@@ -17,6 +17,22 @@
 
   Marionettist$1 = Marionette.extend();
 
+  Marionettist$1.Backbone = Backbone;
+
+  Marionettist$1.Marionette = Marionette;
+
+  Marionettist$1._ = _$1;
+
+  Marionettist$1.$ = $;
+
+  Marionettist$1.s = s;
+
+  Marionettist$1.I18n = i18next;
+
+  Marionettist$1.numeral = numeral;
+
+  Marionettist$1.moment = moment;
+
   var Marionettist$2 = Marionettist$1;
 
   var Env;
@@ -814,22 +830,6 @@
 
   var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   var hasProp = {}.hasOwnProperty;
-  Marionettist$2.Backbone = Backbone;
-
-  Marionettist$2.Marionette = Marionette;
-
-  Marionettist$2._ = _$1;
-
-  Marionettist$2.$ = $;
-
-  Marionettist$2.s = s;
-
-  Marionettist$2.I18n = i18next;
-
-  Marionettist$2.numeral = numeral;
-
-  Marionettist$2.moment = moment;
-
   Marionettist$2.channels = new Channels$1();
 
   Marionettist$2.location = new Location$1();

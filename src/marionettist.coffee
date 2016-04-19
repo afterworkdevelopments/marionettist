@@ -1,16 +1,3 @@
-`import _ from "underscore"`
-`import underscoreContrib from "underscore-contrib"`
-`import s from "underscore.string"`
-`import $ from "jquery"`
-`import Backbone from "backbone"`
-`import backbone_radio from "backbone.radio"`
-`import backboneAssociations from "backbone-associations"`
-`import Marionette from "backbone.marionette"`
-`import i18next from "i18next"`
-`import numeral from "numeral"`
-`import moment from "moment"`
-`import momentRange from "moment-range"`
-`import momentTimezone from "moment-timezone"`
 `import Marionettist from "./core.js"`
 `import Env from "./env.js"`
 `import Channels from "./channels.js"`
@@ -33,21 +20,6 @@
 
 root = typeof self == 'object' and self.self == self and self or typeof global == 'object' and global.global == global and global
 
-Marionettist.Backbone = Backbone
-
-Marionettist.Marionette = Marionette
-
-Marionettist._ = _
-
-Marionettist.$ = $
-
-Marionettist.s = s
-
-Marionettist.I18n = i18next
-
-Marionettist.numeral = numeral
-
-Marionettist.moment = moment
 
 Marionettist.channels = new Channels()
 
