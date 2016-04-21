@@ -337,6 +337,12 @@
       return Utils.__super__.constructor.apply(this, arguments);
     }
 
+    Utils.prototype.pathFor = function(path) {
+      path = "";
+      path = "#" + path;
+      return path;
+    };
+
     Utils.prototype.waitFor = function(ajaxRequests, options) {
       var ref, xhrs;
       if (options == null) {
@@ -668,6 +674,11 @@
     }
 
     Views.prototype.templateHelpers = {
+      pathFor: function() {
+        var args, ref;
+        args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+        return (ref = Marionettist$2.utils).pathFor.apply(ref, args);
+      },
       t: function() {
         var args, ref;
         args = 1 <= arguments.length ? slice.call(arguments, 0) : [];

@@ -1,6 +1,11 @@
 `import Marionettist from "./core.js"`
 class Utils extends Marionettist.Object
 
+  pathFor: (path)->
+    path = ""
+    path = "##{path}"
+    path
+
   waitFor: (ajaxRequests, options = {}) ->
     xhrs = []
     xhrs= _.chain([ajaxRequests]).flatten().value()

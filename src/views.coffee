@@ -3,6 +3,9 @@ class Views extends Marionettist.Object
 
   templateHelpers:
 
+    pathFor: (args...)->
+      Marionettist.utils.pathFor(args...)
+
     t: (args...)->
       Marionettist.I18n.t(args...)
 

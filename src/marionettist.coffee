@@ -111,9 +111,6 @@ Marionettist.Controllers = new Marionettist.Object()
 
 Marionettist.Controllers.Base = BaseController
 
-
-
-
 Marionettist.Application = Marionettist.Application.extend
 
   Controllers: new Marionettist.Object()
