@@ -286,7 +286,7 @@
       if (!Marionettist._.isArray(lookups)) {
         throw "lookupPaths most be an array";
       }
-      templates = [template, this.withTemplate(template)];
+      templates = [template];
       if (lookups.length === 0) {
         lookups = [""];
       }

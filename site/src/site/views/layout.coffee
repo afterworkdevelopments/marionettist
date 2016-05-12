@@ -1,5 +1,5 @@
 class LayoutView extends Marionettist.Views.Layout
-  template: "site/layout"
+  template: "site/templates/layout"
 
   regions:
     navRegion: ".site-nav-region"

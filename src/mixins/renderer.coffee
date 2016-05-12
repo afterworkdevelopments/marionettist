@@ -13,7 +13,7 @@ Renderer =
     lookups = Marionettist.config.templates.lookupPaths
     lookups = lookups() if Marionettist._.isFunction(lookups)
     throw "lookupPaths most be an array" unless Marionettist._.isArray(lookups)
-    templates = [template, @withTemplate(template)]
+    templates = [template]
     lookups = [""] if lookups.length == 0
     for lookup in lookups
       ## inserts the template at the '-1' position of the template array

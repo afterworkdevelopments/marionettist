@@ -1,5 +1,7 @@
 Marionettist = require("../../dist/marionettist.js")
 
+# Marionettist.config.templates.lookupPaths = ["site/"]
+
 Routes = require("./site/routers/routes.coffee")
 # I18n locales
 

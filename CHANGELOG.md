@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+## 2.0.0
+
+* Updated i18next
+
+
 ## 1.4.0
 
 * Added `Marionettist.location.refreshRoute()` which reload the current route
