@@ -1,13 +1,15 @@
-class Templates extends Marionettist.Object
+class Templates
 
-  lookupPaths: ["templates/"]
+  debug: false
+
+  lookupPaths: []
 
   engine: ->
     engine = {}
-    if root.HAML?
+    if HAML?
       engine = HAML
-    if root.JST?
+    if JST?
       engine = JST
     return engine
 
-Marionettist.Config.options.templates = new Templates()
+`export default Templates`

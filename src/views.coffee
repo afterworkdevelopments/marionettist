@@ -1,37 +1,25 @@
-Marionettist.Views = new Marionettist.Object()
+`import Marionettist from "./core.js"`
+class Views extends Marionettist.Object
 
-Marionettist.Views.templateHelpers =
+  templateHelpers:
 
-  t: Marionettist.I18n.t
+    pathFor: (args...)->
+      Marionettist.utils.pathFor(args...)
 
-  formatCurrency: (amount, format = "$0,0.00")->
-    Marionettist.numeral(amount).format(format)
+    t: (args...)->
+      Marionettist.I18n.t(args...)
 
-  formatNumber: (amount, format = "0,0.00")->
-    Marionettist.numeral(amount).format(format)
+    formatCurrency: (amount, format = "$0,0.00")->
+      Marionettist.numeral(amount).format(format)
 
-  formatPercentage: (amount, format = "0.00%")->
-    Marionettist.numeral(amount).format(format)
+    formatNumber: (amount, format = "0,0.00")->
+      Marionettist.numeral(amount).format(format)
 
-  formatDate: (date, format = "DD-MM-YYYY")->
-    Marionettist.moment(date).format(format)
+    formatPercentage: (amount, format = "0.00%")->
+      Marionettist.numeral(amount).format(format)
 
-_.extend Marionettist.View::,
-
-  templateHelpers: ->
-    helpers = Marionettist.Views.templateHelpers
-    if @viewContext?
-      helpers.viewContext = @viewContext
-      helpers.viewContext = @viewContext() if Marionettist._.isFunction(@viewContext)
-    else
-      helpers.viewContext = {}
-    return helpers
+    formatDate: (date, format = "DD-MM-YYYY")->
+      Marionettist.moment(date).format(format)
 
 
-#=require "./views/collection.coffee"
-
-#=require "./views/composite.coffee"
-
-#=require "./views/layout.coffee"
-
-#=require "./views/item.coffee"
+`export default Views`

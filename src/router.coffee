@@ -1,7 +1,9 @@
-class Marionettist.AppRouter extends Marionette.AppRouter
+`import Marionettist from "./core.js"`
+
+class AppRouter extends Marionettist.AppRouter
 
   onRoute: (name, path, args) ->
-    if @controller? and _.isFunction(@controller.onRoute)
+    if @controller? and Marionettist._.isFunction(@controller.onRoute)
       @controller.onRoute(@, name, path, args)
 
   _setControllerFilters: (controller)->
@@ -32,13 +34,13 @@ class Marionettist.AppRouter extends Marionette.AppRouter
         @_executeFilter @controller.filters.after, @controller
 
 
-    throw new Marionette.Error('Method "' + methodName + '" was not found on the controller') if !method
-    @route(route, methodName, _.bind(method, controller))
+    throw new Marionettist.Marionette.Error('Method "' + methodName + '" was not found on the controller') if !method
+    @route(route, methodName, Marionettist._.bind(method, controller))
 
 
   _executeFilter: (filter, controller)->
     result = true
-    for methodName in _.keys(filter)
+    for methodName in Marionettist._.keys(filter)
       filterValue = filter[methodName]
       stopMsg = "Action halted by filter '#{methodName}'"
       switch
@@ -56,7 +58,7 @@ class Marionettist.AppRouter extends Marionette.AppRouter
 
   _getParams: ()->
     route = @_routeToRegExp(@controller.route.getOption("path"))
-    params = @_extractParameters(route, Backbone.history.getFragment())
+    params = @_extractParameters(route, Marionettist.Backbone.history.getFragment())
 
   _proccessFilterObject: (methodName,filter, controller)->
     defaultFilterOptions =
@@ -75,3 +77,5 @@ class Marionettist.AppRouter extends Marionette.AppRouter
         controllerMethod.apply(@controller, @_getParams()) if Marionettist._.isFunction(controllerMethod)
     else
       controllerMethod.apply(@controller, @_getParams()) if Marionettist._.isFunction(controllerMethod)
+
+`export default AppRouter`
