@@ -1,181 +1,146 @@
-do (root=this, factory=(root, exports, Backbone, Marionette, _, $, i18next, s, numeral, moment) ->
+`import Marionettist from "./core.js"`
+`import Env from "./env.js"`
+`import Channels from "./channels.js"`
+`import Location from "./location.js"`
+`import Config from "./config.js"`
+`import Renderer from "./mixins/renderer.js"`
+`import Utils from "./utils.js"`
+`import Logger from "./logger.js"`
+`import AppRoute from "./route.js"`
+`import AppRouter from "./router.js"`
+`import Region from "./region.js"`
+`import Views from "./views.js"`
+`import CollectionView from "./views/collection.js"`
+`import CompositeView from "./views/composite.js"`
+`import ItemView from "./views/item.js"`
+`import LayoutView from "./views/layout.js"`
+`import BaseModel from "./entities/models/base.js"`
+`import BaseCollection from "./entities/collections/base.js"`
+`import BaseController from "./controllers/base.js"`
 
-  # Dependencies Check
-
-  console?.error "Unable to load jQuery" unless $?
-  console?.error "Unable to load Underscore" unless _?
-  console?.error "Unable to load Underscore.string" unless s?
-  console?.error "Unable to load Backbone" unless Backbone?
-  console?.error "Unable to load backbone-associations" unless Backbone.AssociatedModel?
-  console?.error "Unable to load Marionette" unless Marionette?
-  console?.error "Unable to load i18next" unless i18next?
-  console?.error "Unable to load numeral" unless numeral?
-  console?.error "Unable to load moment" unless moment?
-  console?.error "Unable to load moment-range" unless moment.range?
-  console?.error "Unable to load moment-timezone" unless moment.tz?
-
-  Marionettist = Marionette.extend()
-
-  Marionettist.Backbone = Backbone
-
-  Marionettist.Marionette = Marionette
-
-  Marionettist._ = _
-
-  Marionettist.$ = $
-
-  Marionettist.s = s
-
-  Marionettist.I18n = i18next
-
-  Marionettist.numeral = numeral
-
-  Marionettist.moment = moment
-
-  Marionettist.channels =
-
-    publish: (channelName = "global", eventName = "", data ={})->
-      return Marionettist.Backbone.Wreqr.radio.channel(channelName).vent.trigger eventName, data
-
-    subscribe: (channelName = "global", eventName = "", callback)->
-      return Marionettist.Backbone.Wreqr.radio.channel(channelName).vent.on eventName, callback
+root = typeof self == 'object' and self.self == self and self or typeof global == 'object' and global.global == global and global
 
 
-  Marionettist.setLocale = (locale = "en", callback = null)->
-    oldLocale = Marionettist.I18n.lng()
-    Marionettist.I18n.setLng locale, (t) ->
-      Marionettist.channels.publish "marionettist", "change:locale",
-        currentLocale: locale
-        oldLocale: oldLocale
+Marionettist.channels = new Channels()
 
-      callback(t) if Marionettist._.isFunction(callback)
+Marionettist.location = new Location()
+
+# Environment
+Marionettist.env = new Env()
+
+# Config
+Marionettist.config = new Config()
+
+# Logger
+
+Marionettist.logger = new Logger
+
+# Renderer
+
+Marionettist._.extend Marionettist.Renderer, Renderer
+
+# Utils
+
+Marionettist.utils = new Utils
+
+# Route
+
+Marionettist.AppRoute = AppRoute
+
+# Router
+Marionettist.AppRouter = AppRouter
+
+#  Region
+
+Marionettist.Region = Region
+
+# Views
+
+Marionettist.Views = new Views()
+
+Marionettist._.extend Marionettist.View::,
+
+  templateHelpers: ->
+    helpers = Marionettist.Views.templateHelpers
+    if @viewContext?
+      helpers.viewContext = @viewContext
+      helpers.viewContext = @viewContext() if Marionettist._.isFunction(@viewContext)
+    else
+      helpers.viewContext = {}
+    return helpers
+
+# views/collection
+
+Marionettist.Views.Collection = CollectionView
+
+# views/composite
+Marionettist.Views.Composite = CompositeView
+
+# views/item
+
+Marionettist.Views.Item = ItemView
+
+# views/layout
+
+Marionettist.Views.Layout = LayoutView
+
+# Entities
+
+Marionettist.Entities = new Marionettist.Object()
+
+Marionettist.Entities.Models = new Marionettist.Object()
+
+Marionettist.Entities.Collections = new Marionettist.Object()
+
+# entities/models/base
+
+Marionettist.Entities.Models.Base = BaseModel
+
+# entities/models/associated
+
+if Marionettist.Backbone.AssociatedModel
+  class Marionettist.Entities.Models.Associated extends Marionettist.Backbone.AssociatedModel
+
+# entities/collections/base
+
+Marionettist.Entities.Collections.Base = BaseCollection
+
+# controllers/base
+
+Marionettist.Controllers = new Marionettist.Object()
+
+Marionettist.Controllers.Base = BaseController
+
+Marionettist.Application = Marionettist.Application.extend
+
+  Controllers: new Marionettist.Object()
+
+  Entities: new Marionettist.Object()
+
+  Views: new Marionettist.Object()
 
 
-  Marionettist.location =
+  startHistory: (options= {})->
+    Marionettist.location.startHistory(options)
 
-    refreshRoute: (fragment = @getCurrentRoute())->
-      Backbone.history.loadUrl(fragment)
+  register: (instance, id) ->
+    @_registry ?= {}
+    @_registry[id] = instance
 
-    navigateTo: (route, options = {}) ->
-      Marionettist.Backbone.history.navigate route, options
+  unregister: (instance, id) ->
+    delete @_registry[id]
 
-    getCurrentRoute: ->
-      frag = Marionettist.Backbone.history.fragment
-      if _.isEmpty(frag) then null else frag
+  resetRegistry: ->
+    oldCount = @getRegistrySize()
+    for key, controller of @_registry
+      controller.region.close()
+    msg = "There were #{oldCount} controllers in the registry, there are now #{@getRegistrySize()}"
+    if @getRegistrySize() > 0 then console.warn(msg, @_registry) else console.log(msg)
 
-    startHistory: (options= {})->
-      if Marionettist.Backbone.history?
-        Marionettist.Backbone.history.start(options)
+  getRegistrySize: ->
+    Marionettist._.size @_registry
 
-  #=require "./config.coffee"
-
-  #=require "./initializers.coffee"
-
-  #=require "./route.coffee"
-
-  #=require "./router.coffee"
-
-  #=require "./views.coffee"
-
-  #=require "./entities.coffee"
-
-  #=require "./controllers.coffee"
-
-  Marionettist.Application = Marionettist.Application.extend
-
-    Backbone: Marionettist.Backbone
-
-    Marionette: Marionettist.Marionette
-
-    _: Marionettist._
-
-    $: Marionettist.$
-
-    s: Marionettist.s
-
-    I18n: Marionettist.I18n
-
-    numeral: Marionettist.numeral
-
-    moment: Marionettist.moment
-
-    Controllers: new Marionettist.Object()
-
-    Entities: new Marionettist.Object()
-
-    Views: new Marionettist.Object()
-
-    navigateTo: (route, options = {}) ->
-      Marionettist.location.navigateTo route, options
-
-    getCurrentRoute: ->
-      Marionettist.location.getCurrentRoute()
-
-    startHistory: (options= {})->
-      Marionettist.location.startHistory(options)
-
-    register: (instance, id) ->
-      @_registry ?= {}
-      @_registry[id] = instance
-
-    unregister: (instance, id) ->
-      delete @_registry[id]
-
-    resetRegistry: ->
-      oldCount = @getRegistrySize()
-      for key, controller of @_registry
-      	controller.region.close()
-      msg = "There were #{oldCount} controllers in the registry, there are now #{@getRegistrySize()}"
-      if @getRegistrySize() > 0 then console.warn(msg, @_registry) else console.log(msg)
-
-    getRegistrySize: ->
-    	_.size @_registry
+global.Marionettist = Marionettist if global?
 
 
-  return Marionettist
-
-) ->
-
-  root = typeof self == 'object' and self.self == self and self or typeof global == 'object' and global.global == global and global
-  # Set up Backbone appropriately for the environment. Start with AMD.
-  if typeof define == 'function' and define.amd
-    define [
-      'underscore'
-      'jquery'
-      'backbone'
-      "backbone-associations"
-      "backbone.marionette"
-      "i18next"
-      'exports'
-      "underscore.string"
-      "numeral"
-      "moment"
-      "moment-range"
-      "moment-timezone"
-    ], (_, $, Backbone, BackboneAssociations, Marionette, i18next, exports, s, numeral, moment, momentRange, momentTimezone) ->
-      # Export global even in AMD case in case this script is loaded with
-      # others that may still expect a global Backbone.
-      Marionettist = factory(root, exports, Backbone, Marionette, _, $, i18next, s, numeral, moment)
-      root.Marionettist = Marionettist
-      return
-    # Next for Node.js or CommonJS. jQuery may not be needed as a module.
-  else if typeof exports != 'undefined'
-    _ = require('underscore')
-    $ = undefined
-    Backbone = require("backbone")
-    Marionette = require("backbone.marionette")
-    i18next = require("i18next")
-    s = require("underscore.string")
-    BackboneAssociations = require("backbone-associations")
-    numeral = require("numeral")
-    moment  = require("moment")
-    momentTimezone  = require("moment-timezone")
-    momentRange  = require("moment-range")
-    try
-      $ = require('jquery')
-    catch e
-
-    module.exports = root.Marionettist = factory(root, exports, Backbone, Marionette, _, $, i18next, s, numeral, moment)
-    # Finally, as a browser global.
-  else
-    root.Marionettist = factory(root, {},root.Backbone, root.Marionette, root._, (root.jQuery or root.Zepto or root.ender or root.$), root.i18next, root.s, root.numeral, root.moment)
+`export default Marionettist`

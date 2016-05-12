@@ -1,11 +1,11 @@
 {
   "name": "marionettist",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "authors": [
     "Emilio Forrer <dev.emilio.forrer@gmail.com>"
   ],
   "description": "Marionette based framework",
-  "main": "lib/marionettist.js",
+  "main": "dist/marionettist.js",
   "moduleType": [
     "amd",
     "globals",
@@ -26,6 +26,7 @@
     "underscore.string": "~3.2.0",
     "backbone.mutators": "^0.4.5",
     "backbone": "1.0.0 - 1.2.3",
+    "backbone.radio": "^1.0.2",
     "backbone-associations": "^0.6.2",
     "backbone.stickit": "^0.9.2",
     "backbone.marionette": "^2.4.3",
