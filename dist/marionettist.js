@@ -41,10 +41,6 @@
   Env = (function(superClass) {
     extend$1(Env, superClass);
 
-    Env.prototype.current = function() {
-      return this._current || (this._current = new Env);
-    };
-
     function Env() {
       this.stage = "development";
     }
@@ -59,6 +55,17 @@
 
     Env.prototype.getLocale = function() {
       return Marionettist$2.I18n.language;
+    };
+
+    Env.prototype.setStage = function(stage) {
+      var oldState;
+      oldState = this.stage;
+      this.stage = stage;
+      return this.triggerMethod("change:stage", oldState, stage);
+    };
+
+    Env.prototype.getStage = function() {
+      return this.stage;
     };
 
     Env.prototype.setLocale = function(locale, callback) {
@@ -337,9 +344,10 @@
       return Utils.__super__.constructor.apply(this, arguments);
     }
 
-    Utils.prototype.pathFor = function(path) {
+    Utils.prototype.pathFor = function(_path) {
+      var path;
       path = "";
-      path = "#" + path;
+      path = "#" + _path;
       return path;
     };
 
@@ -375,75 +383,81 @@
 
     function Logger() {}
 
-    Logger.prototype.success = function(msg, force) {
-      if (force == null) {
-        force = false;
+    Logger.prototype.success = function(msg, options) {
+      if (options == null) {
+        options = {};
       }
-      return this.log(msg, "success", force);
+      options.type = "success";
+      return this.log(msg, options);
     };
 
-    Logger.prototype.warn = function(msg, force) {
-      if (force == null) {
-        force = false;
+    Logger.prototype.warn = function(msg, options) {
+      if (options == null) {
+        options = {};
       }
-      return this.log(msg, "warn", force);
+      options.type = "warn";
+      return this.log(msg, options);
     };
 
-    Logger.prototype.error = function(msg, force) {
-      if (force == null) {
-        force = false;
+    Logger.prototype.error = function(msg, options) {
+      if (options == null) {
+        options = {};
       }
-      return this.log(msg, "error", force);
+      options.type = "error";
+      return this.log(msg, options);
     };
 
-    Logger.prototype.info = function(msg, force) {
-      if (force == null) {
-        force = false;
+    Logger.prototype.info = function(msg, options) {
+      if (options == null) {
+        options = {};
       }
-      return this.log(msg, "info", force);
+      options.type = "info";
+      return this.log(msg, options);
     };
 
-    Logger.prototype.log = function(msg, color, force) {
-      var bgc;
-      if (force == null) {
-        force = false;
+    Logger.prototype.log = function(msg, options) {
+      var bgc, force, type;
+      if (options == null) {
+        options = {};
       }
-      if (Marionettist$2.env.current().isDevelopment() || force === true) {
-        color = color || 'black';
+      force = options.force;
+      type = options.type;
+      if (Marionettist$2.env.isDevelopment() || force === true) {
+        type = type || 'black';
         bgc = 'White';
-        switch (color) {
+        switch (type) {
           case 'success':
-            color = 'Green';
+            type = 'Green';
             bgc = 'LimeGreen';
             break;
           case 'info':
-            color = 'DodgerBlue';
+            type = 'DodgerBlue';
             bgc = 'Turquoise';
             break;
           case 'error':
-            color = 'Red';
+            type = 'Red';
             bgc = 'Black';
             break;
           case 'start':
-            color = 'OliveDrab';
+            type = 'OliveDrab';
             bgc = 'PaleGreen';
             break;
           case 'warning':
-            color = 'Tomato';
+            type = 'Tomato';
             bgc = 'Black';
             break;
           case 'end':
-            color = 'Orchid';
+            type = 'Orchid';
             bgc = 'MediumVioletRed';
             break;
           default:
-            color = color;
+            type = type;
         }
         bgc = 'White';
         if (typeof msg === 'object') {
           console.log(msg);
         } else {
-          console.log('%c' + msg, 'color:' + color + ';font-weight:bold; background-color: ' + bgc + ';');
+          console.log('%c' + msg, 'type:' + type + ';font-weight:bold; background-type: ' + bgc + ';');
         }
       }
     };
@@ -650,7 +664,8 @@
         };
       })(this);
       if ((oldView != null) && Marionettist$2._.isFunction(oldView.onHide)) {
-        return oldView.onHide(showCurrentView, this);
+        oldView.triggerMethod("before:hide", showCurrentView, this);
+        return oldView.triggerMethod("hide", showCurrentView, this);
       } else {
         return showCurrentView();
       }
@@ -822,6 +837,65 @@
       return Base.__super__.constructor.apply(this, arguments);
     }
 
+    Base.prototype.models = {};
+
+    Base.prototype.collections = {};
+
+    Base.prototype.views = {};
+
+    Base.prototype.getView = function(viewName, options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.getResource("views", viewName, options);
+    };
+
+    Base.prototype.getModel = function(modelName, options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.getResource("models", modelName, options);
+    };
+
+    Base.prototype.getCollection = function(collectionName, options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.getResource("collections", collectionName, options);
+    };
+
+    Base.prototype.getResource = function(resourcesName, resourceName, options) {
+      var resource, resources;
+      if (options == null) {
+        options = {};
+      }
+      resource = null;
+      resources = this[resourcesName];
+      if (options.viewModel == null) {
+        options.viewModel = this;
+      }
+      if (Marionettist$2._.isObject(resources) && (resources[resourceName] != null)) {
+        resource = new resources[resourceName](options);
+      }
+      return resource;
+    };
+
+    return Base;
+
+  })(Backbone.Model);
+
+  var BaseViewModel = Base$2;
+
+  var Base$3;
+  var extend$18 = function(child, parent) { for (var key in parent) { if (hasProp$18.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$18 = {}.hasOwnProperty;
+  Base$3 = (function(superClass) {
+    extend$18(Base, superClass);
+
+    function Base() {
+      return Base.__super__.constructor.apply(this, arguments);
+    }
+
     Base.prototype.navigateTo = function(route, options) {
       if (options == null) {
         options = {};
@@ -837,7 +911,7 @@
 
   })(Marionettist$2.Object);
 
-  var BaseController = Base$2;
+  var BaseController = Base$3;
 
   var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   var hasProp = {}.hasOwnProperty;
@@ -859,7 +933,7 @@
 
   Marionettist$2.AppRouter = AppRouter$1;
 
-  Marionettist$2.Region = Region$1;
+  Marionettist$2._.extend(Marionettist$2.Region.prototype, Region$1.prototype);
 
   Marionettist$2.Views = new Views$1();
 
@@ -893,6 +967,8 @@
 
   Marionettist$2.Entities.Collections = new Marionettist$2.Object();
 
+  Marionettist$2.Entities.ViewModels = new Marionettist$2.Object();
+
   Marionettist$2.Entities.Models.Base = BaseModel;
 
   if (Marionettist$2.Backbone.AssociatedModel) {
@@ -909,6 +985,8 @@
   }
 
   Marionettist$2.Entities.Collections.Base = BaseCollection;
+
+  Marionettist$2.Entities.ViewModels.Base = BaseViewModel;
 
   Marionettist$2.Controllers = new Marionettist$2.Object();
 
