@@ -15,6 +15,14 @@ class SiteController extends Marionettist.Controllers.Base
     @app.mainRegion.show(layoutView)
 
 
+  documentation: ()->
+    layoutView = @getLayoutView()
+
+    @listenTo layoutView, "show", =>
+      @showNavbar layoutView.navRegion
+
+    @app.mainRegion.show(layoutView)
+
   getNavbarView: ()->
     new NavbarView()
 

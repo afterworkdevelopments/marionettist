@@ -52,7 +52,7 @@ Marionettist.AppRouter = AppRouter
 
 #  Region
 
-Marionettist.Region = Region
+Marionettist._.extend Marionettist.Region::,Region::
 
 # Views
 

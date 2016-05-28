@@ -1,9 +1,9 @@
 `import Marionettist from "./core.js"`
 class Utils extends Marionettist.Object
 
-  pathFor: (path)->
+  pathFor: (_path)->
     path = ""
-    path = "##{path}"
+    path = "##{_path}"
     path
 
   waitFor: (ajaxRequests, options = {}) ->

@@ -5,5 +5,18 @@ class LayoutView extends Marionettist.Views.Layout
     navRegion: ".site-nav-region"
     contentRegion: ".site-content-region"
 
+  onBeforeShow: ->
+    @$el.fadeIn "slow"
+
+  onBeforeHide: ->
+    Marionettist.logger.warn "onBeforeHide"
+
+  onHide: (cb,region)->
+    Marionettist.logger.warn "onHide"
+    @$el.fadeOut "slow", ->
+      cb()
+
+  onBeforeDestroy: ->
+    Marionettist.logger.warn "onBeforeDestroy"
 
 module.exports = LayoutView

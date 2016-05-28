@@ -3,48 +3,54 @@ class Logger extends Marionettist.Object
 
   constructor: ()->
 
-  success: (msg, force= false)->
-    @log(msg, "success", force)
+  success: (msg, options = {})->
+    options.type = "success"
+    @log(msg,options)
 
-  warn: (msg, force= false)->
-    @log(msg, "warn", force)
+  warn: (msg, options = {})->
+    options.type = "warn"
+    @log(msg,options)
 
-  error: (msg, force= false)->
-    @log(msg, "error", force)
+  error: (msg, options = {})->
+    options.type = "error"
+    @log(msg,options)
 
-  info: (msg, force= false)->
-    @log(msg, "info", force)
+  info: (msg, options = {})->
+    options.type = "info"
+    @log(msg,options)
 
-  log: (msg, color, force= false) ->
-    if Marionettist.env.current().isDevelopment() or force is true
-      color = color or 'black'
+  log: (msg, options = {}) ->
+    force = options.force
+    type = options.type
+    if Marionettist.env.isDevelopment() or force is true
+      type = type or 'black'
       bgc = 'White'
-      switch color
+      switch type
         when 'success'
-          color = 'Green'
+          type = 'Green'
           bgc = 'LimeGreen'
         when 'info'
-          color = 'DodgerBlue'
+          type = 'DodgerBlue'
           bgc = 'Turquoise'
         when 'error'
-          color = 'Red'
+          type = 'Red'
           bgc = 'Black'
         when 'start'
-          color = 'OliveDrab'
+          type = 'OliveDrab'
           bgc = 'PaleGreen'
         when 'warning'
-          color = 'Tomato'
+          type = 'Tomato'
           bgc = 'Black'
         when 'end'
-          color = 'Orchid'
+          type = 'Orchid'
           bgc = 'MediumVioletRed'
         else
-          color = color
+          type = type
       bgc = 'White'
       if typeof msg == 'object'
         console.log msg
       else
-        console.log '%c' + msg, 'color:' + color + ';font-weight:bold; background-color: ' + bgc + ';'
+        console.log '%c' + msg, 'type:' + type + ';font-weight:bold; background-type: ' + bgc + ';'
     return
 
 
