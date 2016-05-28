@@ -19,4 +19,7 @@ class LayoutView extends Marionettist.Views.Layout
   onBeforeDestroy: ->
     Marionettist.logger.warn "onBeforeDestroy"
 
+  onShow: ->
+    
+
 module.exports = LayoutView

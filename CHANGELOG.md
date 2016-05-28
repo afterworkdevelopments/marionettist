@@ -1,9 +1,24 @@
 # CHANGE LOG
 
+## 2.1.0
+
+* Added viewModel
+* Fixed utils.pathFor
+* Changed color option to type in Logger
+* Upgraded site
+* Updated docs
+
 ## 2.0.0
 
+* Added Logger
 * Updated i18next
-
+* Added Environment
+* Added Es6
+* Added Utils
+* Replaced Config
+* Deprecations:
+  * Removed the "template" path from the `templateLookup` options in the Rendered. Now you have the type the full template path
+  * changed the way to setup configurations, now are in the `Marionettist.config` object
 
 ## 1.4.0
 

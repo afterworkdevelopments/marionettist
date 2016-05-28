@@ -1,13 +1,14 @@
-LayoutView = require("../views/layout.coffee")
-NavbarView = require("../views/navbar.coffee")
+SiteViewModel = require("../entities/view-models/site.coffee")
+
 class SiteController extends Marionettist.Controllers.Base
 
   constructor: (options)->
     super(options)
     @app = options.app
+    @viewModel = new SiteViewModel()
 
   index: ()->
-    layoutView = @getLayoutView()
+    layoutView = @viewModel.getView("layout")
 
     @listenTo layoutView, "show", =>
       @showNavbar layoutView.navRegion
@@ -16,21 +17,16 @@ class SiteController extends Marionettist.Controllers.Base
 
 
   documentation: ()->
-    layoutView = @getLayoutView()
+    layoutView = @viewModel.getView("layout")
 
     @listenTo layoutView, "show", =>
       @showNavbar layoutView.navRegion
 
     @app.mainRegion.show(layoutView)
 
-  getNavbarView: ()->
-    new NavbarView()
-
-  getLayoutView: ()->
-    new LayoutView()
 
   showNavbar: (region)->
-    navbar = @getNavbarView()
+    navbar = @viewModel.getView("navbar")
     region.show(navbar)
 
 

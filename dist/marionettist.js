@@ -837,6 +837,65 @@
       return Base.__super__.constructor.apply(this, arguments);
     }
 
+    Base.prototype.models = {};
+
+    Base.prototype.collections = {};
+
+    Base.prototype.views = {};
+
+    Base.prototype.getView = function(viewName, options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.getResource("views", viewName, options);
+    };
+
+    Base.prototype.getModel = function(modelName, options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.getResource("models", modelName, options);
+    };
+
+    Base.prototype.getCollection = function(collectionName, options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.getResource("collections", collectionName, options);
+    };
+
+    Base.prototype.getResource = function(resourcesName, resourceName, options) {
+      var resource, resources;
+      if (options == null) {
+        options = {};
+      }
+      resource = null;
+      resources = this[resourcesName];
+      if (options.viewModel == null) {
+        options.viewModel = this;
+      }
+      if (Marionettist$2._.isObject(resources) && (resources[resourceName] != null)) {
+        resource = new resources[resourceName](options);
+      }
+      return resource;
+    };
+
+    return Base;
+
+  })(Backbone.Model);
+
+  var BaseViewModel = Base$2;
+
+  var Base$3;
+  var extend$18 = function(child, parent) { for (var key in parent) { if (hasProp$18.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$18 = {}.hasOwnProperty;
+  Base$3 = (function(superClass) {
+    extend$18(Base, superClass);
+
+    function Base() {
+      return Base.__super__.constructor.apply(this, arguments);
+    }
+
     Base.prototype.navigateTo = function(route, options) {
       if (options == null) {
         options = {};
@@ -852,7 +911,7 @@
 
   })(Marionettist$2.Object);
 
-  var BaseController = Base$2;
+  var BaseController = Base$3;
 
   var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   var hasProp = {}.hasOwnProperty;
@@ -908,6 +967,8 @@
 
   Marionettist$2.Entities.Collections = new Marionettist$2.Object();
 
+  Marionettist$2.Entities.ViewModels = new Marionettist$2.Object();
+
   Marionettist$2.Entities.Models.Base = BaseModel;
 
   if (Marionettist$2.Backbone.AssociatedModel) {
@@ -924,6 +985,8 @@
   }
 
   Marionettist$2.Entities.Collections.Base = BaseCollection;
+
+  Marionettist$2.Entities.ViewModels.Base = BaseViewModel;
 
   Marionettist$2.Controllers = new Marionettist$2.Object();
 
