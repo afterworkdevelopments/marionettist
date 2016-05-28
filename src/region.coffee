@@ -14,7 +14,8 @@ class Region extends Marionette.Region
       if !options.preventDestroy
         oldView.destroy()
     if oldView? and Marionettist._.isFunction(oldView.onHide)
-      oldView.onHide(showCurrentView, @)
+      oldView.triggerMethod("before:hide",showCurrentView, @)
+      oldView.triggerMethod("hide",showCurrentView, @)
     else
       showCurrentView()
 

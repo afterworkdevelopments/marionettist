@@ -16,6 +16,7 @@
 `import LayoutView from "./views/layout.js"`
 `import BaseModel from "./entities/models/base.js"`
 `import BaseCollection from "./entities/collections/base.js"`
+`import BaseViewModel from "./entities/view-models/base.js"`
 `import BaseController from "./controllers/base.js"`
 
 root = typeof self == 'object' and self.self == self and self or typeof global == 'object' and global.global == global and global
@@ -52,7 +53,7 @@ Marionettist.AppRouter = AppRouter
 
 #  Region
 
-Marionettist.Region = Region
+Marionettist._.extend Marionettist.Region::,Region::
 
 # Views
 
@@ -92,6 +93,8 @@ Marionettist.Entities.Models = new Marionettist.Object()
 
 Marionettist.Entities.Collections = new Marionettist.Object()
 
+Marionettist.Entities.ViewModels = new Marionettist.Object()
+
 # entities/models/base
 
 Marionettist.Entities.Models.Base = BaseModel
@@ -104,6 +107,10 @@ if Marionettist.Backbone.AssociatedModel
 # entities/collections/base
 
 Marionettist.Entities.Collections.Base = BaseCollection
+
+# entities/view-models/base
+
+Marionettist.Entities.ViewModels.Base = BaseViewModel
 
 # controllers/base
 

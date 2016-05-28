@@ -1,9 +1,6 @@
 `import Marionettist from "./core.js"`
 class Env extends Marionettist.Object
 
-  current: ->
-    @_current or= new Env
-
   constructor: ()->
     @stage = "development"
 
@@ -15,6 +12,14 @@ class Env extends Marionettist.Object
 
   getLocale: ()->
     Marionettist.I18n.language
+
+  setStage: (stage)->
+    oldState = @stage
+    @stage = stage
+    @triggerMethod "change:stage", oldState, stage
+
+  getStage: ()->
+    @stage
 
 
   setLocale: (locale = "en", callback = null)->

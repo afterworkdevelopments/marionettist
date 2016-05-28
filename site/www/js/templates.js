@@ -38,9 +38,9 @@
         }
       };
       $o = [];
-      $o.push("<a class='uk-hidden-small uk-navbar-brand' href='layouts_frontpage.html'>");
+      $o.push("<a class='uk-hidden-small uk-navbar-brand' href=''>");
       $o.push("  " + $e($c(this.t("app.brand"))));
-      $o.push("</a>\n<ul class='uk-navbar-nav'>\n  <li>\n    <a href='layouts_documentation.html'>\n      Documentation\n    </a>\n  </li>\n  <li>\n    <a href='layouts_contact.html'>\n      Contact\n    </a>\n  </li>\n</ul>");
+      $o.push("</a>\n<ul class='uk-navbar-nav'>\n  <li>\n    <a href='" + ($e($c(this.pathFor("documentation")))) + "'>\n      Documentation\n    </a>\n  </li>\n  <li>\n    <a href='" + ($e($c(this.pathFor("contact")))) + "'>\n      Contact\n    </a>\n  </li>\n</ul>");
       return $o.join("\n").replace(/\s([\w-]+)='true'/mg, ' $1').replace(/\s([\w-]+)='false'/mg, '').replace(/\s(?:id|class)=(['"])(\1)/mg, "");
     }).call(context);
   };
