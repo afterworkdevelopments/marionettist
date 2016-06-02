@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## 2.2.0
+
+* Added posibility to disable transition out in region
+
 ## 2.1.0
 
 * Added viewModel

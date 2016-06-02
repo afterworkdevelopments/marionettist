@@ -1,10 +1,10 @@
 {
   "name": "marionettist",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "authors": [
     "Emilio Forrer <dev.emilio.forrer@gmail.com>"
   ],
-  "description": "Marionette based framework",
+  "description": "Marionettist. It is a Marionette based framework",
   "main": "dist/marionettist.js",
   "moduleType": [
     "amd",
@@ -12,7 +12,7 @@
     "node"
   ],
   "keywords": [
-    "Marionette Framework Backbone Marionettist"
+    "Marionette Framework Backbone Marionettist Emilio Forrer"
   ],
   "license": "MIT",
   "homepage": "https://github.com/afterworkdevelopments/marionettist",

@@ -8,11 +8,11 @@ class LayoutView extends Marionettist.Views.Layout
   onBeforeShow: ->
     @$el.fadeIn "slow"
 
-  onBeforeHide: ->
-    Marionettist.logger.warn "onBeforeHide"
+  onBeforeTransitionOut: ->
+    Marionettist.logger.warn "onBeforeTransitionOut"
 
-  onHide: (cb,region)->
-    Marionettist.logger.warn "onHide"
+  onTransitionOut: (cb,region)->
+    Marionettist.logger.warn "TransitionOut"
     @$el.fadeOut "slow", ->
       cb()
 
@@ -20,6 +20,6 @@ class LayoutView extends Marionettist.Views.Layout
     Marionettist.logger.warn "onBeforeDestroy"
 
   onShow: ->
-    
+
 
 module.exports = LayoutView
