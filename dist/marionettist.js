@@ -646,28 +646,35 @@
     }
 
     Region.prototype.show = function(view, options) {
-      var oldView, showCurrentView;
+      var args, oldView, preventDestroy, showCurrentView, transitionOut;
       options = options || {};
-      oldView = this.currentView;
-      showCurrentView = (function(_this) {
-        return function() {
-          var args;
-          args = [
-            view, Marionettist$2._.extend(options, {
-              preventDestroy: true
-            })
-          ];
-          _show.apply(_this, args);
-          if (!options.preventDestroy) {
-            return oldView.destroy();
-          }
-        };
-      })(this);
-      if ((oldView != null) && Marionettist$2._.isFunction(oldView.onHide)) {
-        oldView.triggerMethod("before:hide", showCurrentView, this);
-        return oldView.triggerMethod("hide", showCurrentView, this);
+      preventDestroy = options.preventDestroy === true;
+      transitionOut = options.transitionOut;
+      delete options.transitionOut;
+      if (transitionOut === false) {
+        args = [view, options];
+        return _show.apply(this, args);
       } else {
-        return showCurrentView();
+        oldView = this.currentView;
+        showCurrentView = (function(_this) {
+          return function() {
+            args = [
+              view, Marionettist$2._.extend(options, {
+                preventDestroy: true
+              })
+            ];
+            _show.apply(_this, args);
+            if (!preventDestroy && (oldView != null)) {
+              return oldView.destroy();
+            }
+          };
+        })(this);
+        if ((oldView != null) && Marionettist$2._.isFunction(oldView.onTransitionOut)) {
+          oldView.triggerMethod("before:transition:out", showCurrentView, this);
+          return oldView.triggerMethod("transition:out", showCurrentView, this);
+        } else {
+          return showCurrentView();
+        }
       }
     };
 
