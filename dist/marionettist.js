@@ -646,32 +646,33 @@
     }
 
     Region.prototype.show = function(view, options) {
-      var args, oldView, preventDestroy, showCurrentView, transitionOut;
+      var args, oldView, preventDestroy, showCurrentView, transitionOut, value;
       options = options || {};
       preventDestroy = options.preventDestroy === true;
       transitionOut = options.transitionOut;
       delete options.transitionOut;
+      args = [view, options];
       if (transitionOut === false) {
-        args = [view, options];
         return _show.apply(this, args);
       } else {
         oldView = this.currentView;
         showCurrentView = (function(_this) {
           return function() {
-            args = [
-              view, Marionettist$2._.extend(options, {
-                preventDestroy: true
-              })
-            ];
-            _show.apply(_this, args);
-            if (!preventDestroy && (oldView != null)) {
-              return oldView.destroy();
-            }
+            return _show.apply(_this, args);
           };
         })(this);
-        if ((oldView != null) && Marionettist$2._.isFunction(oldView.onTransitionOut)) {
-          oldView.triggerMethod("before:transition:out", showCurrentView, this);
-          return oldView.triggerMethod("transition:out", showCurrentView, this);
+        if ((oldView != null) && Marionettist$2._.isFunction(oldView.transitionOut)) {
+          oldView.triggerMethod("before:transition:out");
+          value = oldView.transitionOut();
+          if ((value != null ? value.then : void 0) != null) {
+            return value.then((function(_this) {
+              return function() {
+                return showCurrentView();
+              };
+            })(this));
+          } else {
+            throw "transitionOut method most return a promise";
+          }
         } else {
           return showCurrentView();
         }
