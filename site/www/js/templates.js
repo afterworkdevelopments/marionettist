@@ -19,6 +19,22 @@
     window.HAML = {};
   }
 
+  window.HAML['site/templates/loading'] = function(context) {
+    return (function() {
+      var $o;
+      $o = [];
+      $o.push("<div class='uk-container uk-container-center uk-margin-large-bottom uk-margin-top'>\n  <div class='uk-height-1-1'>\n    <div class='uk-height-viewport uk-text-center uk-vertical-align'>\n      <div class='uk-vertical-align-middle'>\n        <div class='uk-container-center'>\n          <i class='uk-icon-large uk-icon-spin uk-icon-spinner'></i>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>");
+      return $o.join("\n").replace(/\s(?:id|class)=(['"])(\1)/mg, "");
+    }).call(context);
+  };
+
+}).call(this);
+
+(function() {
+  if (window.HAML == null) {
+    window.HAML = {};
+  }
+
   window.HAML['site/templates/navbar'] = function(context) {
     return (function() {
       var $c, $e, $o;

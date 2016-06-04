@@ -10,19 +10,21 @@ class Region extends Marionette.Region
     preventDestroy = options.preventDestroy is true
     transitionOut = options.transitionOut
     delete options.transitionOut
+    args = [view, options]
     if transitionOut == false
-      args = [view, options]
       _show.apply(@,  args)
     else
       oldView = @currentView
       showCurrentView = =>
-        args = [view, Marionettist._.extend(options, { preventDestroy: true })]
         _show.apply(@,  args)
-        oldView.destroy() if !preventDestroy and oldView?
-
-      if oldView? and Marionettist._.isFunction(oldView.onTransitionOut)
-        oldView.triggerMethod("before:transition:out",showCurrentView, @)
-        oldView.triggerMethod("transition:out",showCurrentView, @)
+      if oldView? and Marionettist._.isFunction(oldView.transitionOut)
+        oldView.triggerMethod("before:transition:out")
+        value = oldView.transitionOut()
+        if value?.then?
+          value.then ()=>
+            showCurrentView()
+        else
+          throw "transitionOut method most return a promise"
       else
         showCurrentView()
 
