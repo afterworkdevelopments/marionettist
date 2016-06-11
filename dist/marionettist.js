@@ -244,6 +244,31 @@
       return engine;
     };
 
+    Templates.prototype.render = function(templateName, data, options) {
+      var engine, template;
+      if (templateName == null) {
+        templateName = "";
+      }
+      if (data == null) {
+        data = {};
+      }
+      if (options == null) {
+        options = {};
+      }
+      template = "";
+      engine = this.engine;
+      if (Marionettist$2._.isFunction(templateName)) {
+        engine = engine();
+      }
+      if (options.defaultTemplate != null) {
+        template = options.defaultTemplate;
+      }
+      if ((engine != null) && Marionettist$2._.isFunction(engine[templateName])) {
+        template = engine[templateName](data);
+      }
+      return template;
+    };
+
     return Templates;
 
   })();
@@ -838,18 +863,189 @@
   var Base$2;
   var extend$17 = function(child, parent) { for (var key in parent) { if (hasProp$17.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   var hasProp$17 = {}.hasOwnProperty;
+  var slice$1 = [].slice;
   Base$2 = (function(superClass) {
     extend$17(Base, superClass);
+
+    function Base(options) {
+      if (options == null) {
+        options = {};
+      }
+      Base.__super__.constructor.call(this, options);
+      this._instance_id = Marionettist$2._.uniqueId("responder");
+      this.register(this, this._instance_id);
+    }
+
+    Base.prototype.loaderView = LayoutView$1.extend({
+      template: function(data) {
+        return Marionettist$2.config.templates.render("marionettist/loader", data, {
+          defaultTemplate: '<div class=\'mri-loader\'>\n  <div class=\'mri-loader__content\'>\n    <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>\n    <span class="sr-only">Loading...</span>\n  </div>\n</div>'
+        });
+      }
+    });
+
+    Base.prototype.getLoaderView = function() {
+      if (this.get("loaderView") == null) {
+        this.set({
+          loaderView: new this.loaderView
+        });
+      }
+      return this.get("loaderView");
+    };
+
+    Base.prototype.close = function() {
+      var args;
+      args = 1 <= arguments.length ? slice$1.call(arguments, 0) : [];
+      Base.__super__.close.call(this, args);
+      return this.unregister(this, this._instance_id);
+    };
+
+    Base.prototype.show = function(view, options) {
+      var loaderView, region;
+      if (options == null) {
+        options = {};
+      }
+      region = options.region != null ? options.region : this.get("region");
+      this.listenTo(view, "close", this.close);
+      if (options.async != null) {
+        loaderView = this.getLoaderView();
+        this.listenTo(loaderView, "close", this.close);
+        region.show(loaderView);
+        return this.fetch().then(((function(_this) {
+          return function() {
+            if (region.currentView !== loaderView) {
+              return view.close();
+            }
+            return region.show(view);
+          };
+        })(this)));
+      } else {
+        return region.show(view);
+      }
+    };
+
+    Base.prototype.defaults = {
+      params: {},
+      async: []
+    };
+
+    Base.prototype.waitFor = function() {
+      var args, ref;
+      args = 1 <= arguments.length ? slice$1.call(arguments, 0) : [];
+      return (ref = Marionettist$2.utils).waitFor.apply(ref, args);
+    };
+
+    Base.prototype.deferred = function() {
+      return Marionettist$2.$.Deferred();
+    };
+
+    Base.prototype.fetch = function(options) {
+      var asyncFetches, deferred;
+      if (options == null) {
+        options = {};
+      }
+      deferred = this.deferred();
+      asyncFetches = Marionettist$2._.chain([this.get("async")]).flatten().compact().value();
+      this.waitFor(asyncFetches, {
+        success: function() {
+          if (Marionettist$2._.isFunction(options.success)) {
+            options.success();
+          }
+          return deferred.resolve();
+        },
+        error: function() {
+          if (Marionettist$2._.isFunction(options.error)) {
+            options.error();
+          }
+          return deferred.reject();
+        }
+      });
+      return deferred.promise();
+    };
+
+    Base.prototype.save = function() {
+      return this.deferred().promise();
+    };
+
+    Base.prototype.destroy = function() {
+      return this.deferred().promise();
+    };
+
+    Base.prototype.register = function(instance, id) {
+      if (this._registry == null) {
+        this._registry = {};
+      }
+      return this._registry[id] = instance;
+    };
+
+    Base.prototype.unregister = function(instance, id) {
+      return delete this._registry[id];
+    };
+
+    Base.prototype.resetRegistry = function() {
+      var key, msg, oldCount, ref, responder;
+      oldCount = this.getRegistrySize();
+      ref = this._registry;
+      for (key in ref) {
+        responder = ref[key];
+        responder.region.close();
+      }
+      msg = "There were " + oldCount + " responders in the registry, there are now " + (this.getRegistrySize());
+      if (this.getRegistrySize() > 0) {
+        return console.warn(msg, this._registry);
+      } else {
+        return console.log(msg);
+      }
+    };
+
+    Base.prototype.getRegistrySize = function() {
+      return Marionettist$2._.size(this._registry);
+    };
+
+    return Base;
+
+  })(BaseModel);
+
+  var BaseResponder = Base$2;
+
+  var Base$3;
+  var extend$18 = function(child, parent) { for (var key in parent) { if (hasProp$18.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$18 = {}.hasOwnProperty;
+  Base$3 = (function(superClass) {
+    extend$18(Base, superClass);
 
     function Base() {
       return Base.__super__.constructor.apply(this, arguments);
     }
 
-    Base.prototype.models = {};
+    Base.prototype.responders = function() {
+      return {
+        base: BaseResponder
+      };
+    };
 
-    Base.prototype.collections = {};
+    Base.prototype.models = function() {
+      return {
+        base: BaseModel
+      };
+    };
 
-    Base.prototype.views = {};
+    Base.prototype.collections = function() {
+      return {
+        base: BaseCollection
+      };
+    };
+
+    Base.prototype.views = function() {
+      return {};
+    };
+
+    Base.prototype.getResponder = function(responderName, options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.getResource("responders", responderName, options);
+    };
 
     Base.prototype.getView = function(viewName, options) {
       if (options == null) {
@@ -865,25 +1061,35 @@
       return this.getResource("models", modelName, options);
     };
 
-    Base.prototype.getCollection = function(collectionName, options) {
+    Base.prototype.getCollection = function(collectionName, models, options) {
+      if (models == null) {
+        models = [];
+      }
       if (options == null) {
         options = {};
       }
-      return this.getResource("collections", collectionName, options);
+      return this.getResource("collections", collectionName, options, models);
     };
 
-    Base.prototype.getResource = function(resourcesName, resourceName, options) {
+    Base.prototype.getResource = function(resourcesName, resourceName, options, models) {
       var resource, resources;
       if (options == null) {
         options = {};
       }
       resource = null;
       resources = this[resourcesName];
+      if (Marionettist$2._.isFunction(resources)) {
+        resources = resources();
+      }
       if (options.viewModel == null) {
         options.viewModel = this;
       }
       if (Marionettist$2._.isObject(resources) && (resources[resourceName] != null)) {
-        resource = new resources[resourceName](options);
+        if (models != null) {
+          resource = new resources[resourceName](models, options);
+        } else {
+          resource = new resources[resourceName](options);
+        }
       }
       return resource;
     };
@@ -892,13 +1098,13 @@
 
   })(Backbone.Model);
 
-  var BaseViewModel = Base$2;
+  var BaseViewModel = Base$3;
 
-  var Base$3;
-  var extend$18 = function(child, parent) { for (var key in parent) { if (hasProp$18.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  var hasProp$18 = {}.hasOwnProperty;
-  Base$3 = (function(superClass) {
-    extend$18(Base, superClass);
+  var Base$4;
+  var extend$19 = function(child, parent) { for (var key in parent) { if (hasProp$19.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$19 = {}.hasOwnProperty;
+  Base$4 = (function(superClass) {
+    extend$19(Base, superClass);
 
     function Base() {
       return Base.__super__.constructor.apply(this, arguments);
@@ -919,7 +1125,7 @@
 
   })(Marionettist$2.Object);
 
-  var BaseController = Base$3;
+  var BaseController = Base$4;
 
   var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   var hasProp = {}.hasOwnProperty;
@@ -977,6 +1183,8 @@
 
   Marionettist$2.Entities.ViewModels = new Marionettist$2.Object();
 
+  Marionettist$2.Entities.Responders = new Marionettist$2.Object();
+
   Marionettist$2.Entities.Models.Base = BaseModel;
 
   if (Marionettist$2.Backbone.AssociatedModel) {
@@ -993,6 +1201,8 @@
   }
 
   Marionettist$2.Entities.Collections.Base = BaseCollection;
+
+  Marionettist$2.Entities.Responders.Base = BaseResponder;
 
   Marionettist$2.Entities.ViewModels.Base = BaseViewModel;
 

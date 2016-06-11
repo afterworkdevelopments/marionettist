@@ -16,6 +16,7 @@
 `import LayoutView from "./views/layout.js"`
 `import BaseModel from "./entities/models/base.js"`
 `import BaseCollection from "./entities/collections/base.js"`
+`import BaseResponder from "./entities/responders/base.js"`
 `import BaseViewModel from "./entities/view-models/base.js"`
 `import BaseController from "./controllers/base.js"`
 
@@ -95,6 +96,8 @@ Marionettist.Entities.Collections = new Marionettist.Object()
 
 Marionettist.Entities.ViewModels = new Marionettist.Object()
 
+Marionettist.Entities.Responders = new Marionettist.Object()
+
 # entities/models/base
 
 Marionettist.Entities.Models.Base = BaseModel
@@ -107,6 +110,10 @@ if Marionettist.Backbone.AssociatedModel
 # entities/collections/base
 
 Marionettist.Entities.Collections.Base = BaseCollection
+
+# entities/view-models/base
+
+Marionettist.Entities.Responders.Base = BaseResponder
 
 # entities/view-models/base
 

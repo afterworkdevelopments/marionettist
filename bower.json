@@ -1,6 +1,6 @@
 {
   "name": "marionettist",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "authors": [
     "Emilio Forrer <dev.emilio.forrer@gmail.com>"
   ],
@@ -12,7 +12,13 @@
     "node"
   ],
   "keywords": [
-    "Marionette Framework Backbone Marionettist Emilio Forrer"
+    "Marionette",
+    "Framework",
+    "Backbone",
+    "Marionettist",
+    "Emilio",
+    "Forrer",
+    "Emilio Forrer"
   ],
   "license": "MIT",
   "homepage": "https://github.com/afterworkdevelopments/marionettist",
