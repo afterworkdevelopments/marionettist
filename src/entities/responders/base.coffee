@@ -43,11 +43,13 @@ class Base extends ModelBase
         @get("region")
     @listenTo view, "close", @close
     if options.async?
-      loaderView = @getLoaderView()
-      @listenTo loaderView, "close", @close
-      region.show loaderView
+      if options.loaderView isnt false
+        loaderView = @getLoaderView()
+        @listenTo loaderView, "close", @close
+        region.show loaderView
       @fetch().then (()=>
-        return view.close() if region.currentView isnt loaderView
+        if options.loaderView isnt false
+          return view.close() if region.currentView isnt loaderView
         region.show view
       )
     else
