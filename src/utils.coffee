@@ -8,7 +8,7 @@ class Utils extends Marionettist.Object
 
   waitFor: (ajaxRequests, options = {}) ->
     xhrs = []
-    xhrs= _.chain([ajaxRequests]).flatten().value()
+    xhrs= Marionettist._.chain([ajaxRequests]).flatten().value()
     Marionettist.$.when(xhrs...).then (->
       options.success() if Marionettist._.isFunction(options.success)
       ), (error)->

@@ -1,3 +1,4 @@
+`import Marionettist from "../core.js"`
 class Templates
 
   debug: false
@@ -11,5 +12,15 @@ class Templates
     if JST?
       engine = JST
     return engine
+
+  render: (templateName = "", data = {} , options = {})->
+    template = ""
+    engine = @engine
+    engine = engine() if Marionettist._.isFunction(templateName)
+    if options.defaultTemplate?
+      template = options.defaultTemplate
+    if engine? and Marionettist._.isFunction(engine[templateName])
+      template = engine[templateName](data)
+    return template
 
 `export default Templates`
