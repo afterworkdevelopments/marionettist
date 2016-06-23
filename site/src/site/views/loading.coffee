@@ -11,7 +11,7 @@ class LoadingView extends Marionettist.Views.Layout
     contentRegion: ".site-content-region"
 
   onShow: ->
-    console.log @
+    
 
 
 module.exports = LoadingView

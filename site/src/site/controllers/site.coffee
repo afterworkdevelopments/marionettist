@@ -9,40 +9,47 @@ class SiteController extends Marionettist.Controllers.Base
 
   index: ()->
     layoutView = @viewModel.getView("layout")
-    loadingView = @viewModel.getView("loading")
+    responder = @viewModel.getResponder("base",
+      region: @app.mainRegion
+      loaderView: @viewModel.getView("loading")
+    )
 
     @listenTo layoutView, "show", =>
       @showNavbar layoutView.navRegion
+      
+    responder.get("async").push @fakeFetch()
 
-    @app.mainRegion.show(loadingView)
-    setTimeout (=>
-      @app.mainRegion.show(layoutView)
-      ), 500
+    responder.show(layoutView, async: true)
 
 
   documentation: ()->
     layoutView = @viewModel.getView("layout")
-    loadingView = @viewModel.getView("loading")
+    responder = @viewModel.getResponder("base",
+      region: @app.mainRegion
+      loaderView: @viewModel.getView("loading")
+    )
 
     @listenTo layoutView, "show", =>
       @showNavbar layoutView.navRegion
 
-    @app.mainRegion.show(loadingView)
-    setTimeout (=>
-      @app.mainRegion.show(layoutView)
-      ), 500
+    responder.get("async").push @fakeFetch()
+
+    responder.show(layoutView, async: true)
 
   contact: ()->
     layoutView = @viewModel.getView("layout")
-    loadingView = @viewModel.getView("loading")
+    responder = @viewModel.getResponder("base",
+      region: @app.mainRegion
+      loaderView: @viewModel.getView("loading")
+    )
 
     @listenTo layoutView, "show", =>
       @showNavbar layoutView.navRegion
 
-    @app.mainRegion.show(loadingView)
-    setTimeout (=>
-      @app.mainRegion.show(layoutView)
-      ), 500
+    responder.get("async").push @fakeFetch()
+
+    responder.show(layoutView, async: true)
+
 
 
   showNavbar: (region)->
@@ -52,6 +59,13 @@ class SiteController extends Marionettist.Controllers.Base
   showLoading: (region)->
     loading = @viewModel.getView("loading")
     region.show(loading)
+
+  fakeFetch: (delay = 3000)->
+    deferred = Marionettist.$.Deferred()
+    setTimeout (=>
+      deferred.resolve()
+      ), delay
+    deferred.promise()
 
 
 module.exports = SiteController

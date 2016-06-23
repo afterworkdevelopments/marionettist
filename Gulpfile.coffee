@@ -75,7 +75,7 @@ gulp.task "coffee", ()->
 gulp.task "watchfiles", ()->
   console.log "Watchfiles"
   return gulp.watch "./src/**/**/**/*.coffee" , (callback)->
-    runSequence("coffee",'bundle', "minify", callback)
+    runSequence("coffee",'bundle', "minify")
 
 gulp.task "site", ()->
   options=
@@ -102,5 +102,5 @@ gulp.task "site", ()->
   bundle()
   gulp.start("hamlc")
 
-gulp.task "default", (callback)->
-  runSequence("coffee",'bundle', "minify", "watchfiles", callback)
+gulp.task "default", (callback = ->)->
+  runSequence("coffee",'bundle', "minify", "watchfiles")
