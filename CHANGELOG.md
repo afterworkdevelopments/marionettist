@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+## 2.3.0
+
+* Added responders
+* Added viewModels
+
 ## 2.2.1
 
 * TransitionOut method must return a promise

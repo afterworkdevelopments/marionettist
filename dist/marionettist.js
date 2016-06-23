@@ -382,7 +382,7 @@
         options = {};
       }
       xhrs = [];
-      xhrs = _.chain([ajaxRequests]).flatten().value();
+      xhrs = Marionettist$2._.chain([ajaxRequests]).flatten().value();
       return (ref = Marionettist$2.$).when.apply(ref, xhrs).then((function() {
         if (Marionettist$2._.isFunction(options.success)) {
           return options.success();
