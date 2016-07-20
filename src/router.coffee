@@ -69,8 +69,8 @@ class AppRouter extends Marionettist.AppRouter
     controllerMethod = controller[methodName]
     actionName = controller.route.actionName()
 
-    throw "filter option only, most be an array" unless _.isArray(filterOptions.only)
-    throw "filter option except, most be an array" unless _.isArray(filterOptions.except)
+    throw "filter option only, most be an array" unless Marionettist._.isArray(filterOptions.only)
+    throw "filter option except, most be an array" unless Marionettist._.isArray(filterOptions.except)
 
     if filterOptions.only.length > 0 or filterOptions.except.length > 0
       if Marionettist._.contains(filterOptions.only, actionName) and !Marionettist._.contains(filterOptions.except, actionName)
