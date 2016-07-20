@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## 2.3.1
+
+* Fixed router filter bug where _ it's not defined
+
 ## 2.3.0
 
 * Added responders

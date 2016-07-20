@@ -2,9 +2,9 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('underscore'), require('underscore-contrib'), require('underscore.string'), require('jquery'), require('backbone'), require('backbone.radio'), require('backbone-associations'), require('backbone.marionette'), require('i18next'), require('numeral'), require('moment'), require('moment-range'), require('moment-timezone')) :
   typeof define === 'function' && define.amd ? define(['underscore', 'underscore-contrib', 'underscore.string', 'jquery', 'backbone', 'backbone.radio', 'backbone-associations', 'backbone.marionette', 'i18next', 'numeral', 'moment', 'moment-range', 'moment-timezone'], factory) :
   (global.Marionettist = factory(global._,global.underscoreContrib,global.s,global.$,global.Backbone,global.Backbone.Radio,global.backboneAssociations,global.Marionette,global.i18next,global.numeral,global.moment,global.momentRange,global.momentTimezone));
-}(this, function (_$1,underscoreContrib,s,$,Backbone,backbone_radio,backboneAssociations,Marionette,i18next,numeral,moment,momentRange,momentTimezone) { 'use strict';
+}(this, function (_,underscoreContrib,s,$,Backbone,backbone_radio,backboneAssociations,Marionette,i18next,numeral,moment,momentRange,momentTimezone) { 'use strict';
 
-  _$1 = 'default' in _$1 ? _$1['default'] : _$1;
+  _ = 'default' in _ ? _['default'] : _;
   s = 'default' in s ? s['default'] : s;
   $ = 'default' in $ ? $['default'] : $;
   Backbone = 'default' in Backbone ? Backbone['default'] : Backbone;
@@ -21,7 +21,7 @@
 
   Marionettist$1.Marionette = Marionette;
 
-  Marionettist$1._ = _$1;
+  Marionettist$1._ = _;
 
   Marionettist$1.$ = $;
 
@@ -632,10 +632,10 @@
       filterOptions = Marionettist$2._.extend(defaultFilterOptions, filter);
       controllerMethod = controller[methodName];
       actionName = controller.route.actionName();
-      if (!_.isArray(filterOptions.only)) {
+      if (!Marionettist$2._.isArray(filterOptions.only)) {
         throw "filter option only, most be an array";
       }
-      if (!_.isArray(filterOptions.except)) {
+      if (!Marionettist$2._.isArray(filterOptions.except)) {
         throw "filter option except, most be an array";
       }
       if (filterOptions.only.length > 0 || filterOptions.except.length > 0) {
