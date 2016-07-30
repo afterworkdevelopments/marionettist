@@ -32,7 +32,7 @@ class Application extends Marionettist.Application
     Marionettist.location.startHistory(options) if not Marionettist.Backbone.History.started
 
   start: (options) ->
-    @triggerMethod "before:resources:fetch"
+    @triggerMethod "before:resources:fetch", options
     Marionettist.utils.waitFor @resources,
       success: =>
         super(options)
@@ -44,6 +44,7 @@ class Application extends Marionettist.Application
   isRunning: ()->
     return @_isRunning
 
+  # TODO
   stop: (options) ->
     if !@_isRunning
       return @
@@ -166,6 +167,10 @@ class Application extends Marionettist.Application
     else
       childApp.destroy()
     childApp
+    
+  # TODO
+  destroy: ->
+
 
 
 

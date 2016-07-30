@@ -29,6 +29,7 @@ SubApp = Marionettist.Application.extend
   onStart: (options)->
     console.log "onStart"
     console.log options
+    console.log @options
 
 mainApp = Marionettist.Application.extend
   childApps:

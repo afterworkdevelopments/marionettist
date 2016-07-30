@@ -1177,7 +1177,7 @@
     };
 
     Application.prototype.start = function(options) {
-      this.triggerMethod("before:resources:fetch");
+      this.triggerMethod("before:resources:fetch", options);
       return Marionettist$2.utils.waitFor(this.resources, {
         success: (function(_this) {
           return function() {
@@ -1349,6 +1349,8 @@
       }
       return childApp;
     };
+
+    Application.prototype.destroy = function() {};
 
     return Application;
 
