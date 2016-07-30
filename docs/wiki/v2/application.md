@@ -1,6 +1,6 @@
 # Marionettist.Appication
 
-Adds more options to standart `Marionette.Application` like:
+Adds more options to standard `Marionette.Application` like:
 
   * The posibility of start child applications (mostly based on [marionette.toolkit](https://github.com/RoundingWellOS/marionette.toolkit) )
 
