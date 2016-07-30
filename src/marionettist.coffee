@@ -19,6 +19,8 @@
 `import BaseResponder from "./entities/responders/base.js"`
 `import BaseViewModel from "./entities/view-models/base.js"`
 `import BaseController from "./controllers/base.js"`
+`import Application from "./application.js"`
+
 
 root = typeof self == 'object' and self.self == self and self or typeof global == 'object' and global.global == global and global
 
@@ -125,34 +127,8 @@ Marionettist.Controllers = new Marionettist.Object()
 
 Marionettist.Controllers.Base = BaseController
 
-Marionettist.Application = Marionettist.Application.extend
+Marionettist.Application = Application
 
-  Controllers: new Marionettist.Object()
-
-  Entities: new Marionettist.Object()
-
-  Views: new Marionettist.Object()
-
-
-  startHistory: (options= {})->
-    Marionettist.location.startHistory(options)
-
-  register: (instance, id) ->
-    @_registry ?= {}
-    @_registry[id] = instance
-
-  unregister: (instance, id) ->
-    delete @_registry[id]
-
-  resetRegistry: ->
-    oldCount = @getRegistrySize()
-    for key, controller of @_registry
-      controller.region.close()
-    msg = "There were #{oldCount} controllers in the registry, there are now #{@getRegistrySize()}"
-    if @getRegistrySize() > 0 then console.warn(msg, @_registry) else console.log(msg)
-
-  getRegistrySize: ->
-    Marionettist._.size @_registry
 
 global.Marionettist = Marionettist if global?
 

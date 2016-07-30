@@ -1,25 +1,25 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('underscore'), require('underscore-contrib'), require('underscore.string'), require('jquery'), require('backbone'), require('backbone.radio'), require('backbone-associations'), require('backbone.marionette'), require('i18next'), require('numeral'), require('moment'), require('moment-range'), require('moment-timezone')) :
   typeof define === 'function' && define.amd ? define(['underscore', 'underscore-contrib', 'underscore.string', 'jquery', 'backbone', 'backbone.radio', 'backbone-associations', 'backbone.marionette', 'i18next', 'numeral', 'moment', 'moment-range', 'moment-timezone'], factory) :
-  (global.Marionettist = factory(global._,global.underscoreContrib,global.s,global.$,global.Backbone,global.Backbone.Radio,global.backboneAssociations,global.Marionette,global.i18next,global.numeral,global.moment,global.momentRange,global.momentTimezone));
-}(this, function (_,underscoreContrib,s,$,Backbone,backbone_radio,backboneAssociations,Marionette,i18next,numeral,moment,momentRange,momentTimezone) { 'use strict';
+  (global.Marionettist = factory(global._,global.underscoreContrib,global.s,global.$,global.Backbone,global.Backbone.Radio,global.backboneAssociations,global.Marionette$1,global.i18next,global.numeral,global.moment,global.momentRange,global.momentTimezone));
+}(this, function (_,underscoreContrib,s,$,Backbone,backbone_radio,backboneAssociations,Marionette$1,i18next,numeral,moment,momentRange,momentTimezone) { 'use strict';
 
   _ = 'default' in _ ? _['default'] : _;
   s = 'default' in s ? s['default'] : s;
   $ = 'default' in $ ? $['default'] : $;
   Backbone = 'default' in Backbone ? Backbone['default'] : Backbone;
-  Marionette = 'default' in Marionette ? Marionette['default'] : Marionette;
+  Marionette$1 = 'default' in Marionette$1 ? Marionette$1['default'] : Marionette$1;
   i18next = 'default' in i18next ? i18next['default'] : i18next;
   numeral = 'default' in numeral ? numeral['default'] : numeral;
   moment = 'default' in moment ? moment['default'] : moment;
 
   var Marionettist$1;
 
-  Marionettist$1 = Marionette.extend();
+  Marionettist$1 = Marionette$1.extend();
 
   Marionettist$1.Backbone = Backbone;
 
-  Marionettist$1.Marionette = Marionette;
+  Marionettist$1.Marionette = Marionette$1;
 
   Marionettist$1._ = _;
 
@@ -661,7 +661,7 @@
   var _show;
   var extend$9 = function(child, parent) { for (var key in parent) { if (hasProp$9.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   var hasProp$9 = {}.hasOwnProperty;
-  _show = Marionette.Region.prototype.show;
+  _show = Marionette$1.Region.prototype.show;
 
   Region = (function(superClass) {
     extend$9(Region, superClass);
@@ -706,7 +706,7 @@
 
     return Region;
 
-  })(Marionette.Region);
+  })(Marionette$1.Region);
 
   var Region$1 = Region;
 
@@ -727,6 +727,8 @@
         args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
         return (ref = Marionettist$2.utils).pathFor.apply(ref, args);
       },
+      _: Marionettist$2._,
+      s: Marionettist$2.s,
       t: function() {
         var args, ref;
         args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
@@ -776,7 +778,7 @@
 
     return CollectionView;
 
-  })(Marionette.CollectionView);
+  })(Marionette$1.CollectionView);
 
   var CollectionView$1 = CollectionView;
 
@@ -792,7 +794,7 @@
 
     return CompositeView;
 
-  })(Marionette.CompositeView);
+  })(Marionette$1.CompositeView);
 
   var CompositeView$1 = CompositeView;
 
@@ -808,7 +810,7 @@
 
     return ItemView;
 
-  })(Marionette.ItemView);
+  })(Marionette$1.ItemView);
 
   var ItemView$1 = ItemView;
 
@@ -824,7 +826,7 @@
 
     return LayoutView;
 
-  })(Marionette.LayoutView);
+  })(Marionette$1.LayoutView);
 
   var LayoutView$1 = LayoutView;
 
@@ -1131,6 +1133,229 @@
 
   var BaseController = Base$4;
 
+  var Application;
+  var extend$20 = function(child, parent) { for (var key in parent) { if (hasProp$20.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$20 = {}.hasOwnProperty;
+  Application = (function(superClass) {
+    extend$20(Application, superClass);
+
+    Application.prototype.Controllers = new Marionettist$2.Object();
+
+    Application.prototype.Entities = new Marionettist$2.Object();
+
+    Application.prototype.Views = new Marionettist$2.Object();
+
+    Application.prototype._isRunning = false;
+
+    Application.prototype._isDestroyed = false;
+
+    Application.prototype.preventDestroy = false;
+
+    Application.prototype.startAfterInitialized = false;
+
+    Application.prototype.startWithParent = false;
+
+    Application.prototype.stopWithParent = true;
+
+    Application.prototype.resources = [];
+
+    function Application(options) {
+      Application.__super__.constructor.call(this, options);
+      this._initChildApps(options);
+      if (Marionettist$2._.result(this, 'startAfterInitialized')) {
+        this.start(options);
+      }
+    }
+
+    Application.prototype.startHistory = function(options) {
+      if (options == null) {
+        options = {};
+      }
+      if (!Marionettist$2.Backbone.History.started) {
+        return Marionettist$2.location.startHistory(options);
+      }
+    };
+
+    Application.prototype.start = function(options) {
+      this.triggerMethod("before:resources:fetch");
+      return Marionettist$2.utils.waitFor(this.resources, {
+        success: (function(_this) {
+          return function() {
+            Application.__super__.start.call(_this, options);
+            return _this.triggerMethod("resources:fetch:success");
+          };
+        })(this),
+        error: (function(_this) {
+          return function() {
+            return _this.triggerMethod("resources:fetch:error");
+          };
+        })(this)
+      });
+    };
+
+    Application.prototype.isRunning = function() {
+      return this._isRunning;
+    };
+
+    Application.prototype.stop = function(options) {
+      if (!this._isRunning) {
+        return this;
+      }
+      this.triggerMethod('before:stop', options);
+      this._isRunning = false;
+      this.triggerMethod('stop', options);
+      return this;
+    };
+
+    Application.prototype._initChildApps = function() {
+      var childApps, options;
+      options = arguments.length <= 0 || arguments[0] === void 0 ? {} : arguments[0];
+      this._childApps = {};
+      this.mergeOptions(options, ['childApps', 'childAppOptions']);
+      childApps = this.childApps;
+      if (childApps) {
+        if (Marionettist$2._.isFunction(childApps)) {
+          childApps = childApps.call(this, options);
+        }
+        this.addChildApps(childApps);
+      }
+      this._initListeners();
+    };
+
+    Application.prototype._initListeners = function() {
+      this.on({
+        'start': this._startChildApps,
+        'before:stop': this._stopChildApps,
+        'before:destroy': this._destroyChildApps
+      });
+    };
+
+    Application.prototype._startChildApps = function(options) {
+      return Marionettist$2._.each(this._childApps, function(childApp) {
+        if (Marionettist$2._.result(childApp, 'startWithParent')) {
+          return childApp.start(options);
+        }
+      });
+    };
+
+    Application.prototype._stopChildApps = function(options) {
+      return Marionettist$2._.each(this._childApps, function(childApp) {
+        if (Marionettist$2._.result(childApp, 'stopWithParent')) {
+          return childApp.stop(options);
+        }
+      });
+    };
+
+    Application.prototype._destroyChildApps = function(options) {
+      return Marionettist$2._.each(this._childApps, function(childApp) {
+        if (!Marionettist$2._.result(childApp, 'preventDestroy')) {
+          return childApp.destroy(options);
+        }
+      });
+    };
+
+    Application.prototype._buildAppFromObject = function(appConfig) {
+      var AppClass, options;
+      AppClass = appConfig.AppClass;
+      options = Marionettist$2._.omit(appConfig, 'AppClass');
+      return this.buildApp(AppClass, options);
+    };
+
+    Application.prototype._buildApp = function(AppClass, options) {
+      if (Marionettist$2._.isFunction(AppClass)) {
+        return this.buildApp(AppClass, options);
+      }
+      if (Marionettist$2._.isObject(AppClass)) {
+        return this._buildAppFromObject(AppClass);
+      }
+    };
+
+    Application.prototype.buildApp = function(AppClass, options) {
+      options = Marionettist$2._.extend({}, this.childAppOptions, options);
+      return new AppClass(options);
+    };
+
+    Application.prototype._ensureAppIsUnique = function(appName) {
+      if (this._childApps[appName]) {
+        throw new Marionette.Error({
+          name: 'DuplicateChildAppError',
+          message: 'A child App with name "' + appName + '" has already been added.'
+        });
+      }
+    };
+
+    Application.prototype.addChildApps = function(childApps) {
+      return Marionettist$2._.each(childApps, (function(childApp, appName) {
+        this.addChildApp(appName, childApp);
+      }), this);
+    };
+
+    Application.prototype.addChildApp = function(appName, AppClass, options) {
+      var childApp;
+      this._ensureAppIsUnique(appName);
+      childApp = this._buildApp(AppClass, options);
+      if (!childApp) {
+        throw new Marionette.Error({
+          name: 'AddChildAppError',
+          message: 'App build failed.  Incorrect configuration.'
+        });
+      }
+      childApp._name = appName;
+      this._childApps[appName] = childApp;
+      childApp.on('destroy', Marionettist$2._.partial(this._removeChildApp, appName), this);
+      if (this.isRunning() && Marionettist$2._.result(childApp, 'startWithParent')) {
+        childApp.start();
+      }
+      return childApp;
+    };
+
+    Application.prototype.getName = function() {
+      return this._name;
+    };
+
+    Application.prototype.getChildApps = function() {
+      return Marionettist$2._.clone(this._childApps);
+    };
+
+    Application.prototype.getChildApp = function(appName) {
+      return this._childApps[appName];
+    };
+
+    Application.prototype._removeChildApp = function(appName) {
+      delete this._childApps[appName]._name;
+      delete this._childApps[appName];
+    };
+
+    Application.prototype.removeChildApps = function() {
+      var childApps;
+      childApps = this.getChildApps();
+      Marionettist$2._.each(this._childApps, (function(childApp, appName) {
+        this.removeChildApp(appName);
+      }), this);
+      return childApps;
+    };
+
+    Application.prototype.removeChildApp = function(appName, options) {
+      var childApp;
+      options = Marionettist$2._.extend({}, options);
+      childApp = this.getChildApp(appName);
+      if (!childApp) {
+        return;
+      }
+      if (options.preventDestroy || Marionettist$2._.result(childApp, 'preventDestroy')) {
+        this._removeChildApp(appName);
+      } else {
+        childApp.destroy();
+      }
+      return childApp;
+    };
+
+    return Application;
+
+  })(Marionettist$2.Application);
+
+  var Application$1 = Application;
+
   var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   var hasProp = {}.hasOwnProperty;
   Marionettist$2.channels = new Channels$1();
@@ -1214,44 +1439,7 @@
 
   Marionettist$2.Controllers.Base = BaseController;
 
-  Marionettist$2.Application = Marionettist$2.Application.extend({
-    Controllers: new Marionettist$2.Object(),
-    Entities: new Marionettist$2.Object(),
-    Views: new Marionettist$2.Object(),
-    startHistory: function(options) {
-      if (options == null) {
-        options = {};
-      }
-      return Marionettist$2.location.startHistory(options);
-    },
-    register: function(instance, id) {
-      if (this._registry == null) {
-        this._registry = {};
-      }
-      return this._registry[id] = instance;
-    },
-    unregister: function(instance, id) {
-      return delete this._registry[id];
-    },
-    resetRegistry: function() {
-      var controller, key, msg, oldCount, ref;
-      oldCount = this.getRegistrySize();
-      ref = this._registry;
-      for (key in ref) {
-        controller = ref[key];
-        controller.region.close();
-      }
-      msg = "There were " + oldCount + " controllers in the registry, there are now " + (this.getRegistrySize());
-      if (this.getRegistrySize() > 0) {
-        return console.warn(msg, this._registry);
-      } else {
-        return console.log(msg);
-      }
-    },
-    getRegistrySize: function() {
-      return Marionettist$2._.size(this._registry);
-    }
-  });
+  Marionettist$2.Application = Application$1;
 
   if (typeof global !== "undefined" && global !== null) {
     global.Marionettist = Marionettist$2;

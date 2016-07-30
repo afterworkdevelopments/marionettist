@@ -1,5 +1,11 @@
 # CHANGE LOG
 
+## 2.4.0
+
+* Added support for childApplications
+* Added Underscore.string `@s` helper to views
+* Added Underscore `@_` helper to views
+
 ## 2.3.1
 
 * Fixed router filter bug where _ it's not defined
