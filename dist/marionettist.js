@@ -1182,7 +1182,8 @@
         success: (function(_this) {
           return function() {
             Application.__super__.start.call(_this, options);
-            return _this.triggerMethod("resources:fetch:success");
+            _this.triggerMethod("resources:fetch:success");
+            return _this.triggerMethod("ready");
           };
         })(this),
         error: (function(_this) {

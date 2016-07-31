@@ -37,6 +37,7 @@ class Application extends Marionettist.Application
       success: =>
         super(options)
         @triggerMethod "resources:fetch:success"
+        @triggerMethod "ready"
       error: =>
         @triggerMethod "resources:fetch:error"
 
@@ -167,7 +168,7 @@ class Application extends Marionettist.Application
     else
       childApp.destroy()
     childApp
-    
+
   # TODO
   destroy: ->
 
