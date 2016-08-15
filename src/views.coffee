@@ -6,6 +6,10 @@ class Views extends Marionettist.Object
     pathFor: (args...)->
       Marionettist.utils.pathFor(args...)
 
+    _: Marionettist._
+
+    s: Marionettist.s
+
     t: (args...)->
       Marionettist.I18n.t(args...)
 

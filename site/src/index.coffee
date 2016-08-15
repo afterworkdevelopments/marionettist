@@ -12,13 +12,37 @@ Marionettist.I18n.init
   lng: "en"
   resources: localeResources
 
-console.log Marionettist.I18n.t("app.brand")
-
+fakeFetch = (delay = 3000)->
+  deferred = Marionettist.$.Deferred()
+  setTimeout (=>
+    deferred.resolve()
+    ), delay
+  deferred.promise()
 # Marionettist.config.templates.lookupPaths = []
 Marionettist.config.templates.debug = true
 
+SubApp = Marionettist.Application.extend
 
-Site = new Marionettist.Application
+  onResourcesFetchSuccess: ->
+    console.log "yay"
+
+  onStart: (options)->
+    console.log "onStart"
+    console.log options
+    console.log @options
+
+mainApp = Marionettist.Application.extend
+  childApps:
+    subApp:
+      AppClass: SubApp
+      fooOption: true
+      startWithParent: true
+
+
+Site = new mainApp
+window.Site = Site
+
+Site.resources.push(fakeFetch(5000))
 
 Site.addRegions
   mainRegion: '.site-application-region'
@@ -38,7 +62,7 @@ Site.on "start", ->
     root: '/'
 
 Marionettist.$(document).ready ->
-  Site.start()
+  Site.start({hola: "MainApp"})
 
 window.Marionettist = Marionettist
 
