@@ -1,6 +1,6 @@
 {
   "name": "marionettist",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "Marionettist. It is a Marionette based framework",
   "main": "dist/marionettist.js",
   "scripts": {
