@@ -362,6 +362,7 @@
   var Utils;
   var extend$5 = function(child, parent) { for (var key in parent) { if (hasProp$5.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   var hasProp$5 = {}.hasOwnProperty;
+  var slice = [].slice;
   Utils = (function(superClass) {
     extend$5(Utils, superClass);
 
@@ -376,7 +377,19 @@
       return path;
     };
 
-    Utils.prototype.waitFor = function(ajaxRequests, options) {
+    Utils.prototype.waitFor = function(promises, options) {
+      if (options == null) {
+        options = {};
+      }
+      switch (false) {
+        case options.promiseType !== "bluebird":
+          return this._waitForBluebird(promises, options);
+        default:
+          return this._waitForAjax(promises, options);
+      }
+    };
+
+    Utils.prototype._waitForAjax = function(ajaxRequests, options) {
       var ref, xhrs;
       if (options == null) {
         options = {};
@@ -384,12 +397,47 @@
       xhrs = [];
       xhrs = Marionettist$2._.chain([ajaxRequests]).flatten().value();
       return (ref = Marionettist$2.$).when.apply(ref, xhrs).then((function() {
+        var args;
+        args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
         if (Marionettist$2._.isFunction(options.success)) {
-          return options.success();
+          return options.success.apply(options, args);
         }
-      }), function(error) {
+      }), function() {
+        var args;
+        args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
         if (Marionettist$2._.isFunction(options.error)) {
-          return options.error();
+          return options.error.apply(options, args);
+        }
+      });
+    };
+
+    Utils.prototype._waitForBluebird = function(promises, options) {
+      if (options == null) {
+        options = {};
+      }
+      promises = Marionettist$2._.chain([promises]).flatten().value();
+      return Promise.all(promises.map(function(promise) {
+        return promise.reflect();
+      })).then(function(inspections) {
+        var errors, i, inspection, len, successArgs;
+        successArgs = [];
+        errors = [];
+        for (i = 0, len = inspections.length; i < len; i++) {
+          inspection = inspections[i];
+          if (inspection.isFulfilled()) {
+            successArgs.push(inspection.value());
+          } else {
+            errors.push(inspection.reason());
+          }
+        }
+        if (errors.length > 0) {
+          if (Marionettist$2._.isFunction(options.error)) {
+            return options.error.apply(options, errors);
+          }
+        } else {
+          if (Marionettist$2._.isFunction(options.success)) {
+            return options.success.apply(options, successArgs);
+          }
         }
       });
     };
@@ -713,7 +761,7 @@
   var Views;
   var extend$10 = function(child, parent) { for (var key in parent) { if (hasProp$10.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   var hasProp$10 = {}.hasOwnProperty;
-  var slice = [].slice;
+  var slice$1 = [].slice;
   Views = (function(superClass) {
     extend$10(Views, superClass);
 
@@ -724,14 +772,14 @@
     Views.prototype.templateHelpers = {
       pathFor: function() {
         var args, ref;
-        args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+        args = 1 <= arguments.length ? slice$1.call(arguments, 0) : [];
         return (ref = Marionettist$2.utils).pathFor.apply(ref, args);
       },
       _: Marionettist$2._,
       s: Marionettist$2.s,
       t: function() {
         var args, ref;
-        args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+        args = 1 <= arguments.length ? slice$1.call(arguments, 0) : [];
         return (ref = Marionettist$2.I18n).t.apply(ref, args);
       },
       formatCurrency: function(amount, format) {
@@ -865,7 +913,7 @@
   var Base$2;
   var extend$17 = function(child, parent) { for (var key in parent) { if (hasProp$17.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   var hasProp$17 = {}.hasOwnProperty;
-  var slice$1 = [].slice;
+  var slice$2 = [].slice;
   Base$2 = (function(superClass) {
     extend$17(Base, superClass);
 
@@ -897,7 +945,7 @@
 
     Base.prototype.close = function() {
       var args;
-      args = 1 <= arguments.length ? slice$1.call(arguments, 0) : [];
+      args = 1 <= arguments.length ? slice$2.call(arguments, 0) : [];
       Base.__super__.close.call(this, args);
       return this.unregister(this, this._instance_id);
     };
@@ -937,7 +985,7 @@
 
     Base.prototype.waitFor = function() {
       var args, ref;
-      args = 1 <= arguments.length ? slice$1.call(arguments, 0) : [];
+      args = 1 <= arguments.length ? slice$2.call(arguments, 0) : [];
       return (ref = Marionettist$2.utils).waitFor.apply(ref, args);
     };
 
