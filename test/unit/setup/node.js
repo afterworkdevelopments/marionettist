@@ -26,5 +26,5 @@ if (!global.document || !global.window) {
 global.$ = global.jQuery = require('jquery');
 global._ = require('underscore');
 global.Backbone = require('backbone');
-// global.Marionettist = require('backbone')
+global.Marionettist = require('../../../dist/marionettist.js')
 global.slice = Array.prototype.slice;

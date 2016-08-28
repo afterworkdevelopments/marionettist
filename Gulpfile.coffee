@@ -48,7 +48,7 @@ gulp.task "bundle", ->
       'underscore': '_'
       'backbone.babysitter': 'Backbone.ChildViewContainer'
       'backbone.radio': 'Backbone.Radio'
-      'Marionette': "Marionette"
+      'backbone.marionette': "Marionette"
       'i18next': "i18next"
       'numeral': "numeral"
       'moment': "moment"

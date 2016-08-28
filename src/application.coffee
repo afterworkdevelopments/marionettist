@@ -33,6 +33,7 @@ class Application extends Marionettist.Application
 
   start: (options) ->
     @triggerMethod "before:resources:fetch", options
+    @resources = [] if not @resources?
     Marionettist.utils.waitFor @resources,
       success: =>
         super(options)
