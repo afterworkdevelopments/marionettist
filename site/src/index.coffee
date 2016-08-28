@@ -32,6 +32,7 @@ SubApp = Marionettist.Application.extend
     console.log @options
 
 mainApp = Marionettist.Application.extend
+  region: '.site-application-region'
   childApps:
     subApp:
       AppClass: SubApp
@@ -44,8 +45,8 @@ window.Site = Site
 
 Site.resources.push(fakeFetch(5000))
 
-Site.addRegions
-  mainRegion: '.site-application-region'
+
+
 
 
 Site.on "start", ->

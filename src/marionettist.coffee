@@ -10,10 +10,8 @@
 `import AppRouter from "./router.js"`
 `import Region from "./region.js"`
 `import Views from "./views.js"`
+`import BaseView from "./views/base.js"`
 `import CollectionView from "./views/collection.js"`
-`import CompositeView from "./views/composite.js"`
-`import ItemView from "./views/item.js"`
-`import LayoutView from "./views/layout.js"`
 `import BaseModel from "./entities/models/base.js"`
 `import BaseCollection from "./entities/collections/base.js"`
 `import BaseResponder from "./entities/responders/base.js"`
@@ -64,29 +62,24 @@ Marionettist.Views = new Views()
 
 Marionettist._.extend Marionettist.View::,
 
-  templateHelpers: ->
+  templateContext: ->
     helpers = Marionettist.Views.templateHelpers
     if @viewContext?
-      helpers.viewContext = @viewContext
-      helpers.viewContext = @viewContext() if Marionettist._.isFunction(@viewContext)
+      viewContext = @viewContext
+      viewContext = @viewContext() if Marionettist._.isFunction(@viewContext)
+      Marionettist._.extend helpers, viewContext
     else
       helpers.viewContext = {}
     return helpers
+
+# views/base
+
+Marionettist.Views.BaseView = BaseView
 
 # views/collection
 
 Marionettist.Views.Collection = CollectionView
 
-# views/composite
-Marionettist.Views.Composite = CompositeView
-
-# views/item
-
-Marionettist.Views.Item = ItemView
-
-# views/layout
-
-Marionettist.Views.Layout = LayoutView
 
 # Entities
 

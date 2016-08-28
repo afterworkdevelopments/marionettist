@@ -7,7 +7,7 @@ concat  = require("gulp-concat")
 include = require("gulp-include")
 uglify  = require("gulp-uglify")
 runSequence   = require('run-sequence').use(gulp)
-rollup         = require("gulp-rollup")
+rollup         = require("rollup-stream")
 sourcemaps     = require("gulp-sourcemaps")
 pkg            = require("./package.json")
 pagakeName     = pkg.name
@@ -34,7 +34,8 @@ gulp.task "hamlc", ()->
 
 gulp.task "bundle", ->
   console.log "Bundle"
-  return gulp.src("./lib/#{pagakeName}.js", read: false).pipe(rollup(
+  return rollup(
+    entry: "./lib/#{pagakeName}.js"
     sourceMap: true
     moduleName: "Marionettist"
     format: "umd"
@@ -52,7 +53,8 @@ gulp.task "bundle", ->
       'numeral': "numeral"
       'moment': "moment"
 
-  ))
+  )
+  .pipe(source("#{pagakeName}.js"))
   .pipe(sourcemaps.write("."))
   .pipe gulp.dest("./dist")
 
@@ -88,7 +90,7 @@ gulp.task "site", ()->
     pathmodify.mod.dir("marionettist-site", "./site/src")
   ]})
   b.transform(coffeeify)
-  b.transform(debowerify)
+  # b.transform(debowerify)
   bundle = ()->
     b.bundle()
     .on("error", gutil.log)

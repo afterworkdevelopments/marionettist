@@ -1,6 +1,6 @@
 `import Marionettist from "../../core.js"`
 `import ModelBase from "../../entities/models/base.js"`
-`import LayoutView from "../../views/layout.js"`
+`import BaseView from "../../views/base.js"`
 class Base extends ModelBase
 
   constructor: (options = {})->
@@ -12,7 +12,7 @@ class Base extends ModelBase
 
 
 
-  loaderView: LayoutView.extend
+  loaderView: BaseView.extend
     template: (data)->
       return Marionettist.config.templates.render "marionettist/loader", data,
         defaultTemplate: '''
