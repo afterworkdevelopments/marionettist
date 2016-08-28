@@ -34,6 +34,8 @@ It's a framework that extends [Marionette](http://marionettejs.com/) and add a l
 
 ## Documentation
 
+* **V3:** [Documentation](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v3/README.md)
+
 * **V2:** [Documentation](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v2/README.md)
 
 * **V1:** [Documentation](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v1/README.md)

@@ -64,12 +64,6 @@ Marionettist._.extend Marionettist.View::,
 
   templateContext: ->
     helpers = Marionettist.Views.templateHelpers
-    if @viewContext?
-      viewContext = @viewContext
-      viewContext = @viewContext() if Marionettist._.isFunction(@viewContext)
-      Marionettist._.extend helpers, viewContext
-    else
-      helpers.viewContext = {}
     return helpers
 
 # views/base
