@@ -6,17 +6,18 @@ class SiteController extends Marionettist.Controllers.Base
     super(options)
     @app = options.app
     @viewModel = new SiteViewModel()
+    @mainRegion = @app.getRegion()
 
   index: ()->
     layoutView = @viewModel.getView("layout")
     responder = @viewModel.getResponder("base",
-      region: @app.mainRegion
+      region: @mainRegion
       loaderView: @viewModel.getView("loading")
     )
 
-    @listenTo layoutView, "show", =>
-      @showNavbar layoutView.navRegion
-      
+    @listenTo layoutView, "render", =>
+      @showNavbar layoutView
+
     responder.get("async").push @fakeFetch()
 
     responder.show(layoutView, async: true)
@@ -25,12 +26,12 @@ class SiteController extends Marionettist.Controllers.Base
   documentation: ()->
     layoutView = @viewModel.getView("layout")
     responder = @viewModel.getResponder("base",
-      region: @app.mainRegion
+      region: @mainRegion
       loaderView: @viewModel.getView("loading")
     )
 
-    @listenTo layoutView, "show", =>
-      @showNavbar layoutView.navRegion
+    @listenTo layoutView, "render", =>
+      @showNavbar layoutView
 
     responder.get("async").push @fakeFetch()
 
@@ -39,12 +40,12 @@ class SiteController extends Marionettist.Controllers.Base
   contact: ()->
     layoutView = @viewModel.getView("layout")
     responder = @viewModel.getResponder("base",
-      region: @app.mainRegion
+      region: @mainRegion
       loaderView: @viewModel.getView("loading")
     )
 
-    @listenTo layoutView, "show", =>
-      @showNavbar layoutView.navRegion
+    @listenTo layoutView, "render", =>
+      @showNavbar layoutView
 
     responder.get("async").push @fakeFetch()
 
@@ -52,13 +53,10 @@ class SiteController extends Marionettist.Controllers.Base
 
 
 
-  showNavbar: (region)->
+  showNavbar: (layoutView)->
     navbar = @viewModel.getView("navbar")
-    region.show(navbar)
+    layoutView.showChildView("navRegion",navbar)
 
-  showLoading: (region)->
-    loading = @viewModel.getView("loading")
-    region.show(loading)
 
   fakeFetch: (delay = 3000)->
     deferred = Marionettist.$.Deferred()

@@ -1,5 +1,5 @@
 TransitionOut = require("../behaviors/transition-out.coffee")
-class LoadingView extends Marionettist.Views.Layout
+class LoadingView extends Marionettist.Views.BaseView
   template: "site/templates/loading"
 
   behaviors:
@@ -11,7 +11,7 @@ class LoadingView extends Marionettist.Views.Layout
     contentRegion: ".site-content-region"
 
   onShow: ->
-    
+
 
 
 module.exports = LoadingView

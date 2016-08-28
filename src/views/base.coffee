@@ -1,7 +1,7 @@
 `import Marionettist from "../core.js"`
 `import Marionette from "backbone.marionette"`
-class LayoutView extends Marionette.LayoutView
+class BaseView extends Marionette.View
 
 
 
-`export default LayoutView`
+`export default BaseView`

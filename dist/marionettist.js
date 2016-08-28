@@ -814,11 +814,27 @@
 
   var Views$1 = Views;
 
-  var CollectionView;
+  var BaseView;
   var extend$11 = function(child, parent) { for (var key in parent) { if (hasProp$11.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   var hasProp$11 = {}.hasOwnProperty;
+  BaseView = (function(superClass) {
+    extend$11(BaseView, superClass);
+
+    function BaseView() {
+      return BaseView.__super__.constructor.apply(this, arguments);
+    }
+
+    return BaseView;
+
+  })(Marionette$1.View);
+
+  var BaseView$1 = BaseView;
+
+  var CollectionView;
+  var extend$12 = function(child, parent) { for (var key in parent) { if (hasProp$12.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$12 = {}.hasOwnProperty;
   CollectionView = (function(superClass) {
-    extend$11(CollectionView, superClass);
+    extend$12(CollectionView, superClass);
 
     function CollectionView() {
       return CollectionView.__super__.constructor.apply(this, arguments);
@@ -830,59 +846,11 @@
 
   var CollectionView$1 = CollectionView;
 
-  var CompositeView;
-  var extend$12 = function(child, parent) { for (var key in parent) { if (hasProp$12.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  var hasProp$12 = {}.hasOwnProperty;
-  CompositeView = (function(superClass) {
-    extend$12(CompositeView, superClass);
-
-    function CompositeView() {
-      return CompositeView.__super__.constructor.apply(this, arguments);
-    }
-
-    return CompositeView;
-
-  })(Marionette$1.CompositeView);
-
-  var CompositeView$1 = CompositeView;
-
-  var ItemView;
+  var Base;
   var extend$13 = function(child, parent) { for (var key in parent) { if (hasProp$13.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
   var hasProp$13 = {}.hasOwnProperty;
-  ItemView = (function(superClass) {
-    extend$13(ItemView, superClass);
-
-    function ItemView() {
-      return ItemView.__super__.constructor.apply(this, arguments);
-    }
-
-    return ItemView;
-
-  })(Marionette$1.ItemView);
-
-  var ItemView$1 = ItemView;
-
-  var LayoutView;
-  var extend$14 = function(child, parent) { for (var key in parent) { if (hasProp$14.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  var hasProp$14 = {}.hasOwnProperty;
-  LayoutView = (function(superClass) {
-    extend$14(LayoutView, superClass);
-
-    function LayoutView() {
-      return LayoutView.__super__.constructor.apply(this, arguments);
-    }
-
-    return LayoutView;
-
-  })(Marionette$1.LayoutView);
-
-  var LayoutView$1 = LayoutView;
-
-  var Base;
-  var extend$15 = function(child, parent) { for (var key in parent) { if (hasProp$15.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  var hasProp$15 = {}.hasOwnProperty;
   Base = (function(superClass) {
-    extend$15(Base, superClass);
+    extend$13(Base, superClass);
 
     function Base() {
       return Base.__super__.constructor.apply(this, arguments);
@@ -895,10 +863,10 @@
   var BaseModel = Base;
 
   var Base$1;
-  var extend$16 = function(child, parent) { for (var key in parent) { if (hasProp$16.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  var hasProp$16 = {}.hasOwnProperty;
+  var extend$14 = function(child, parent) { for (var key in parent) { if (hasProp$14.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$14 = {}.hasOwnProperty;
   Base$1 = (function(superClass) {
-    extend$16(Base, superClass);
+    extend$14(Base, superClass);
 
     function Base() {
       return Base.__super__.constructor.apply(this, arguments);
@@ -911,11 +879,11 @@
   var BaseCollection = Base$1;
 
   var Base$2;
-  var extend$17 = function(child, parent) { for (var key in parent) { if (hasProp$17.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  var hasProp$17 = {}.hasOwnProperty;
+  var extend$15 = function(child, parent) { for (var key in parent) { if (hasProp$15.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$15 = {}.hasOwnProperty;
   var slice$2 = [].slice;
   Base$2 = (function(superClass) {
-    extend$17(Base, superClass);
+    extend$15(Base, superClass);
 
     function Base(options) {
       if (options == null) {
@@ -926,7 +894,7 @@
       this.register(this, this._instance_id);
     }
 
-    Base.prototype.loaderView = LayoutView$1.extend({
+    Base.prototype.loaderView = BaseView$1.extend({
       template: function(data) {
         return Marionettist$2.config.templates.render("marionettist/loader", data, {
           defaultTemplate: '<div class=\'mri-loader\'>\n  <div class=\'mri-loader__content\'>\n    <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>\n    <span class="sr-only">Loading...</span>\n  </div>\n</div>'
@@ -1063,10 +1031,10 @@
   var BaseResponder = Base$2;
 
   var Base$3;
-  var extend$18 = function(child, parent) { for (var key in parent) { if (hasProp$18.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  var hasProp$18 = {}.hasOwnProperty;
+  var extend$16 = function(child, parent) { for (var key in parent) { if (hasProp$16.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$16 = {}.hasOwnProperty;
   Base$3 = (function(superClass) {
-    extend$18(Base, superClass);
+    extend$16(Base, superClass);
 
     function Base() {
       return Base.__super__.constructor.apply(this, arguments);
@@ -1155,10 +1123,10 @@
   var BaseViewModel = Base$3;
 
   var Base$4;
-  var extend$19 = function(child, parent) { for (var key in parent) { if (hasProp$19.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  var hasProp$19 = {}.hasOwnProperty;
+  var extend$17 = function(child, parent) { for (var key in parent) { if (hasProp$17.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$17 = {}.hasOwnProperty;
   Base$4 = (function(superClass) {
-    extend$19(Base, superClass);
+    extend$17(Base, superClass);
 
     function Base() {
       return Base.__super__.constructor.apply(this, arguments);
@@ -1182,10 +1150,10 @@
   var BaseController = Base$4;
 
   var Application;
-  var extend$20 = function(child, parent) { for (var key in parent) { if (hasProp$20.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-  var hasProp$20 = {}.hasOwnProperty;
+  var extend$18 = function(child, parent) { for (var key in parent) { if (hasProp$18.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var hasProp$18 = {}.hasOwnProperty;
   Application = (function(superClass) {
-    extend$20(Application, superClass);
+    extend$18(Application, superClass);
 
     Application.prototype.Controllers = new Marionettist$2.Object();
 
@@ -1432,14 +1400,15 @@
   Marionettist$2.Views = new Views$1();
 
   Marionettist$2._.extend(Marionettist$2.View.prototype, {
-    templateHelpers: function() {
-      var helpers;
+    templateContext: function() {
+      var helpers, viewContext;
       helpers = Marionettist$2.Views.templateHelpers;
       if (this.viewContext != null) {
-        helpers.viewContext = this.viewContext;
+        viewContext = this.viewContext;
         if (Marionettist$2._.isFunction(this.viewContext)) {
-          helpers.viewContext = this.viewContext();
+          viewContext = this.viewContext();
         }
+        Marionettist$2._.extend(helpers, viewContext);
       } else {
         helpers.viewContext = {};
       }
@@ -1447,13 +1416,9 @@
     }
   });
 
+  Marionettist$2.Views.BaseView = BaseView$1;
+
   Marionettist$2.Views.Collection = CollectionView$1;
-
-  Marionettist$2.Views.Composite = CompositeView$1;
-
-  Marionettist$2.Views.Item = ItemView$1;
-
-  Marionettist$2.Views.Layout = LayoutView$1;
 
   Marionettist$2.Entities = new Marionettist$2.Object();
 

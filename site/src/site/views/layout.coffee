@@ -1,5 +1,5 @@
 TransitionOut = require("../behaviors/transition-out.coffee")
-class LayoutView extends Marionettist.Views.Layout
+class LayoutView extends Marionettist.Views.BaseView
   template: "site/templates/layout"
 
   regions:
