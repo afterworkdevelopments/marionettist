@@ -2,6 +2,11 @@ SiteViewModel = require("../entities/view-models/site.coffee")
 
 class SiteController extends Marionettist.Controllers.Base
 
+  filters:
+    before:
+      authenticate: (controller)=>
+        console.log "Before filter authenticate"
+
   constructor: (options)->
     super(options)
     @app = options.app
