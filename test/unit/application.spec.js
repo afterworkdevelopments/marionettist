@@ -2,8 +2,17 @@ describe('marionettist application', function() {
   'use strict';
 
   beforeEach(function() {
+
     this.fooOptions = {foo: 'bar'};
+
     this.app = new Marionettist.Application();
+
+    this.subAppBeforeStartStub = sinon.stub();
+
+    this.SubApp = Marionettist.Application.extend({
+      onBeforeStart: this.subAppBeforeStartStub
+    })
+
 
     this.beforeResourcesFetchStub = sinon.stub();
 
@@ -17,6 +26,8 @@ describe('marionettist application', function() {
 
     this.startStub = sinon.stub();
 
+
+
     this.app.on('before:start', this.beforeStartStub);
 
     this.app.on('before:resources:fetch', this.beforeResourcesFetchStub);
@@ -25,7 +36,18 @@ describe('marionettist application', function() {
 
     this.app.on('start', this.startStub);
 
+    this.app.on('ready', this.readyStub);
+
+    this.app.addChildApp('subApp', {
+      AppClass: this.SubApp,
+      startWithParent: true
+    });
+
     this.app.start(this.fooOptions);
+  });
+
+  it('should run the subApp onBeforeStart callback', function() {
+    expect(this.subAppBeforeStartStub).to.have.been.called;
   });
 
   it('should run the onBeforeStart callback', function() {
@@ -42,6 +64,10 @@ describe('marionettist application', function() {
 
   it('should run the onStart callback', function() {
     expect(this.startStub).to.have.been.called;
+  });
+
+  it('should run the onReady callback', function() {
+    expect(this.readyStub).to.have.been.called;
   });
 
 });

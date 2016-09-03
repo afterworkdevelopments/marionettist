@@ -79,7 +79,7 @@ class Application extends Marionettist.Application
 
   _startChildApps: (options)->
     Marionettist._.each @_childApps, (childApp) ->
-      if Marionettist._.result(childApp, 'startWithParent')
+      if Marionettist.utils.getValue(childApp.getOption("startWithParent")) is true
         childApp.start(options)
 
   _stopChildApps: (options)->

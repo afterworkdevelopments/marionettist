@@ -27,7 +27,7 @@ SubApp = Marionettist.Application.extend
     console.log "yay"
 
   onStart: (options)->
-    console.log "onStart"
+    console.log "SubApponStart"
     console.log options
     console.log @options
 

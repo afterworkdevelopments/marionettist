@@ -1,6 +1,11 @@
 `import Marionettist from "./core.js"`
 class Utils extends Marionettist.Object
 
+  getValue: (value, context, params) ->
+    if Marionettist._.isFunction(value)
+      value = if params then value.apply(context, params) else value.call(context)
+    value
+
   pathFor: (_path)->
     path = ""
     path = "##{_path}"
