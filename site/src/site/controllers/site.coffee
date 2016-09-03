@@ -2,11 +2,6 @@ SiteViewModel = require("../entities/view-models/site.coffee")
 
 class SiteController extends Marionettist.Controllers.Base
 
-  filters:
-    before:
-      authenticate: (controller)=>
-        console.log "Before filter authenticate"
-
   constructor: (options)->
     super(options)
     @app = options.app
@@ -23,7 +18,7 @@ class SiteController extends Marionettist.Controllers.Base
     @listenTo layoutView, "render", =>
       @showNavbar layoutView
 
-    responder.get("async").push @fakeFetch()
+    # responder.get("async").push @fakeFetch()
 
     responder.show(layoutView, async: true)
 
@@ -38,11 +33,11 @@ class SiteController extends Marionettist.Controllers.Base
     @listenTo layoutView, "render", =>
       @showNavbar layoutView
 
-    responder.get("async").push @fakeFetch()
+    # responder.get("async").push @fakeFetch()
 
     responder.show(layoutView, async: true)
 
-  contact: ()->
+  blog: ()->
     layoutView = @viewModel.getView("layout")
     responder = @viewModel.getResponder("base",
       region: @mainRegion
@@ -52,7 +47,7 @@ class SiteController extends Marionettist.Controllers.Base
     @listenTo layoutView, "render", =>
       @showNavbar layoutView
 
-    responder.get("async").push @fakeFetch()
+    # responder.get("async").push @fakeFetch()
 
     responder.show(layoutView, async: true)
 

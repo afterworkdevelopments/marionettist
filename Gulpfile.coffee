@@ -30,7 +30,7 @@ gulp.task "hamlc", ()->
   gulp.src("./site/**/**/**/**/*.hamlc")
     .pipe(hamlc(options).on("error", gutil.log))
     .pipe(concat("templates.js"))
-    .pipe(gulp.dest("./site/www/js"))
+    .pipe(gulp.dest("./docs/assets/js"))
 
 gulp.task "bundle", ->
   console.log "Bundle"
@@ -97,7 +97,7 @@ gulp.task "site", ()->
     .pipe(source("js/application.js"))
     .pipe(buffer())
 
-    .pipe(gulp.dest("./site/www"))
+    .pipe(gulp.dest("./docs/assets"))
 
   b.on("update", bundle)
   b.on("log", gutil.log)

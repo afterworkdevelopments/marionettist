@@ -1,9 +1,2 @@
 %a.uk-navbar-brand.uk-hidden-small{href: ""}
   = @t("app.brand")
-%ul.uk-navbar-nav
-  %li
-    %a{href: @pathFor("documentation")}
-      Documentation
-  %li
-    %a{href: @pathFor("contact")}
-      Contact
