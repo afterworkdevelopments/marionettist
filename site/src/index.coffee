@@ -18,12 +18,10 @@ Marionettist.I18n.init
 SubApp = Marionettist.Application.extend
 
   onResourcesFetchSuccess: ->
-    console.log "yay"
+
 
   onStart: (options)->
-    console.log "SubApponStart"
-    console.log options
-    console.log @options
+    
 
 mainApp = Marionettist.Application.extend
   region: '.site-application-region'
