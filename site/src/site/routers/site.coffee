@@ -2,6 +2,6 @@ class SiteRouter extends Marionettist.AppRouter
   appRoutes:
     "": "index"
     "documentation": "documentation"
-    "contact": "contact"
+    "blog": "blog"
 
 module.exports = SiteRouter

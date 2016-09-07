@@ -7,7 +7,7 @@ concat  = require("gulp-concat")
 include = require("gulp-include")
 uglify  = require("gulp-uglify")
 runSequence   = require('run-sequence').use(gulp)
-rollup         = require("gulp-rollup")
+rollup         = require("rollup-stream")
 sourcemaps     = require("gulp-sourcemaps")
 pkg            = require("./package.json")
 pagakeName     = pkg.name
@@ -30,11 +30,12 @@ gulp.task "hamlc", ()->
   gulp.src("./site/**/**/**/**/*.hamlc")
     .pipe(hamlc(options).on("error", gutil.log))
     .pipe(concat("templates.js"))
-    .pipe(gulp.dest("./site/www/js"))
+    .pipe(gulp.dest("./docs/assets/js"))
 
 gulp.task "bundle", ->
   console.log "Bundle"
-  return gulp.src("./lib/#{pagakeName}.js", read: false).pipe(rollup(
+  return rollup(
+    entry: "./lib/#{pagakeName}.js"
     sourceMap: true
     moduleName: "Marionettist"
     format: "umd"
@@ -47,12 +48,13 @@ gulp.task "bundle", ->
       'underscore': '_'
       'backbone.babysitter': 'Backbone.ChildViewContainer'
       'backbone.radio': 'Backbone.Radio'
-      'Marionette': "Marionette"
+      'backbone.marionette': "Marionette"
       'i18next': "i18next"
       'numeral': "numeral"
       'moment': "moment"
 
-  ))
+  )
+  .pipe(source("#{pagakeName}.js"))
   .pipe(sourcemaps.write("."))
   .pipe gulp.dest("./dist")
 
@@ -88,14 +90,14 @@ gulp.task "site", ()->
     pathmodify.mod.dir("marionettist-site", "./site/src")
   ]})
   b.transform(coffeeify)
-  b.transform(debowerify)
+  # b.transform(debowerify)
   bundle = ()->
     b.bundle()
     .on("error", gutil.log)
     .pipe(source("js/application.js"))
     .pipe(buffer())
 
-    .pipe(gulp.dest("./site/www"))
+    .pipe(gulp.dest("./docs/assets"))
 
   b.on("update", bundle)
   b.on("log", gutil.log)
