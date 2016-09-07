@@ -1,5 +1,12 @@
 # CHANGE LOG
 
+## 3.0.0-beta
+
+* Upgraded to Marionette 3
+* Starting tests
+* Views:
+  * removed `viewContext` option, in favor `templateContext` of Marionette 3
+
 ## 2.4.0
 
 * Added support for childApplications
