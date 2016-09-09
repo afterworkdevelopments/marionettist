@@ -18,7 +18,7 @@
 `import BaseViewModel from "./entities/view-models/base.js"`
 `import BaseController from "./controllers/base.js"`
 `import Application from "./application.js"`
-
+`import Module from "./module.js"`
 
 root = typeof self == 'object' and self.self == self and self or typeof global == 'object' and global.global == global and global
 
@@ -26,6 +26,8 @@ root = typeof self == 'object' and self.self == self and self or typeof global =
 Marionettist.channels = new Channels()
 
 Marionettist.location = new Location()
+
+Marionettist.Module = Module
 
 # Environment
 Marionettist.env = new Env()
