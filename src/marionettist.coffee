@@ -70,7 +70,7 @@ Marionettist._.extend Marionettist.View::,
 
 # views/base
 
-Marionettist.Views.BaseView = BaseView
+Marionettist.Views.Base = BaseView
 
 # views/collection
 

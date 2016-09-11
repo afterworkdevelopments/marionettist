@@ -1,8 +1,6 @@
 `import Marionettist from "./core.js"`
 
-Module = Marionettist.Object.extend Marionettist.Backbone.Radio.Requests,
-
-  initialize: ()->
+Module = Marionettist.Object.extend Marionettist.Backbone.Radio.Requests
 
 
 

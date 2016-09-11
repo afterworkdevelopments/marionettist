@@ -13,6 +13,8 @@ class Views extends Marionettist.Object
     t: (args...)->
       Marionettist.I18n.t(args...)
 
+    Mnt: Marionettist
+
     formatCurrency: (amount, format = "$0,0.00")->
       Marionettist.numeral(amount).format(format)
 
