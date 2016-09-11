@@ -11,60 +11,6 @@ List of all the diferent collection classes:
 
 * **`Marionettist.Entities.Collections.Base`**
 
-## ViewModels
-
-A view-model it's an object that groups common classes that you might use in a app. Every class invoked will have a the same instance of the viewModel  mixed in the options.
-
-This is useful to have because you can have a viewModel object shared across the views, and listen or trigger events to comunicate with another views with the same context.
-
-```
-# ViewModel
-
-class SiteViewModel extends Marionettist.Entities.ViewModels.Base
-
-  models:
-    navItem: require("../models/nav-item")
-
-  collections:
-    navItems: require("../collections/nav-items")
-
-  views:
-    layout: require("../../views/layout.coffee")
-    navbar: require("../../views/navbar.coffee")
-    loading: require("../../views/loading.coffee")
-    sidebar: require("../../views/sidebar.coffee")
-    navItem: require("../../views/nav-item.coffee")
-
-module.exports = SiteViewModel
-
-```
-
-```
-# Controller
-
-SiteViewModel = require("../entities/view-models/site.coffee")
-class SiteController extends Marionettist.Controllers.Base
-
-  constructor: (options)->
-    super(options)
-    @app = options.app
-    @viewModel = new SiteViewModel()
-
-  index: ()->
-    layoutView = @viewModel.getView("layout")
-    sidebarView = @viewModel.getView("sidebar")
-
-    layoutView.getOption("viewModel") # this is an instance of @viewModel
-
-    @listenTo layoutView, "show", =>
-      @showNavbar layoutView.navRegion
-      @showSidebar layoutView.sidebarRegion
-
-
-    @app.mainRegion.show(layoutView)
-
-```
-
 
 ## Responders
 

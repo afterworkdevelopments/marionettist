@@ -1,6 +1,6 @@
 {
   "name": "marionettist",
-  "version": "3.0.0-beta",
+  "version": "3.0.0-beta.1",
   "description": "Marionettist. It is a Marionette based framework",
   "main": "dist/marionettist.js",
   "scripts": {
