@@ -36,6 +36,8 @@ class Base extends ModelBase
 
   # Renders the view in the selected region and binds to view's close event
   show: (view, options = {}) ->
+    fetchOptions = {}
+    fetchOptions = options.fetch if Marionettist._.isObject(options) and  Marionettist._.isObject(options.fetch)
     region =
       if options.region?
         options.region
@@ -47,11 +49,12 @@ class Base extends ModelBase
         loaderView = @getLoaderView()
         @listenTo loaderView, "close", @close
         region.show loaderView
-      @fetch().then (()=>
+      @fetch(fetchOptions).then (()=>
         if options.loaderView isnt false
           return view.close() if region.currentView isnt loaderView
         region.show view
-      )
+      ), ()->
+
     else
       region.show view
 

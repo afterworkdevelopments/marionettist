@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+## 3.0.0
+* Updated docs
+* Views:
+  * Fixed bug where calling super in `templateContext` made all this context global and avaibale on all views, causing unexpected behaviours
+
 ## 3.0.0-beta
 
 * Upgraded to Marionette 3
