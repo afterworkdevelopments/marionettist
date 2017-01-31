@@ -29,6 +29,13 @@ Marionettist.location = new Location()
 
 Marionettist.Module = Module
 
+# Mixins
+
+Marionettist.Mixins =
+  Collections: {}
+  Models: {}
+  Views: {}
+
 # Environment
 Marionettist.env = new Env()
 
@@ -65,7 +72,7 @@ Marionettist.Views = new Views()
 Marionettist._.extend Marionettist.View::,
 
   templateContext: ->
-    helpers = Marionettist.Views.templateHelpers
+    helpers = Marionettist._.clone Marionettist.Views.templateHelpers
     return helpers
 
 # views/base

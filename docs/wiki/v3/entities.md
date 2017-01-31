@@ -25,13 +25,14 @@ Some benefits of using this service are:
 ```
 # Controller
 
-SiteViewModel = require("../entities/view-models/site.coffee")
+SiteResponder = require("../entities/responders/site.coffee")
+LayoutView = require("../views/layout.coffee")
+LoadingView = require("../views/loading.coffee")
 class SiteController extends Marionettist.Controllers.Base
 
   constructor: (options)->
     super(options)
     @app = options.app
-    @viewModel = new SiteViewModel()
 
   fakeFetch: (duration = 3000)->
     deferred = Marionettist.$.Deferred()
@@ -42,16 +43,14 @@ class SiteController extends Marionettist.Controllers.Base
     return deferred.promise()
 
   index: ()->
-    responder = @viewModel.getResponder("base", region: @app.mainRegion)
-    layoutView = @viewModel.getView("layout")
+    responder = new SiteResponder("base", region: @app.mainRegion)
+    layoutView = new LayoutView()
 
     # Changes the default loading view for a custom one, the default view use font-awesome as spinner icon
     responder.set
-      loaderView: @viewModel.getView("loading")
+      loaderView: new LoadingView()
 
-    sidebarView = @viewModel.getView("sidebar")
-
-    @listenTo layoutView, "show", =>
+    @listenTo layoutView, "render", =>
       @showNavbar layoutView.navRegion
       @showSidebar layoutView.sidebarRegion
 

@@ -16,6 +16,8 @@ Marionettist = Marionette.extend()
 
 Marionettist.Backbone = Backbone
 
+Marionettist.Backbone.Radio = backbone_radio
+
 Marionettist.Marionette = Marionette
 
 Marionettist._ = _

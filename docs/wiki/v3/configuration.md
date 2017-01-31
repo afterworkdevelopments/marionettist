@@ -9,7 +9,7 @@ Type: **Array**, default: **["templates/"]**
 Base paths to lookup templates
 
 ```
-class Views.AdvertiseItem extends Marionettist.Views.ItemView
+class Views.AdvertiseItem extends Marionettist.Views.Base
   template: "maps/templates/item"
 ```
 

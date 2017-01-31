@@ -2,5 +2,5 @@
 
 List of all the diferent view classes:
 
-* **`Marionettist.Views.BaseView`**
+* **`Marionettist.Views.Base`**
 * **`Marionettist.Views.Collection`**

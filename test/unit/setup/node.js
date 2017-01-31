@@ -10,17 +10,15 @@ global.expect = chai.expect;
 global.sinon = sinon;
 
 if (!global.document || !global.window) {
+  var jsdom = require('jsdom').jsdom;
 
-  var jsdom = require("jsdom");
-
-  jsdom.env({
-    url: "http://localhost/",
-    // html: "",
-    scripts: [],
-    done: function (err, window) {
-      var $ = window.$;
-    }
+  global.document = jsdom('<html><head><script></script></head><body><div id="app-test-region"></div></body></html>', {
+    FetchExternalResources: ['script'],
+    ProcessExternalResources: ['script']
   });
+
+  global.window = document.defaultView;
+  global.navigator = global.window.navigator;
 }
 
 global.$ = global.jQuery = require('jquery');

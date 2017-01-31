@@ -9,12 +9,12 @@
 
 
 ## Documentation
-* **[channels](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v2/channels.md)**
-* **[configuration](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v2/configuration.md)**
-* **[controllers](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v2/controllers.md)**
-* **[entities](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v2/entities.md)**
-* **[i18n](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v2/i18n.md)**
-* **[router](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v2/router.md)**
-* **[template helpers](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v2/template-helpers.md)**
-* **[utils](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v2/utils.md)**
-* **[views](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v2/views.md)**
+* **[channels](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v3/channels.md)**
+* **[configuration](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v3/configuration.md)**
+* **[controllers](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v3/controllers.md)**
+* **[entities](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v3/entities.md)**
+* **[i18n](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v3/i18n.md)**
+* **[router](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v3/router.md)**
+* **[template helpers](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v3/template-helpers.md)**
+* **[utils](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v3/utils.md)**
+* **[views](https://github.com/afterworkdevelopments/marionettist/blob/master/docs/wiki/v3/views.md)**
