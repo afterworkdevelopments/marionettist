@@ -2,6 +2,7 @@
 
 ## 3.0.0
 * Updated docs
+* Finxing error with browserify, where backbone.radio was not getting loaded properly
 * Views:
   * Fixed bug where calling super in `templateContext` made all this context global and avaibale on all views, causing unexpected behaviours
 
