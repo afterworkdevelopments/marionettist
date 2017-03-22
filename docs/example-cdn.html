@@ -16,11 +16,74 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.string/3.3.4/underscore.string.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore-contrib/0.3.0/underscore-contrib.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.5/backbone.marionette.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.radio/2.0.0/backbone.radio.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/3.1.0/backbone.marionette.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/2.5.1/i18next.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment-with-locales.min.js"></script>
-  <script src="../../dist/marionettist.js"></script>
+  <script src="../dist/marionettist.js"></script>
+
+  <script>
+
+
+
+    Marionettist.$(document).ready(function(){
+      var fakeFetch;
+
+      fakeFetch = function(delay) {
+        var deferred;
+        if (delay == null) {
+          delay = 1000;
+        }
+        deferred = Marionettist.$.Deferred();
+        setTimeout(((function(_this) {
+          return function() {
+            return deferred.resolve();
+          };
+        })(this)), delay);
+        return deferred.promise();
+      };
+
+      SubApp1 = Marionettist.Application.extend({
+        onBeforeResourcesFetch: function(){
+          this.getOption("mainApp").resources.push(
+            fakeFetch()
+          );
+        }
+      });
+      SubApp2 = Marionettist.Application.extend({
+        onBeforeResourcesFetch: function(){
+          console.log(this.resources);
+        },
+        onStart: function(){
+          console.log("onStart");
+        }
+
+      });
+      App = Marionettist.Application.extend({
+        onInitChildApps: function(){
+          console.log("onBeforeInitChildApps");
+          this.addChildApp('SubApp1', {
+            AppClass: SubApp1,
+            startWithParent: true,
+            mainApp: this
+          });
+
+          this.addChildApp('SubApp2', {
+            AppClass: SubApp2,
+            startWithParent: true,
+            mainApp: this
+          });
+        },
+      });
+      app = new App();
+
+
+
+      app.start();
+    })
+
+  </script>
   </head>
   <body>
   </body>
