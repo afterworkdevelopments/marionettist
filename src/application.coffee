@@ -20,11 +20,11 @@ class Application extends Marionettist.Application
 
   stopWithParent: true
 
-  resources: []
-
   constructor: (options)->
+    @resources = []
     super(options)
     @_initChildApps(options)
+    @triggerMethod "init:child:apps"
     if Marionettist._.result(@, 'startAfterInitialized')
       @start(options)
 

@@ -1,5 +1,8 @@
 # CHANGE LOG
 
+## 3.0.1
+* Fixed resources reference from parent to sub applications, which can cause unexpected behaviours
+
 ## 3.0.0
 * Updated docs
 * Finxing error with browserify, where backbone.radio was not getting loaded properly
