@@ -1,7 +1,5 @@
 src
 test
 site
-src/
+lib
 npm-debug.log
-test/
-site/
