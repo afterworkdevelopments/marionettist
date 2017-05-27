@@ -1,5 +1,8 @@
 # CHANGE LOG
 
+## 3.0.3
+* Added lib to .npmignore
+
 ## 3.0.2
 * Fixed some dependencies
 
