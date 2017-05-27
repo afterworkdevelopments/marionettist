@@ -40,18 +40,20 @@ gulp.task "bundle", ->
     moduleName: "Marionettist"
     format: "umd"
     exports: "default"
-    external: ['underscore', 'backbone', 'backbone.babysitter', 'backbone.radio', 'backbone.marionette','i18next','numeral','moment']
+    external: ['underscore', 'backbone', 'backbone-associations', 'backbone.radio', 'backbone.marionette','i18next','numeral','moment','moment-range', 'moment-timezone']
     plugins: []
     globals:
       'jquery': "$"
       'backbone': 'Backbone'
       'underscore': '_'
-      'backbone.babysitter': 'Backbone.ChildViewContainer'
+      'backbone-associations': 'Backbone'
       'backbone.radio': 'Backbone.Radio'
       'backbone.marionette': "Marionette"
       'i18next': "i18next"
       'numeral': "numeral"
       'moment': "moment"
+      'moment-range': "moment"
+      'moment-timezone': "moment"
 
   )
   .pipe(source("#{pagakeName}.js"))

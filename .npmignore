@@ -1,2 +1,7 @@
+src
+test
+site
 src/
 npm-debug.log
+test/
+site/
