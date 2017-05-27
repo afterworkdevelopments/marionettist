@@ -1,5 +1,8 @@
 # CHANGE LOG
 
+## 3.0.2
+* Fixed some dependencies
+
 ## 3.0.1
 * Fixed resources reference from parent to sub applications, which can cause unexpected behaviours
 
