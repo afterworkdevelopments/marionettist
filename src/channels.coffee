@@ -1,4 +1,4 @@
-`import Marionettist from "./core.js"`
+import Marionettist from "./core.coffee"
 class Channels extends Marionettist.Object
 
   constructor: ()->
@@ -26,4 +26,4 @@ class Channels extends Marionettist.Object
   subscribe: (channelName = "global", eventName = "", callback)->
     return Marionettist.Backbone.Radio.channel(channelName).on eventName, callback
 
-`export default Channels`
+export default Channels

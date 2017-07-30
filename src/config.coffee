@@ -1,9 +1,9 @@
-`import Templates from "./config/templates.js"`
-`import Marionettist from "./core.js"`
+import Templates from "./config/templates.coffee"
+import Marionettist from "./core.coffee"
 class Config extends Marionettist.Object
 
   constructor: ()->
     @templates = new Templates()
 
 
-`export default Config`
+export default Config

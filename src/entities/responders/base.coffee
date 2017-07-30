@@ -1,6 +1,6 @@
-`import Marionettist from "../../core.js"`
-`import ModelBase from "../../entities/models/base.js"`
-`import BaseView from "../../views/base.js"`
+import Marionettist from "../../core.coffee"
+import ModelBase from "../../entities/models/base.coffee"
+import BaseView from "../../views/base.coffee"
 class Base extends ModelBase
 
   constructor: (options = {})->
@@ -105,4 +105,4 @@ class Base extends ModelBase
     Marionettist._.size @_registry
 
 
-`export default Base`
+export default Base

@@ -1,4 +1,4 @@
-`import Marionettist from "./core.js"`
+import Marionettist from "./core.coffee"
 class Location extends Marionettist.Object
 
   constructor: ()->
@@ -17,4 +17,4 @@ class Location extends Marionettist.Object
     if Marionettist.Backbone.history?
       Marionettist.Backbone.history.start(options)
 
-`export default Location`
+export default Location

@@ -1,8 +1,8 @@
-`import Marionettist from "./core.js"`
+import Marionettist from "./core.coffee"
 
 Module = Marionettist.Object.extend Marionettist.Backbone.Radio.Requests
 
 
 
 
-`export default Module`
+export default Module

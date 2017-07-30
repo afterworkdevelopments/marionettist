@@ -39,4 +39,4 @@ Renderer =
       array.splice(-1, 0, "templates")
       array.join("/")
 
-`export default Renderer`
+export default Renderer

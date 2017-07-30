@@ -1,8 +1,8 @@
-`import Marionettist from "../../core.js"`
-`import Backbone from "backbone"`
-`import BaseModel from "../../entities/models/base.js"`
-`import BaseCollection from "../../entities/collections/base.js"`
-`import BaseResponder from "../../entities/responders/base.js"`
+import Marionettist from "../../core.coffee"
+import Backbone from "backbone"
+import BaseModel from "../../entities/models/base.coffee"
+import BaseCollection from "../../entities/collections/base.coffee"
+import BaseResponder from "../../entities/responders/base.coffee"
 class Base extends Backbone.Model
 
   responders:()->
@@ -41,4 +41,4 @@ class Base extends Backbone.Model
         resource = new resources[resourceName](options)
     return resource
 
-`export default Base`
+export default Base

@@ -1,7 +1,7 @@
-`import Marionettist from "../core.js"`
-`import Marionette from "backbone.marionette"`
+import Marionettist from "../core.coffee"
+import Marionette from "backbone.marionette"
 class BaseView extends Marionette.View
 
 
 
-`export default BaseView`
+export default BaseView

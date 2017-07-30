@@ -1,4 +1,4 @@
-`import Marionettist from "./core.js"`
+import Marionettist from "./core.coffee"
 class Utils extends Marionettist.Object
 
   getValue: (value, context, params) ->
@@ -50,4 +50,4 @@ class Utils extends Marionettist.Object
     else
       options.success(null) if Marionettist._.isFunction(options.success)
 
-`export default Utils`
+export default Utils

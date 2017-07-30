@@ -1,4 +1,4 @@
-`import Marionettist from "./core.js"`
+import Marionettist from "./core.coffee"
 class Logger extends Marionettist.Object
 
   constructor: ()->
@@ -54,4 +54,4 @@ class Logger extends Marionettist.Object
     return
 
 
-`export default Logger`
+export default Logger

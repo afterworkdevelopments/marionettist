@@ -1,4 +1,4 @@
-`import Marionettist from "./core.js"`
+import Marionettist from "./core.coffee"
 class Views extends Marionettist.Object
 
   templateHelpers:
@@ -28,4 +28,4 @@ class Views extends Marionettist.Object
       Marionettist.moment(date).format(format)
 
 
-`export default Views`
+export default Views

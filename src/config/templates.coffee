@@ -1,4 +1,4 @@
-`import Marionettist from "../core.js"`
+import Marionettist from "../core.coffee"
 class Templates
 
   debug: false
@@ -23,4 +23,4 @@ class Templates
       template = engine[templateName](data)
     return template
 
-`export default Templates`
+export default Templates

@@ -1,4 +1,4 @@
-`import Marionettist from "./core.js"`
+import Marionettist from "./core.coffee"
 
 class AppRoute extends Marionettist.Object
 
@@ -14,4 +14,4 @@ class AppRoute extends Marionettist.Object
   controller: ()->
     @getOption("controller")
 
-`export default AppRoute`
+export default AppRoute

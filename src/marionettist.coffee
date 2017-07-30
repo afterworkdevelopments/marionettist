@@ -1,24 +1,26 @@
-`import Marionettist from "./core.js"`
-`import Env from "./env.js"`
-`import Channels from "./channels.js"`
-`import Location from "./location.js"`
-`import Config from "./config.js"`
-`import Renderer from "./mixins/renderer.js"`
-`import Utils from "./utils.js"`
-`import Logger from "./logger.js"`
-`import AppRoute from "./route.js"`
-`import AppRouter from "./router.js"`
-`import Region from "./region.js"`
-`import Views from "./views.js"`
-`import BaseView from "./views/base.js"`
-`import CollectionView from "./views/collection.js"`
-`import BaseModel from "./entities/models/base.js"`
-`import BaseCollection from "./entities/collections/base.js"`
-`import BaseResponder from "./entities/responders/base.js"`
-`import BaseViewModel from "./entities/view-models/base.js"`
-`import BaseController from "./controllers/base.js"`
-`import Application from "./application.js"`
-`import Module from "./module.js"`
+import Marionettist from "./core.coffee"
+import Env from "./env.coffee"
+import Channels from "./channels.coffee"
+import Location from "./location.coffee"
+import Config from "./config.coffee"
+import Renderer from "./mixins/renderer.coffee"
+import Utils from "./utils.coffee"
+import Logger from "./logger.coffee"
+import AppRoute from "./route.coffee"
+import AppRouter from "./router.coffee"
+import Region from "./region.coffee"
+import Views from "./views.coffee"
+import BaseView from "./views/base.coffee"
+import CollectionView from "./views/collection.coffee"
+import BaseModel from "./entities/models/base.coffee"
+import BaseAssociatedModel from "./entities/models/associated.coffee"
+import BaseCollection from "./entities/collections/base.coffee"
+import BaseResponder from "./entities/responders/base.coffee"
+import BaseViewModel from "./entities/view-models/base.coffee"
+import BaseController from "./controllers/base.coffee"
+import Application from "./application.coffee"
+import Module from "./module.coffee"
+
 
 root = typeof self == 'object' and self.self == self and self or typeof global == 'object' and global.global == global and global
 
@@ -101,9 +103,7 @@ Marionettist.Entities.Responders = new Marionettist.Object()
 Marionettist.Entities.Models.Base = BaseModel
 
 # entities/models/associated
-
-if Marionettist.Backbone.AssociatedModel
-  class Marionettist.Entities.Models.Associated extends Marionettist.Backbone.AssociatedModel
+Marionettist.Entities.Models.Associated = BaseAssociatedModel
 
 # entities/collections/base
 
@@ -129,4 +129,4 @@ Marionettist.Application = Application
 global.Marionettist = Marionettist if global?
 
 
-`export default Marionettist`
+export default Marionettist

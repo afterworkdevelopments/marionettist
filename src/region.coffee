@@ -1,5 +1,5 @@
-`import Marionettist from "./core.js"`
-`import Marionette from "backbone.marionette"`
+import Marionettist from "./core.coffee"
+import Marionette from "backbone.marionette"
 
 _show = Marionette.Region.prototype.show
 
@@ -28,4 +28,4 @@ class Region extends Marionette.Region
       else
         showCurrentView()
 
-`export default Region`
+export default Region

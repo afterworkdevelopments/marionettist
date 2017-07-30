@@ -1,4 +1,4 @@
-`import Marionettist from "./core.js"`
+import Marionettist from "./core.coffee"
 class Env extends Marionettist.Object
 
   constructor: ()->
@@ -30,4 +30,4 @@ class Env extends Marionettist.Object
         oldLocale: oldLocale
 
       callback(t) if Marionettist._.isFunction(callback)
-`export default Env`
+export default Env

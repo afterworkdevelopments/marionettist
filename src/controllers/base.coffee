@@ -1,4 +1,4 @@
-`import Marionettist from "../core.js"`
+import Marionettist from "../core.coffee"
 
 class Base extends Marionettist.Object
 
@@ -9,4 +9,4 @@ class Base extends Marionettist.Object
     Marionettist.location.getCurrentRoute()
 
 
-`export default Base`
+export default Base

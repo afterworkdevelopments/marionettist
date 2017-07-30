@@ -1,4 +1,4 @@
-`import Marionettist from "./core.js"`
+import Marionettist from "./core.coffee"
 
 class AppRouter extends Marionettist.AppRouter
 
@@ -78,4 +78,4 @@ class AppRouter extends Marionettist.AppRouter
     else
       controllerMethod.apply(@controller, @_getParams()) if Marionettist._.isFunction(controllerMethod)
 
-`export default AppRouter`
+export default AppRouter
